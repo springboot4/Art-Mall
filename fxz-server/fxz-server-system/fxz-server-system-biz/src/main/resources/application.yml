@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: fxz-server-system
+  cloud:
+    nacos:
+      config:
+        server-addr: ${NACOS_HOST:fxz-nacos}:8848
+      discovery:
+        server-addr: ${NACOS_HOST:fxz-nacos}:8848
+  config:
+    import:
+      - optional:nacos:${spring.application.name}.yaml
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
