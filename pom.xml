@@ -17,6 +17,7 @@
         <module>fxz-tx-manager</module>
         <module>fxz-generate</module>
         <module>fxz-Job</module>
+        <module>mall-product</module>
     </modules>
 
     <properties>
