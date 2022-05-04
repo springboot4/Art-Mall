@@ -1,6 +1,7 @@
 package com.fxz.mall.product.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -55,7 +56,7 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
 	 */
 	@Override
 	public IPage<Brand> pageBrand(Page<Brand> pageParam, Brand brand) {
-		return brandMapper.selectPage(pageParam, Wrappers.emptyWrapper());
+		return brandMapper.selectPage(pageParam, Wrappers.<Brand>lambdaQuery().like(StringUtils.isNotBlank(brand.getName()),Brand::getName,brand.getName()));
 	}
 
 	/**
