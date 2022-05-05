@@ -1,18 +1,3 @@
-/*
- Navicat Premium Data Transfer
-
- Source Server         : localhost3306
- Source Server Type    : MySQL
- Source Server Version : 80000
- Source Host           : localhost:3306
- Source Schema         : fxz_cloud_txmanager
-
- Target Server Type    : MySQL
- Target Server Version : 80000
- File Encoding         : 65001
-
- Date: 24/01/2022 22:25:53
-*/
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;

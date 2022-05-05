@@ -1,16 +1,3 @@
-/*
- Navicat Premium Data Transfer
-
- Source Server Type    : MySQL
- Source Server Version : 80028
- Source Schema         : fxz_cloud_base
-
- Target Server Type    : MySQL
- Target Server Version : 80028
- File Encoding         : 65001
-
- Date: 24/04/2022 00:19:34
-*/
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
