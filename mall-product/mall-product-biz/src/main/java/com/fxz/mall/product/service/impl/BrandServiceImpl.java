@@ -56,7 +56,8 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
 	 */
 	@Override
 	public IPage<Brand> pageBrand(Page<Brand> pageParam, Brand brand) {
-		return brandMapper.selectPage(pageParam, Wrappers.<Brand>lambdaQuery().like(StringUtils.isNotBlank(brand.getName()),Brand::getName,brand.getName()));
+		return brandMapper.selectPage(pageParam, Wrappers.<Brand>lambdaQuery()
+				.like(StringUtils.isNotBlank(brand.getName()), Brand::getName, brand.getName()));
 	}
 
 	/**

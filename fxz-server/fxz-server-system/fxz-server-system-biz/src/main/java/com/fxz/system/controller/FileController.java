@@ -5,6 +5,7 @@ import com.fxz.common.log.annotation.OperLogAnn;
 import com.fxz.common.log.enums.BusinessType;
 import com.fxz.common.mp.result.PageResult;
 import com.fxz.common.mp.result.Result;
+import com.fxz.common.security.annotation.Ojbk;
 import com.fxz.system.dto.FileDto;
 import com.fxz.system.entity.File;
 import com.fxz.system.service.FileService;
@@ -46,6 +47,7 @@ public class FileController {
 	 * @param fileName 文件名
 	 * @param response 响应
 	 */
+	@Ojbk
 	@GetMapping("/{bucket}/{fileName}")
 	public void file(@PathVariable String bucket, @PathVariable String fileName, HttpServletResponse response) {
 		fileService.getFile(bucket, fileName, response);
