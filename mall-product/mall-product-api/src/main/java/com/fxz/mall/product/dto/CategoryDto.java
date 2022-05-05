@@ -16,14 +16,20 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class CategoryDto extends BaseEntity {
 
-    private static final long serialVersionUID = -1L;
+	private static final long serialVersionUID = -1L;
 
-    private Long id;
-    private String name;
-    private Long parentId;
-    private Integer level;
-    private String iconUrl;
-    private Integer sort;
-    private Integer visible;
+	private Long id;
+
+	private String name;
+
+	private Long parentId;
+
+	private Integer level;
+
+	private String iconUrl;
+
+	private Integer sort;
+
+	private Integer visible;
 
 }

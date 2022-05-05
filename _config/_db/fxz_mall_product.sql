@@ -17,7 +17,7 @@ CREATE TABLE `attribute` (
   `update_by` varchar(255) DEFAULT NULL COMMENT '更新人',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `fk_pms_attr_pms_category` (`category_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='商品属性表';
+) ENGINE=InnoDB AUTO_INCREMENT=1522228947647795202 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='商品属性表';
 
 -- ----------------------------
 -- Records of attribute
@@ -27,6 +27,12 @@ INSERT INTO `attribute` (`id`, `category_id`, `name`, `type`, `create_time`, `up
 INSERT INTO `attribute` (`id`, `category_id`, `name`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (35, 5, '规格', 1, '2021-07-11 18:00:06', '2022-03-05 13:16:30', NULL, NULL);
 INSERT INTO `attribute` (`id`, `category_id`, `name`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (36, 5, '上市时间', 2, '2021-07-11 18:00:08', '2022-03-05 13:16:31', NULL, NULL);
 INSERT INTO `attribute` (`id`, `category_id`, `name`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (47, 8, '阿斯顿', 1, '2022-03-04 13:00:43', '2022-03-04 13:00:43', NULL, NULL);
+INSERT INTO `attribute` (`id`, `category_id`, `name`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1522227526558879746, 3, '网络', 2, '2022-05-05 22:51:39', '2022-05-05 22:56:41', 'fxz', 'fxz');
+INSERT INTO `attribute` (`id`, `category_id`, `name`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1522228459514695682, 0, '', 1, '2022-05-05 22:55:21', '2022-05-05 22:55:21', 'fxz', 'fxz');
+INSERT INTO `attribute` (`id`, `category_id`, `name`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1522228692801884161, 3, '电池', 2, '2022-05-05 22:56:17', '2022-05-05 22:56:41', 'fxz', 'fxz');
+INSERT INTO `attribute` (`id`, `category_id`, `name`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1522228724506628098, 3, '颜色', 1, '2022-05-05 22:56:24', '2022-05-05 22:56:51', 'fxz', 'fxz');
+INSERT INTO `attribute` (`id`, `category_id`, `name`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1522228796099203073, 3, '重量', 2, '2022-05-05 22:56:41', '2022-05-05 22:56:41', 'fxz', 'fxz');
+INSERT INTO `attribute` (`id`, `category_id`, `name`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1522228947647795201, 0, '', 2, '2022-05-05 22:57:17', '2022-05-05 22:57:17', 'fxz', 'fxz');
 COMMIT;
 
 -- ----------------------------
@@ -70,7 +76,7 @@ CREATE TABLE `category` (
   `create_by` varchar(255) DEFAULT NULL COMMENT '创建人',
   `update_by` varchar(255) DEFAULT NULL COMMENT '更新人',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='商品分类表';
+) ENGINE=InnoDB AUTO_INCREMENT=1522191266574311426 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='商品分类表';
 
 -- ----------------------------
 -- Records of category
@@ -78,10 +84,12 @@ CREATE TABLE `category` (
 BEGIN;
 INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (3, '手机配件', 0, 1, NULL, 1, 1, NULL, NULL, NULL, NULL);
 INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (4, '智能手机', 3, 2, NULL, 1, 1, NULL, NULL, NULL, NULL);
-INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (5, '5g手机', 4, 3, 'http://a.youlai.tech:9000/default/f4a27e240c184758942670aad9ce5639.jpg', 1, 1, NULL, '2022-03-05 16:16:16', NULL, NULL);
 INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (6, '电脑', 0, 1, 'http://a.youlai.tech:9000/default/776c21c1a71848069093033f461c5f4a.jpg', 1, 1, '2022-02-25 11:22:44', '2022-02-25 11:22:44', NULL, NULL);
 INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (7, '游戏本', 6, 2, 'http://a.youlai.tech:9000/default/f41d764d7ce64054b75fe9be5fb3f700.jpg', 1, 1, '2022-02-25 11:23:06', '2022-02-25 11:23:06', NULL, NULL);
 INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (8, '轻薄本', 6, 2, 'http://a.youlai.tech:9000/default/840ddc78c93d422b9929821c97f3dfbe.jpg', 2, 1, '2022-02-25 11:23:24', '2022-02-25 11:23:24', NULL, NULL);
+INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1522189691277635586, 'dd', 4, 3, '/system/file/fxzcloud/2917ae8f5c4a446ea83b7ce8c947faf3.png', 0, 1, '2022-05-05 20:21:18', '2022-05-05 20:21:18', 'fxz', 'fxz');
+INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1522191209464668161, 'dd', 6, 2, '/system/file/fxzcloud/0c1aacddbff24e48bcde61ae4b0ccc7a.jpeg', 3, 1, '2022-05-05 20:27:20', '2022-05-05 20:27:20', 'fxz', 'fxz');
+INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1522191266574311425, '33', 1522191209464668161, 3, '/system/file/fxzcloud/f3caeea78a7640b7a079cfa775acef45.jpeg', 1, 1, '2022-05-05 20:27:34', '2022-05-05 20:27:34', 'fxz', 'fxz');
 COMMIT;
 
 -- ----------------------------

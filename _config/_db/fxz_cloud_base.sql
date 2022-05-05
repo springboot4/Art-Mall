@@ -7,8 +7,8 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dept`;
 CREATE TABLE `sys_dept` (
-  `dept_id` bigint NOT NULL AUTO_INCREMENT COMMENT '部门ID',
-  `parent_id` bigint NOT NULL COMMENT '上级部门ID',
+  `dept_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '部门ID',
+  `parent_id` bigint(20) NOT NULL COMMENT '上级部门ID',
   `dept_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '部门名称',
   `order_num` double(20,0) DEFAULT NULL COMMENT '排序',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
@@ -16,18 +16,18 @@ CREATE TABLE `sys_dept` (
   `create_by` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '创建人',
   `update_by` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '更新人',
   PRIMARY KEY (`dept_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='部门表';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='部门表';
 
 -- ----------------------------
 -- Records of sys_dept
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_dept` (`dept_id`, `parent_id`, `dept_name`, `order_num`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (0, -1, 'fxzcloud', 0, '2022-02-28 16:42:49', '2022-02-28 16:42:51', NULL, NULL);
 INSERT INTO `sys_dept` (`dept_id`, `parent_id`, `dept_name`, `order_num`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1, 0, '研发部', 0, '2022-02-28 16:43:53', '2022-02-28 16:43:55', NULL, NULL);
 INSERT INTO `sys_dept` (`dept_id`, `parent_id`, `dept_name`, `order_num`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (2, 0, '市场部', -1, '2022-02-28 16:43:10', '2022-03-26 20:16:52', NULL, 'fxz');
 INSERT INTO `sys_dept` (`dept_id`, `parent_id`, `dept_name`, `order_num`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (3, 2, '销售部', 0, '2022-02-28 16:43:27', '2022-03-25 19:32:45', NULL, 'fxz');
 INSERT INTO `sys_dept` (`dept_id`, `parent_id`, `dept_name`, `order_num`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (4, 1, '前端组', 1, '2022-02-28 16:44:29', '2022-02-28 16:44:29', NULL, NULL);
 INSERT INTO `sys_dept` (`dept_id`, `parent_id`, `dept_name`, `order_num`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (5, 1, '后端组', 0, '2022-02-28 16:44:41', '2022-03-26 20:26:43', NULL, 'fxz');
+INSERT INTO `sys_dept` (`dept_id`, `parent_id`, `dept_name`, `order_num`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (6, -1, 'fxzcloud', 0, '2022-02-28 16:42:49', '2022-02-28 16:42:51', NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -35,7 +35,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dict`;
 CREATE TABLE `sys_dict` (
-  `id` bigint NOT NULL,
+  `id` bigint(20) NOT NULL,
   `type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '类型',
   `description` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '描述',
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
@@ -75,13 +75,13 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dict_item`;
 CREATE TABLE `sys_dict_item` (
-  `id` bigint NOT NULL,
-  `dict_id` bigint NOT NULL COMMENT '字典ID',
+  `id` bigint(20) NOT NULL,
+  `dict_id` bigint(20) NOT NULL COMMENT '字典ID',
   `value` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '值',
   `label` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '标签',
   `type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '字典类型',
   `description` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '描述',
-  `sort_order` int NOT NULL DEFAULT '0' COMMENT '排序（升序）',
+  `sort_order` int(11) NOT NULL DEFAULT '0' COMMENT '排序（升序）',
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT ' ' COMMENT '备注',
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '0' COMMENT '删除标记',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
@@ -112,12 +112,12 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_file`;
 CREATE TABLE `sys_file` (
-  `id` bigint NOT NULL,
+  `id` bigint(20) NOT NULL,
   `file_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `bucket_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `original` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `file_size` bigint DEFAULT NULL COMMENT '文件大小',
+  `file_size` bigint(20) DEFAULT NULL COMMENT '文件大小',
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '0' COMMENT '0-正常，1-删除',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
@@ -133,6 +133,9 @@ BEGIN;
 INSERT INTO `sys_file` (`id`, `file_name`, `bucket_name`, `original`, `type`, `file_size`, `del_flag`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1517878422349291521, '2eb7605827094bb8b9409f8efb795dd1.png', 'fxzcloud', '7493281_fxzcloud_1644239239.png', 'png', 20151, '0', '2022-04-23 22:49:51', '2022-04-23 22:49:51', 'fxz', 'fxz');
 INSERT INTO `sys_file` (`id`, `file_name`, `bucket_name`, `original`, `type`, `file_size`, `del_flag`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1517878484760535041, '36f848152cef4db3be798ae7b23ddef5.png', 'fxzcloud', '7493281_fxzcloud_1644239239.png', 'png', 20151, '0', '2022-04-23 22:50:06', '2022-04-23 22:50:06', 'fxz', 'fxz');
 INSERT INTO `sys_file` (`id`, `file_name`, `bucket_name`, `original`, `type`, `file_size`, `del_flag`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1517900762525290497, '2cf6a2a5a7704c67b733877ae3d8ac23.png', 'fxzcloud', '7493281_fxzcloud_1644239239.png', 'png', 20151, '0', '2022-04-24 00:18:38', '2022-04-24 00:18:38', 'fxz', 'fxz');
+INSERT INTO `sys_file` (`id`, `file_name`, `bucket_name`, `original`, `type`, `file_size`, `del_flag`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1522189670826184706, '2917ae8f5c4a446ea83b7ce8c947faf3.png', 'fxzcloud', '7493281_fxzcloud_1644239239.png', 'png', 20151, '0', '2022-05-05 20:21:13', '2022-05-05 20:21:13', 'fxz', 'fxz');
+INSERT INTO `sys_file` (`id`, `file_name`, `bucket_name`, `original`, `type`, `file_size`, `del_flag`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1522191184164638721, '0c1aacddbff24e48bcde61ae4b0ccc7a.jpeg', 'fxzcloud', '235104-1627660264251e.jpeg', 'jpeg', 488520, '0', '2022-05-05 20:27:14', '2022-05-05 20:27:14', 'fxz', 'fxz');
+INSERT INTO `sys_file` (`id`, `file_name`, `bucket_name`, `original`, `type`, `file_size`, `del_flag`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1522191249688055809, 'f3caeea78a7640b7a079cfa775acef45.jpeg', 'fxzcloud', '235104-1627660264251e.jpeg', 'jpeg', 488520, '0', '2022-05-05 20:27:30', '2022-05-05 20:27:30', 'fxz', 'fxz');
 COMMIT;
 
 -- ----------------------------
@@ -140,8 +143,8 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_menu`;
 CREATE TABLE `sys_menu` (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '菜单/按钮ID',
-  `parent_id` bigint NOT NULL COMMENT '上级菜单ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '菜单/按钮ID',
+  `parent_id` bigint(20) NOT NULL COMMENT '上级菜单ID',
   `title` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'title',
   `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '菜单/按钮名称',
   `perms` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '权限标识(多个用逗号分隔，如：user:list,user:create)',
@@ -150,7 +153,7 @@ CREATE TABLE `sys_menu` (
   `path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '对应路由path',
   `redirect` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '重定向',
   `icon` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '图标',
-  `keep_alive` tinyint DEFAULT '1' COMMENT '是否缓存 0:否 1:是',
+  `keep_alive` tinyint(4) DEFAULT '1' COMMENT '是否缓存 0:否 1:是',
   `order_num` double(20,0) DEFAULT NULL COMMENT '排序',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
@@ -158,7 +161,7 @@ CREATE TABLE `sys_menu` (
   `update_by` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '更新人',
   `hidden` char(10) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0' COMMENT '是否隐藏(1 隐藏 0 不隐藏)',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=100027 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=100030 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='菜单表';
 
 -- ----------------------------
 -- Records of sys_menu
@@ -198,6 +201,9 @@ INSERT INTO `sys_menu` (`id`, `parent_id`, `title`, `name`, `perms`, `type`, `co
 INSERT INTO `sys_menu` (`id`, `parent_id`, `title`, `name`, `perms`, `type`, `component`, `path`, `redirect`, `icon`, `keep_alive`, `order_num`, `create_time`, `update_time`, `create_by`, `update_by`, `hidden`) VALUES (100024, 20, '审计管理', 'oper', 'sys:oper', '0', 'RouteView', '/permissions/oper', NULL, 'credit-card', 1, 7, '2022-04-24 00:12:34', '2022-04-24 00:12:34', 'fxz', 'fxz', '0');
 INSERT INTO `sys_menu` (`id`, `parent_id`, `title`, `name`, `perms`, `type`, `component`, `path`, `redirect`, `icon`, `keep_alive`, `order_num`, `create_time`, `update_time`, `create_by`, `update_by`, `hidden`) VALUES (100025, 100024, '登录日志', 'OperLogin', 'sys:oper:login', '0', 'modules/system/log/OperLogList.vue', '/sys/oper/login', NULL, 'logout', 1, 0, '2022-04-24 00:15:20', '2022-04-24 00:16:26', 'fxz', 'fxz', '0');
 INSERT INTO `sys_menu` (`id`, `parent_id`, `title`, `name`, `perms`, `type`, `component`, `path`, `redirect`, `icon`, `keep_alive`, `order_num`, `create_time`, `update_time`, `create_by`, `update_by`, `hidden`) VALUES (100026, 100024, '操作日志', 'OperLogList', 'sys:oper:log', '0', 'modules/system/log/OperLogList.vue', '/sys/oper/log', NULL, 'stock', 1, 1, '2022-04-24 00:17:31', '2022-04-24 00:17:31', 'fxz', 'fxz', '0');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `title`, `name`, `perms`, `type`, `component`, `path`, `redirect`, `icon`, `keep_alive`, `order_num`, `create_time`, `update_time`, `create_by`, `update_by`, `hidden`) VALUES (100027, 0, '商品管理', 'product', 'product', '0', 'RouteView', '/product', NULL, 'gift', 1, 3, '2022-05-05 20:14:55', '2022-05-05 20:14:55', 'fxz', 'fxz', '0');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `title`, `name`, `perms`, `type`, `component`, `path`, `redirect`, `icon`, `keep_alive`, `order_num`, `create_time`, `update_time`, `create_by`, `update_by`, `hidden`) VALUES (100028, 100027, '品牌管理', 'brandList', 'product:brand', '0', 'modules/mall/product/brand/BrandList', '/product/brand', NULL, 'taobao', 1, 0, '2022-05-05 20:15:54', '2022-05-05 20:15:54', 'fxz', 'fxz', '0');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `title`, `name`, `perms`, `type`, `component`, `path`, `redirect`, `icon`, `keep_alive`, `order_num`, `create_time`, `update_time`, `create_by`, `update_by`, `hidden`) VALUES (100029, 100027, '分类管理', 'categoryList', 'product:category', '0', 'modules/mall/product/category/CategoryList', '/product/category', NULL, 'layout', 1, 1, '2022-05-05 20:16:57', '2022-05-05 20:16:57', 'fxz', 'fxz', '0');
 COMMIT;
 
 -- ----------------------------
@@ -212,8 +218,8 @@ CREATE TABLE `sys_oauth_client_details` (
   `authorized_grant_types` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '认证类型',
   `web_server_redirect_uri` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '重定向地址',
   `authorities` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '角色列表',
-  `access_token_validity` int DEFAULT NULL COMMENT 'token 有效期',
-  `refresh_token_validity` int DEFAULT NULL COMMENT '刷新令牌有效期',
+  `access_token_validity` int(11) DEFAULT NULL COMMENT 'token 有效期',
+  `refresh_token_validity` int(11) DEFAULT NULL COMMENT '刷新令牌有效期',
   `additional_information` varchar(4096) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '令牌扩展字段JSON',
   `autoapprove` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '是否自动放行',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
@@ -243,10 +249,10 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_oper_log`;
 CREATE TABLE `sys_oper_log` (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `title` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '标题',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '标题',
   `business_type` tinyint(1) DEFAULT NULL COMMENT '业务类型',
-  `method` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '方法名称',
+  `method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '方法名称',
   `request_method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '请求方式',
   `oper_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '操作人员',
   `oper_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '请求url',
@@ -254,13 +260,13 @@ CREATE TABLE `sys_oper_log` (
   `oper_param` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '请求参数',
   `status` tinyint(1) DEFAULT NULL COMMENT '操作状态（0正常 1异常）',
   `error_msg` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '异常信息',
-  `time` bigint DEFAULT NULL COMMENT '执行时间',
+  `time` bigint(20) DEFAULT NULL COMMENT '执行时间',
   `create_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '更新人',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1517900793491836930 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1522225148048789507 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -295,6 +301,18 @@ INSERT INTO `sys_oper_log` (`id`, `title`, `business_type`, `method`, `request_m
 INSERT INTO `sys_oper_log` (`id`, `title`, `business_type`, `method`, `request_method`, `oper_name`, `oper_url`, `oper_ip`, `oper_param`, `status`, `error_msg`, `time`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (1517900618702606337, '用户登录', 4, NULL, 'POST', 'fxz', NULL, '127.0.0.1', 'fxz', 0, NULL, NULL, 'fxz', '2022-04-24 00:18:03', 'anonymousUser', '2022-04-24 00:18:03');
 INSERT INTO `sys_oper_log` (`id`, `title`, `business_type`, `method`, `request_method`, `oper_name`, `oper_url`, `oper_ip`, `oper_param`, `status`, `error_msg`, `time`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (1517900763418677249, '文件管理', 1, 'com.fxz.system.controller.FileController.add()', 'POST', 'fxz', '/file/add', '127.0.0.1', '', NULL, NULL, 395, 'anonymousUser', '2022-04-24 00:18:38', 'anonymousUser', '2022-04-24 00:18:38');
 INSERT INTO `sys_oper_log` (`id`, `title`, `business_type`, `method`, `request_method`, `oper_name`, `oper_url`, `oper_ip`, `oper_param`, `status`, `error_msg`, `time`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (1517900793491836929, '用户登录', 4, NULL, 'POST', 'fxz', NULL, '127.0.0.1', 'fxz', 0, NULL, NULL, 'fxz', '2022-04-24 00:18:45', 'anonymousUser', '2022-04-24 00:18:45');
+INSERT INTO `sys_oper_log` (`id`, `title`, `business_type`, `method`, `request_method`, `oper_name`, `oper_url`, `oper_ip`, `oper_param`, `status`, `error_msg`, `time`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (1522187621753511937, '用户登录', 4, NULL, 'POST', 'fxz', NULL, '127.0.0.1', 'fxz', 0, NULL, NULL, 'fxz', '2022-05-05 20:13:05', 'anonymousUser', '2022-05-05 20:13:04');
+INSERT INTO `sys_oper_log` (`id`, `title`, `business_type`, `method`, `request_method`, `oper_name`, `oper_url`, `oper_ip`, `oper_param`, `status`, `error_msg`, `time`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (1522188371632132098, '用户登录', 4, NULL, 'POST', 'fxz', NULL, '127.0.0.1', 'fxz', 0, NULL, NULL, 'fxz', '2022-05-05 20:16:03', 'anonymousUser', '2022-05-05 20:16:03');
+INSERT INTO `sys_oper_log` (`id`, `title`, `business_type`, `method`, `request_method`, `oper_name`, `oper_url`, `oper_ip`, `oper_param`, `status`, `error_msg`, `time`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (1522189672017367042, '文件管理', 1, 'com.fxz.system.controller.FileController.add()', 'POST', 'fxz', '/file/add', '127.0.0.1', '', NULL, NULL, 349, 'anonymousUser', '2022-05-05 20:21:13', 'anonymousUser', '2022-05-05 20:21:13');
+INSERT INTO `sys_oper_log` (`id`, `title`, `business_type`, `method`, `request_method`, `oper_name`, `oper_url`, `oper_ip`, `oper_param`, `status`, `error_msg`, `time`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (1522191185301295106, '文件管理', 1, 'com.fxz.system.controller.FileController.add()', 'POST', 'fxz', '/file/add', '127.0.0.1', '', NULL, NULL, 431, 'anonymousUser', '2022-05-05 20:27:14', 'anonymousUser', '2022-05-05 20:27:14');
+INSERT INTO `sys_oper_log` (`id`, `title`, `business_type`, `method`, `request_method`, `oper_name`, `oper_url`, `oper_ip`, `oper_param`, `status`, `error_msg`, `time`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (1522191250258481154, '文件管理', 1, 'com.fxz.system.controller.FileController.add()', 'POST', 'fxz', '/file/add', '127.0.0.1', '', NULL, NULL, 237, 'anonymousUser', '2022-05-05 20:27:30', 'anonymousUser', '2022-05-05 20:27:30');
+INSERT INTO `sys_oper_log` (`id`, `title`, `business_type`, `method`, `request_method`, `oper_name`, `oper_url`, `oper_ip`, `oper_param`, `status`, `error_msg`, `time`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (1522200675748761601, '用户登录', 4, NULL, 'POST', 'fxz', NULL, '127.0.0.1', 'fxz', 0, NULL, NULL, 'fxz', '2022-05-05 21:04:57', 'anonymousUser', '2022-05-05 21:04:56');
+INSERT INTO `sys_oper_log` (`id`, `title`, `business_type`, `method`, `request_method`, `oper_name`, `oper_url`, `oper_ip`, `oper_param`, `status`, `error_msg`, `time`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (1522200704601378817, '用户登录', 4, NULL, 'POST', 'fxz', NULL, '127.0.0.1', 'fxz', 0, NULL, NULL, 'fxz', '2022-05-05 21:05:04', 'anonymousUser', '2022-05-05 21:05:03');
+INSERT INTO `sys_oper_log` (`id`, `title`, `business_type`, `method`, `request_method`, `oper_name`, `oper_url`, `oper_ip`, `oper_param`, `status`, `error_msg`, `time`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (1522203145237516289, '用户登录', 4, NULL, 'POST', 'fxz', NULL, '127.0.0.1', 'fxz', 0, NULL, NULL, 'fxz', '2022-05-05 21:14:46', 'anonymousUser', '2022-05-05 21:14:45');
+INSERT INTO `sys_oper_log` (`id`, `title`, `business_type`, `method`, `request_method`, `oper_name`, `oper_url`, `oper_ip`, `oper_param`, `status`, `error_msg`, `time`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (1522209374764617730, '用户登录', 4, NULL, 'POST', 'fxz', NULL, '127.0.0.1', 'fxz', 0, NULL, NULL, 'fxz', '2022-05-05 21:39:31', 'anonymousUser', '2022-05-05 21:39:30');
+INSERT INTO `sys_oper_log` (`id`, `title`, `business_type`, `method`, `request_method`, `oper_name`, `oper_url`, `oper_ip`, `oper_param`, `status`, `error_msg`, `time`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (1522210697421606914, '用户登录', 4, NULL, 'POST', 'fxz', NULL, '127.0.0.1', 'fxz', 0, NULL, NULL, 'fxz', '2022-05-05 21:44:46', 'anonymousUser', '2022-05-05 21:44:46');
+INSERT INTO `sys_oper_log` (`id`, `title`, `business_type`, `method`, `request_method`, `oper_name`, `oper_url`, `oper_ip`, `oper_param`, `status`, `error_msg`, `time`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (1522218828746805249, '用户登录', 4, NULL, 'POST', 'fxz', NULL, '127.0.0.1', 'fxz', 0, NULL, NULL, 'fxz', '2022-05-05 22:17:05', 'anonymousUser', '2022-05-05 22:17:04');
+INSERT INTO `sys_oper_log` (`id`, `title`, `business_type`, `method`, `request_method`, `oper_name`, `oper_url`, `oper_ip`, `oper_param`, `status`, `error_msg`, `time`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (1522225148048789506, '用户登录', 4, NULL, 'POST', 'fxz', NULL, '127.0.0.1', 'fxz', 0, NULL, NULL, 'fxz', '2022-05-05 22:42:12', 'anonymousUser', '2022-05-05 22:42:11');
 COMMIT;
 
 -- ----------------------------
@@ -302,10 +320,10 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_post`;
 CREATE TABLE `sys_post` (
-  `post_id` bigint NOT NULL AUTO_INCREMENT COMMENT '岗位ID',
+  `post_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '岗位ID',
   `post_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '岗位编码',
   `post_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '岗位名称',
-  `post_sort` int NOT NULL COMMENT '岗位排序',
+  `post_sort` int(11) NOT NULL COMMENT '岗位排序',
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '是否删除  -1：已删除  0：正常',
   `description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '描述',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
@@ -338,7 +356,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role` (
-  `role_id` bigint NOT NULL AUTO_INCREMENT COMMENT '角色ID',
+  `role_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '角色ID',
   `role_name` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色名称',
   `remark` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '角色描述',
   `create_time` datetime NOT NULL COMMENT '创建时间',
@@ -348,13 +366,13 @@ CREATE TABLE `sys_role` (
   `data_scope` tinyint(1) DEFAULT NULL COMMENT '数据权限范围',
   `data_scope_dept_ids` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '数据范围(指定部门数组)',
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='角色表';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='角色表';
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_role` (`role_id`, `role_name`, `remark`, `create_time`, `update_time`, `create_by`, `update_by`, `data_scope`, `data_scope_dept_ids`) VALUES (1, 'admin', '管理员', '2022-02-28 16:23:11', '2022-04-24 00:17:52', NULL, 'fxz', 1, NULL);
+INSERT INTO `sys_role` (`role_id`, `role_name`, `remark`, `create_time`, `update_time`, `create_by`, `update_by`, `data_scope`, `data_scope_dept_ids`) VALUES (1, 'admin', '管理员', '2022-02-28 16:23:11', '2022-05-05 20:17:27', NULL, 'fxz', 1, NULL);
 INSERT INTO `sys_role` (`role_id`, `role_name`, `remark`, `create_time`, `update_time`, `create_by`, `update_by`, `data_scope`, `data_scope_dept_ids`) VALUES (8, '游客', '游客,没啥权限', '2022-02-28 19:45:16', '2022-04-05 18:03:00', NULL, 'fxz', 1, NULL);
 COMMIT;
 
@@ -363,9 +381,9 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_menu`;
 CREATE TABLE `sys_role_menu` (
-  `ROLE_ID` bigint NOT NULL,
-  `MENU_ID` bigint NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='角色菜单关联表';
+  `ROLE_ID` bigint(20) NOT NULL,
+  `MENU_ID` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='角色菜单关联表';
 
 -- ----------------------------
 -- Records of sys_role_menu
@@ -410,6 +428,9 @@ INSERT INTO `sys_role_menu` (`ROLE_ID`, `MENU_ID`) VALUES (1, 100023);
 INSERT INTO `sys_role_menu` (`ROLE_ID`, `MENU_ID`) VALUES (1, 100024);
 INSERT INTO `sys_role_menu` (`ROLE_ID`, `MENU_ID`) VALUES (1, 100025);
 INSERT INTO `sys_role_menu` (`ROLE_ID`, `MENU_ID`) VALUES (1, 100026);
+INSERT INTO `sys_role_menu` (`ROLE_ID`, `MENU_ID`) VALUES (1, 100027);
+INSERT INTO `sys_role_menu` (`ROLE_ID`, `MENU_ID`) VALUES (1, 100028);
+INSERT INTO `sys_role_menu` (`ROLE_ID`, `MENU_ID`) VALUES (1, 100029);
 COMMIT;
 
 -- ----------------------------
@@ -417,13 +438,13 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_trade_log`;
 CREATE TABLE `sys_trade_log` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `goods_id` int DEFAULT NULL COMMENT '商品ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `goods_id` int(11) DEFAULT NULL COMMENT '商品ID',
   `goods_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '商品名称',
   `status` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '状态',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_trade_log
@@ -444,10 +465,10 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
-  `user_id` bigint NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+  `user_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
   `username` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户名',
   `password` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密码',
-  `dept_id` bigint DEFAULT NULL COMMENT '部门ID',
+  `dept_id` bigint(20) DEFAULT NULL COMMENT '部门ID',
   `email` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '邮箱',
   `mobile` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '联系电话',
   `status` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '1' COMMENT '状态 0锁定 1有效',
@@ -460,7 +481,7 @@ CREATE TABLE `sys_user` (
   `create_by` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '创建人',
   `update_by` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '更新人',
   PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='用户表';
 
 -- ----------------------------
 -- Records of sys_user
@@ -474,8 +495,8 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_post`;
 CREATE TABLE `sys_user_post` (
-  `user_id` bigint NOT NULL COMMENT '用户ID',
-  `post_id` bigint NOT NULL COMMENT '岗位ID',
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `post_id` bigint(20) NOT NULL COMMENT '岗位ID',
   PRIMARY KEY (`user_id`,`post_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='用户与岗位关联表';
 
@@ -491,9 +512,9 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_role`;
 CREATE TABLE `sys_user_role` (
-  `USER_ID` bigint NOT NULL COMMENT '用户ID',
-  `ROLE_ID` bigint NOT NULL COMMENT '角色ID'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='用户角色关联表';
+  `USER_ID` bigint(20) NOT NULL COMMENT '用户ID',
+  `ROLE_ID` bigint(20) NOT NULL COMMENT '角色ID'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='用户角色关联表';
 
 -- ----------------------------
 -- Records of sys_user_role
@@ -507,16 +528,16 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zipkin_annotations`;
 CREATE TABLE `zipkin_annotations` (
-  `trace_id_high` bigint NOT NULL DEFAULT '0' COMMENT 'If non zero, this means the trace uses 128 bit traceIds instead of 64 bit',
-  `trace_id` bigint NOT NULL COMMENT 'coincides with zipkin_spans.trace_id',
-  `span_id` bigint NOT NULL COMMENT 'coincides with zipkin_spans.id',
+  `trace_id_high` bigint(20) NOT NULL DEFAULT '0' COMMENT 'If non zero, this means the trace uses 128 bit traceIds instead of 64 bit',
+  `trace_id` bigint(20) NOT NULL COMMENT 'coincides with zipkin_spans.trace_id',
+  `span_id` bigint(20) NOT NULL COMMENT 'coincides with zipkin_spans.id',
   `a_key` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'BinaryAnnotation.key or Annotation.value if type == -1',
   `a_value` blob COMMENT 'BinaryAnnotation.value(), which must be smaller than 64KB',
-  `a_type` int NOT NULL COMMENT 'BinaryAnnotation.type() or -1 if Annotation',
-  `a_timestamp` bigint DEFAULT NULL COMMENT 'Used to implement TTL; Annotation.timestamp or zipkin_spans.timestamp',
-  `endpoint_ipv4` int DEFAULT NULL COMMENT 'Null when Binary/Annotation.endpoint is null',
+  `a_type` int(11) NOT NULL COMMENT 'BinaryAnnotation.type() or -1 if Annotation',
+  `a_timestamp` bigint(20) DEFAULT NULL COMMENT 'Used to implement TTL; Annotation.timestamp or zipkin_spans.timestamp',
+  `endpoint_ipv4` int(11) DEFAULT NULL COMMENT 'Null when Binary/Annotation.endpoint is null',
   `endpoint_ipv6` binary(16) DEFAULT NULL COMMENT 'Null when Binary/Annotation.endpoint is null, or no IPv6 address',
-  `endpoint_port` smallint DEFAULT NULL COMMENT 'Null when Binary/Annotation.endpoint is null',
+  `endpoint_port` smallint(6) DEFAULT NULL COMMENT 'Null when Binary/Annotation.endpoint is null',
   `endpoint_service_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'Null when Binary/Annotation.endpoint is null',
   UNIQUE KEY `trace_id_high` (`trace_id_high`,`trace_id`,`span_id`,`a_key`,`a_timestamp`) USING BTREE COMMENT 'Ignore insert on duplicate',
   KEY `trace_id_high_2` (`trace_id_high`,`trace_id`,`span_id`) USING BTREE COMMENT 'for joining with zipkin_spans',
@@ -525,7 +546,7 @@ CREATE TABLE `zipkin_annotations` (
   KEY `a_type` (`a_type`) USING BTREE COMMENT 'for getTraces and autocomplete values',
   KEY `a_key` (`a_key`) USING BTREE COMMENT 'for getTraces and autocomplete values',
   KEY `trace_id` (`trace_id`,`span_id`,`a_key`) USING BTREE COMMENT 'for dependencies job'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPRESSED;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED;
 
 -- ----------------------------
 -- Records of zipkin_annotations
@@ -778,10 +799,10 @@ CREATE TABLE `zipkin_dependencies` (
   `day` date NOT NULL,
   `parent` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `child` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `call_count` bigint DEFAULT NULL,
-  `error_count` bigint DEFAULT NULL,
+  `call_count` bigint(20) DEFAULT NULL,
+  `error_count` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`day`,`parent`,`child`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPRESSED;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED;
 
 -- ----------------------------
 -- Records of zipkin_dependencies
@@ -794,21 +815,21 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zipkin_spans`;
 CREATE TABLE `zipkin_spans` (
-  `trace_id_high` bigint NOT NULL DEFAULT '0' COMMENT 'If non zero, this means the trace uses 128 bit traceIds instead of 64 bit',
-  `trace_id` bigint NOT NULL,
-  `id` bigint NOT NULL,
+  `trace_id_high` bigint(20) NOT NULL DEFAULT '0' COMMENT 'If non zero, this means the trace uses 128 bit traceIds instead of 64 bit',
+  `trace_id` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL,
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `remote_service_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `parent_id` bigint DEFAULT NULL,
+  `parent_id` bigint(20) DEFAULT NULL,
   `debug` bit(1) DEFAULT NULL,
-  `start_ts` bigint DEFAULT NULL COMMENT 'Span.timestamp(): epoch micros used for endTs query and to implement TTL',
-  `duration` bigint DEFAULT NULL COMMENT 'Span.duration(): micros used for minDuration and maxDuration query',
+  `start_ts` bigint(20) DEFAULT NULL COMMENT 'Span.timestamp(): epoch micros used for endTs query and to implement TTL',
+  `duration` bigint(20) DEFAULT NULL COMMENT 'Span.duration(): micros used for minDuration and maxDuration query',
   PRIMARY KEY (`trace_id_high`,`trace_id`,`id`) USING BTREE,
   KEY `trace_id_high` (`trace_id_high`,`trace_id`) USING BTREE COMMENT 'for getTracesByIds',
   KEY `name` (`name`) USING BTREE COMMENT 'for getTraces and getSpanNames',
   KEY `remote_service_name` (`remote_service_name`) USING BTREE COMMENT 'for getTraces and getRemoteServiceNames',
   KEY `start_ts` (`start_ts`) USING BTREE COMMENT 'for getTraces ordering and range'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPRESSED;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED;
 
 -- ----------------------------
 -- Records of zipkin_spans

@@ -23,64 +23,63 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryController {
 
-    private final CategoryServiceImpl categoryService;
+	private final CategoryServiceImpl categoryService;
 
-    /**
-     * 查询分类列表
-     *
-     * @return 商品分类列表
-     */
-    @GetMapping("list")
-    public Result<List<Tree<Long>>> list() {
-        return Result.success(categoryService.listCategory(null));
-    }
+	/**
+	 * 查询分类列表
+	 * @return 商品分类列表
+	 */
+	@GetMapping("list")
+	public Result<List<Tree<Long>>> list() {
+		return Result.success(categoryService.listCategory(null));
+	}
 
-    /**
-     * 添加
-     */
-    @PostMapping(value = "/add")
-    public Result<Boolean> add(@RequestBody CategoryDto categoryDto) {
-        return Result.success(categoryService.addCategory(categoryDto));
-    }
+	/**
+	 * 添加
+	 */
+	@PostMapping(value = "/add")
+	public Result<Boolean> add(@RequestBody CategoryDto categoryDto) {
+		return Result.success(categoryService.addCategory(categoryDto));
+	}
 
-    /**
-     * 修改
-     */
-    @PostMapping(value = "/update")
-    public Result<Boolean> update(@RequestBody CategoryDto categoryDto) {
-        return Result.success(categoryService.updateCategory(categoryDto));
-    }
+	/**
+	 * 修改
+	 */
+	@PostMapping(value = "/update")
+	public Result<Boolean> update(@RequestBody CategoryDto categoryDto) {
+		return Result.success(categoryService.updateCategory(categoryDto));
+	}
 
-    /**
-     * 删除
-     */
-    @DeleteMapping(value = "/delete")
-    public Result<Boolean> delete(Long id) {
-        return Result.judge(categoryService.deleteCategory(id));
-    }
+	/**
+	 * 删除
+	 */
+	@DeleteMapping(value = "/delete")
+	public Result<Boolean> delete(Long id) {
+		return Result.judge(categoryService.deleteCategory(id));
+	}
 
-    /**
-     * 获取单条
-     */
-    @GetMapping(value = "/findById")
-    public Result<Category> findById(Long id) {
-        return Result.success(categoryService.findById(id));
-    }
+	/**
+	 * 获取单条
+	 */
+	@GetMapping(value = "/findById")
+	public Result<Category> findById(Long id) {
+		return Result.success(categoryService.findById(id));
+	}
 
-    /**
-     * 获取全部
-     */
-    @GetMapping(value = "/findAll")
-    public Result<List<Category>> findAll() {
-        return Result.success(categoryService.findAll());
-    }
+	/**
+	 * 获取全部
+	 */
+	@GetMapping(value = "/findAll")
+	public Result<List<Category>> findAll() {
+		return Result.success(categoryService.findAll());
+	}
 
-    /**
-     * 分页
-     */
-    @GetMapping(value = "/page")
-    public Result<PageResult<Category>> pageCategory(Page<Category> pageParam, Category category) {
-        return Result.success(PageResult.success(categoryService.pageCategory(pageParam, category)));
-    }
+	/**
+	 * 分页
+	 */
+	@GetMapping(value = "/page")
+	public Result<PageResult<Category>> pageCategory(Page<Category> pageParam, Category category) {
+		return Result.success(PageResult.success(categoryService.pageCategory(pageParam, category)));
+	}
 
 }

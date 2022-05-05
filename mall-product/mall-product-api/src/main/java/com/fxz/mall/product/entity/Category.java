@@ -18,35 +18,41 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = true)
 public class Category extends BaseEntity {
 
-    private static final long serialVersionUID = -1L;
+	private static final long serialVersionUID = -1L;
 
-    /**
-     * 主键
-     */
-    private Long id;
-    /**
-     * 商品分类名称
-     */
-    private String name;
-    /**
-     * 父级ID
-     */
-    private Long parentId;
-    /**
-     * 层级
-     */
-    private Integer level;
-    /**
-     * 图标地址
-     */
-    private String iconUrl;
-    /**
-     * 排序
-     */
-    private Integer sort;
-    /**
-     * 显示状态:( 0:隐藏 1:显示)
-     */
-    private Integer visible;
+	/**
+	 * 主键
+	 */
+	private Long id;
+
+	/**
+	 * 商品分类名称
+	 */
+	private String name;
+
+	/**
+	 * 父级ID
+	 */
+	private Long parentId;
+
+	/**
+	 * 层级
+	 */
+	private Integer level;
+
+	/**
+	 * 图标地址
+	 */
+	private String iconUrl;
+
+	/**
+	 * 排序
+	 */
+	private Integer sort;
+
+	/**
+	 * 显示状态:( 0:隐藏 1:显示)
+	 */
+	private Integer visible;
 
 }

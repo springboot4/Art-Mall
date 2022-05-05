@@ -18,39 +18,40 @@ import java.util.List;
  */
 public interface CategoryService extends IService<Category> {
 
-    /**
-     * 添加
-     */
-    Boolean addCategory(CategoryDto categoryDto);
+	/**
+	 * 添加
+	 */
+	Boolean addCategory(CategoryDto categoryDto);
 
-    /**
-     * 修改
-     */
-    Boolean updateCategory(CategoryDto categoryDto);
+	/**
+	 * 修改
+	 */
+	Boolean updateCategory(CategoryDto categoryDto);
 
-    /**
-     * 分页
-     */
-    IPage<Category> pageCategory(Page<Category> pageParam, Category category);
+	/**
+	 * 分页
+	 */
+	IPage<Category> pageCategory(Page<Category> pageParam, Category category);
 
-    /**
-     * 获取单条
-     */
-    Category findById(Long id);
+	/**
+	 * 获取单条
+	 */
+	Category findById(Long id);
 
-    /**
-     * 获取全部
-     */
-    List<Category> findAll();
+	/**
+	 * 获取全部
+	 */
+	List<Category> findAll();
 
-    /**
-     * 删除
-     */
-    Boolean deleteCategory(Long id);
+	/**
+	 * 删除
+	 */
+	Boolean deleteCategory(Long id);
 
-    /**
-     * 查询分类列表
-     * @return 商品分类列表
-     */
-    List<Tree<Long>> listCategory(Long parentId);
+	/**
+	 * 查询分类列表
+	 * @return 商品分类列表
+	 */
+	List<Tree<Long>> listCategory(Long parentId);
+
 }
