@@ -25,10 +25,11 @@ public enum CodeGenColumnTypeEnum {
 	TINYINT("tinyint", "Integer"), SMALLINT("smallint", "Integer"), MEDIUMINT("mediumint", "Integer"), INT("int",
 			"Integer"), INTEGER("integer", "Integer"), BIGINT("bigint", "Long"), FLOAT("float", "Float"), DOUBLE(
 					"double", "Double"), DECIMAL("decimal", "BigDecimal"), BIT("bit", "Boolean"), CHAR("char",
-							"String"), VARCHAR("varchar", "String"), TINYTEXT("tinytext", "String"), TEXT("text",
-									"String"), MEDIUMTEXT("mediumtext", "String"), LONGTEXT("longtext", "String"), DATE(
-											"date", "LocalDate"), DATETIME("datetime", "LocalDateTime"), TIME("time",
-													"LocalTime"), TIMESTAMP("timestamp", "LocalDateTime");
+							"String"), VARCHAR("varchar", "String"), JSON("json", "String"), TINYTEXT("tinytext",
+									"String"), TEXT("text", "String"), MEDIUMTEXT("mediumtext",
+											"String"), LONGTEXT("longtext", "String"), DATE("date",
+													"LocalDate"), DATETIME("datetime", "LocalDateTime"), TIME("time",
+															"LocalTime"), TIMESTAMP("timestamp", "LocalDateTime");
 
 	private final String columnType;
 
