@@ -7,7 +7,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `gen_datasource_conf`;
 CREATE TABLE `gen_datasource_conf` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '数据源名称',
   `url` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'jdbc-url',
   `username` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '用户名',
@@ -18,7 +18,7 @@ CREATE TABLE `gen_datasource_conf` (
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '更新人',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1510886293184806914 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='数据源表';
+) ENGINE=InnoDB AUTO_INCREMENT=1522211132668686339 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='数据源表';
 
 -- ----------------------------
 -- Records of gen_datasource_conf
@@ -29,6 +29,7 @@ INSERT INTO `gen_datasource_conf` (`id`, `name`, `url`, `username`, `password`, 
 INSERT INTO `gen_datasource_conf` (`id`, `name`, `url`, `username`, `password`, `del_flag`, `create_time`, `create_by`, `update_time`, `update_by`) VALUES (1510166239929495553, 'fxzcloud_gen', 'jdbc:mysql://127.0.0.1/fxz_cloud_codegen?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8', 'root', 'E46KJNsvjWdoc0V5nt2jGg==', '1', '2022-04-02 16:04:24', 'fxz', '2022-04-02 16:04:24', 'fxz');
 INSERT INTO `gen_datasource_conf` (`id`, `name`, `url`, `username`, `password`, `del_flag`, `create_time`, `create_by`, `update_time`, `update_by`) VALUES (1510497293475336193, 'pig_base', 'jdbc:mysql://127.0.0.1/pig?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8', 'root', '0+Mu9YWFYj0QlJHXVSzscQ==', '0', '2022-04-03 13:59:53', 'fxz', '2022-04-03 13:59:53', 'fxz');
 INSERT INTO `gen_datasource_conf` (`id`, `name`, `url`, `username`, `password`, `del_flag`, `create_time`, `create_by`, `update_time`, `update_by`) VALUES (1510886293184806913, 'fxzcloud_job', 'jdbc:mysql://127.0.0.1/fxz_cloud_job?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8', 'root', 'KNIsOUmb6f9fQnThKdC3Sw==', '0', '2022-03-31 15:55:05', 'fxz', '2022-04-02 16:04:44', 'fxz');
+INSERT INTO `gen_datasource_conf` (`id`, `name`, `url`, `username`, `password`, `del_flag`, `create_time`, `create_by`, `update_time`, `update_by`) VALUES (1522211132668686338, 'fxz_mall_product', 'jdbc:mysql://fxz-mysql/fxz_mall_product?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8', 'root', 'dXE3Vionlghs0GDyH9bxIQ==', '0', '2022-03-31 15:55:05', 'fxz', '2022-04-02 16:04:44', 'fxz');
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

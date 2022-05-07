@@ -79,9 +79,9 @@ CREATE TABLE `QRTZ_FIRED_TRIGGERS` (
   `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
   `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
   `instance_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度器实例名',
-  `fired_time` bigint NOT NULL COMMENT '触发的时间',
-  `sched_time` bigint NOT NULL COMMENT '定时器制定的时间',
-  `priority` int NOT NULL COMMENT '优先级',
+  `fired_time` bigint(20) NOT NULL COMMENT '触发的时间',
+  `sched_time` bigint(20) NOT NULL COMMENT '定时器制定的时间',
+  `priority` int(11) NOT NULL COMMENT '优先级',
   `state` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '状态',
   `job_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '任务名称',
   `job_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '任务组名',
@@ -174,8 +174,8 @@ DROP TABLE IF EXISTS `QRTZ_SCHEDULER_STATE`;
 CREATE TABLE `QRTZ_SCHEDULER_STATE` (
   `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
   `instance_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '实例名称',
-  `last_checkin_time` bigint NOT NULL COMMENT '上次检查时间',
-  `checkin_interval` bigint NOT NULL COMMENT '检查间隔时间',
+  `last_checkin_time` bigint(20) NOT NULL COMMENT '上次检查时间',
+  `checkin_interval` bigint(20) NOT NULL COMMENT '检查间隔时间',
   PRIMARY KEY (`sched_name`,`instance_name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='调度器状态表';
 
@@ -195,9 +195,9 @@ CREATE TABLE `QRTZ_SIMPLE_TRIGGERS` (
   `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
   `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
   `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
-  `repeat_count` bigint NOT NULL COMMENT '重复的次数统计',
-  `repeat_interval` bigint NOT NULL COMMENT '重复的间隔时间',
-  `times_triggered` bigint NOT NULL COMMENT '已经触发的次数',
+  `repeat_count` bigint(20) NOT NULL COMMENT '重复的次数统计',
+  `repeat_interval` bigint(20) NOT NULL COMMENT '重复的间隔时间',
+  `times_triggered` bigint(20) NOT NULL COMMENT '已经触发的次数',
   PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`) USING BTREE,
   CONSTRAINT `QRTZ_SIMPLE_TRIGGERS_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `QRTZ_TRIGGERS` (`sched_name`, `trigger_name`, `trigger_group`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='简单触发器的信息表';
@@ -219,10 +219,10 @@ CREATE TABLE `QRTZ_SIMPROP_TRIGGERS` (
   `str_prop_1` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'String类型的trigger的第一个参数',
   `str_prop_2` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'String类型的trigger的第二个参数',
   `str_prop_3` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'String类型的trigger的第三个参数',
-  `int_prop_1` int DEFAULT NULL COMMENT 'int类型的trigger的第一个参数',
-  `int_prop_2` int DEFAULT NULL COMMENT 'int类型的trigger的第二个参数',
-  `long_prop_1` bigint DEFAULT NULL COMMENT 'long类型的trigger的第一个参数',
-  `long_prop_2` bigint DEFAULT NULL COMMENT 'long类型的trigger的第二个参数',
+  `int_prop_1` int(11) DEFAULT NULL COMMENT 'int类型的trigger的第一个参数',
+  `int_prop_2` int(11) DEFAULT NULL COMMENT 'int类型的trigger的第二个参数',
+  `long_prop_1` bigint(20) DEFAULT NULL COMMENT 'long类型的trigger的第一个参数',
+  `long_prop_2` bigint(20) DEFAULT NULL COMMENT 'long类型的trigger的第二个参数',
   `dec_prop_1` decimal(13,4) DEFAULT NULL COMMENT 'decimal类型的trigger的第一个参数',
   `dec_prop_2` decimal(13,4) DEFAULT NULL COMMENT 'decimal类型的trigger的第二个参数',
   `bool_prop_1` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Boolean类型的trigger的第一个参数',
@@ -248,15 +248,15 @@ CREATE TABLE `QRTZ_TRIGGERS` (
   `job_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_job_details表job_name的外键',
   `job_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_job_details表job_group的外键',
   `description` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '相关介绍',
-  `next_fire_time` bigint DEFAULT NULL COMMENT '上一次触发时间（毫秒）',
-  `prev_fire_time` bigint DEFAULT NULL COMMENT '下一次触发时间（默认为-1表示不触发）',
-  `priority` int DEFAULT NULL COMMENT '优先级',
+  `next_fire_time` bigint(20) DEFAULT NULL COMMENT '上一次触发时间（毫秒）',
+  `prev_fire_time` bigint(20) DEFAULT NULL COMMENT '下一次触发时间（默认为-1表示不触发）',
+  `priority` int(11) DEFAULT NULL COMMENT '优先级',
   `trigger_state` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '触发器状态',
   `trigger_type` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '触发器的类型',
-  `start_time` bigint NOT NULL COMMENT '开始时间',
-  `end_time` bigint DEFAULT NULL COMMENT '结束时间',
+  `start_time` bigint(20) NOT NULL COMMENT '开始时间',
+  `end_time` bigint(20) DEFAULT NULL COMMENT '结束时间',
   `calendar_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '日程表名称',
-  `misfire_instr` smallint DEFAULT NULL COMMENT '补偿执行的策略',
+  `misfire_instr` smallint(6) DEFAULT NULL COMMENT '补偿执行的策略',
   `job_data` blob COMMENT '存放持久化job对象',
   PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`) USING BTREE,
   KEY `sched_name` (`sched_name`,`job_name`,`job_group`) USING BTREE,
@@ -285,7 +285,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_job`;
 CREATE TABLE `sys_job` (
-  `job_id` bigint NOT NULL AUTO_INCREMENT COMMENT '任务ID',
+  `job_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '任务ID',
   `job_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '任务名称',
   `job_group` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'DEFAULT' COMMENT '任务组名',
   `invoke_target` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调用目标字符串',
@@ -315,7 +315,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_job_log`;
 CREATE TABLE `sys_job_log` (
-  `job_log_id` bigint NOT NULL AUTO_INCREMENT COMMENT '任务日志ID',
+  `job_log_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '任务日志ID',
   `job_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务名称',
   `job_group` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务组名',
   `invoke_target` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调用目标字符串',
