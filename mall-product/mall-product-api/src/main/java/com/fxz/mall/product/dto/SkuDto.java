@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.util.List;
+
 /**
  * 商品库存表
  *
@@ -33,5 +35,7 @@ public class SkuDto extends BaseEntity {
 	private Integer lockedStockNum;
 
 	private String picUrl;
+
+	private List<AttributeValueDto> specValList;
 
 }

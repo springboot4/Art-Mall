@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
 @TableName("spu_attribute_value")
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class AttributeValue extends BaseEntity {
+public class SpuAttributeValue extends BaseEntity {
 
 	private static final long serialVersionUID = -1L;
 
