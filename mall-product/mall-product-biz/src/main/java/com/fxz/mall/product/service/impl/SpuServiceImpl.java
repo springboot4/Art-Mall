@@ -37,147 +37,154 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuService {
 
-	private final SpuMapper spuMapper;
+    private final SpuMapper spuMapper;
 
-	private final SkuServiceImpl skuService;
+    private final SkuServiceImpl skuService;
 
-	private final SpuAttributeValueServiceImpl spuAttributeValueService;
+    private final SpuAttributeValueServiceImpl spuAttributeValueService;
 
-	private final SkuAttributeValueServiceImpl skuAttributeValueService;
+    private final SkuAttributeValueServiceImpl skuAttributeValueService;
 
-	/**
-	 * 添加
-	 */
-	@Override
-	public Boolean addSpu(SpuDto spuDto) {
-		Spu spu = new Spu();
-		BeanUtils.copyProperties(spuDto, spu);
-		spuMapper.insert(spu);
-		return Boolean.TRUE;
-	}
+    /**
+     * 添加
+     */
+    @Override
+    public Boolean addSpu(SpuDto spuDto) {
+        Spu spu = new Spu();
+        BeanUtils.copyProperties(spuDto, spu);
+        spuMapper.insert(spu);
+        return Boolean.TRUE;
+    }
 
-	/**
-	 * 修改
-	 */
-	@Override
-	public Boolean updateSpu(SpuDto spuDto) {
-		Spu spu = new Spu();
-		BeanUtils.copyProperties(spuDto, spu);
-		spuMapper.updateById(spu);
-		return Boolean.TRUE;
-	}
+    /**
+     * 修改
+     */
+    @Override
+    public Boolean updateSpu(SpuDto spuDto) {
+        Spu spu = new Spu();
+        BeanUtils.copyProperties(spuDto, spu);
+        spuMapper.updateById(spu);
+        return Boolean.TRUE;
+    }
 
-	/**
-	 * 分页
-	 */
-	@Override
-	public IPage<Spu> pageSpu(Page<Spu> pageParam, Spu spu) {
-		return spuMapper.selectPage(pageParam, Wrappers.emptyWrapper());
-	}
+    /**
+     * 分页
+     */
+    @Override
+    public IPage<Spu> pageSpu(Page<Spu> pageParam, Spu spu) {
+        return spuMapper.selectPage(pageParam, Wrappers.emptyWrapper());
+    }
 
-	/**
-	 * 获取单条
-	 */
-	@Override
-	public Spu findById(Long id) {
-		return spuMapper.selectById(id);
-	}
+    /**
+     * 获取单条
+     */
+    @Override
+    public Spu findById(Long id) {
+        return spuMapper.selectById(id);
+    }
 
-	/**
-	 * 获取全部
-	 */
-	@Override
-	public List<Spu> findAll() {
-		return spuMapper.selectList(Wrappers.emptyWrapper());
-	}
+    /**
+     * 获取全部
+     */
+    @Override
+    public List<Spu> findAll() {
+        return spuMapper.selectList(Wrappers.emptyWrapper());
+    }
 
-	/**
-	 * 删除
-	 */
-	@Override
-	public Boolean deleteSpu(Long id) {
-		spuMapper.deleteById(id);
-		return Boolean.TRUE;
-	}
+    /**
+     * 删除
+     */
+    @Override
+    public Boolean deleteSpu(Long id) {
+        spuMapper.deleteById(id);
+        return Boolean.TRUE;
+    }
 
-	/**
-	 * 保存商品
-	 * @param goodsDto 商品信息
-	 * @return 是否保存成功
-	 */
-	@Override
-	public Boolean addGoods(GoodsDto goodsDto) {
-		// 保存spu信息
-		Long goodsId = this.saveSpu(goodsDto);
+    /**
+     * 保存商品
+     *
+     * @param goodsDto 商品信息
+     * @return 是否保存成功
+     */
+    @Override
+    public Boolean addGoods(GoodsDto goodsDto) {
+        // 保存spu信息
+        Long goodsId = this.saveSpu(goodsDto);
 
-		// 属性保存
-		List<AttributeValueDto> attrValList = goodsDto.getAttrList();
-		this.saveAttribute(goodsId, attrValList);
+        // 属性保存
+        List<AttributeValueDto> attrValList = goodsDto.getAttrList();
+        this.saveAttribute(goodsId, attrValList);
 
-		// sku保存
-		List<SkuDto> skuList = goodsDto.getSkuList();
-		return this.saveSku(goodsId, skuList);
-	}
+        // sku保存
+        List<SkuDto> skuList = goodsDto.getSkuList();
 
-	/**
-	 * 保存Sku信息
-	 * @param goodsId spuId
-	 * @param skuList sku列表
-	 * @return 是否保存成功
-	 */
-	private Boolean saveSku(Long goodsId, List<SkuDto> skuList) {
-		// 新增/修改SKU
-		skuList.forEach(skuDto -> {
-			Sku sku = new Sku();
-			BeanUtils.copyProperties(skuDto, sku);
-			sku.setSpuId(goodsId);
+        // todo 商品上架同步到es
+        return this.saveSku(goodsId, skuList);
+    }
 
-			// 保存sku信息
-			skuService.save(sku);
+    /**
+     * 保存Sku信息
+     *
+     * @param goodsId spuId
+     * @param skuList sku列表
+     * @return 是否保存成功
+     */
+    private Boolean saveSku(Long goodsId, List<SkuDto> skuList) {
+        // 新增/修改SKU
+        skuList.forEach(skuDto -> {
+            Sku sku = new Sku();
+            BeanUtils.copyProperties(skuDto, sku);
+            sku.setSpuId(goodsId);
 
-			// 保存sku属性
-			List<AttributeValueDto> specValList = skuDto.getSpecValList();
-			if (CollectionUtils.isNotEmpty(specValList)) {
-				List<SkuAttributeValue> skuAttributeValues = specValList.stream().map(item -> {
-					SkuAttributeValue skuAttributeValue = new SkuAttributeValue();
-					BeanUtils.copyProperties(item, skuAttributeValue);
-					skuAttributeValue.setSpuId(goodsId);
-					skuAttributeValue.setSkuId(sku.getId());
-					return skuAttributeValue;
-				}).collect(Collectors.toList());
-				skuAttributeValueService.saveOrUpdateBatch(skuAttributeValues);
-			}
+            // 保存sku信息
+            skuService.save(sku);
 
-		});
+            // 保存sku属性
+            List<AttributeValueDto> specValList = skuDto.getSpecValList();
+            if (CollectionUtils.isNotEmpty(specValList)) {
+                List<SkuAttributeValue> skuAttributeValues = specValList.stream().map(item -> {
+                    SkuAttributeValue skuAttributeValue = new SkuAttributeValue();
+                    BeanUtils.copyProperties(item, skuAttributeValue);
+                    skuAttributeValue.setSpuId(goodsId);
+                    skuAttributeValue.setSkuId(sku.getId());
+                    return skuAttributeValue;
+                }).collect(Collectors.toList());
+                skuAttributeValueService.saveOrUpdateBatch(skuAttributeValues);
+            }
 
-		return Boolean.TRUE;
-	}
+        });
 
-	/**
-	 * 保存spu的属性
-	 * @param goodsId spuId
-	 * @param attrValList 属性列表
-	 */
-	private void saveAttribute(Long goodsId, List<AttributeValueDto> attrValList) {
-		List<SpuAttributeValue> spuAttributeValueList = attrValList.stream().map(item -> {
-			SpuAttributeValue spuAttributeValue = new SpuAttributeValue();
-			BeanUtils.copyProperties(item, spuAttributeValue);
-			spuAttributeValue.setSpuId(goodsId);
-			spuAttributeValue.setType(AttributeTypeEnum.ATTRIBUTE.getValue());
-			return spuAttributeValue;
-		}).collect(Collectors.toList());
-		if (CollectionUtils.isNotEmpty(spuAttributeValueList)) {
-			spuAttributeValueService.saveOrUpdateBatch(spuAttributeValueList);
-		}
-	}
+        return Boolean.TRUE;
+    }
 
-	private Long saveSpu(GoodsDto goodsDto) {
-		Spu spu = new Spu();
-		BeanUtil.copyProperties(goodsDto, spu);
-		// 商品图册
-		spu.setAlbum(JSONUtil.toJsonStr(goodsDto.getSubPicUrls()));
-		boolean result = this.saveOrUpdate(spu);
-		return result ? spu.getId() : 0;
-	}
+    /**
+     * 保存spu的属性
+     *
+     * @param goodsId     spuId
+     * @param attrValList 属性列表
+     */
+    private void saveAttribute(Long goodsId, List<AttributeValueDto> attrValList) {
+        if (CollectionUtils.isNotEmpty(attrValList)) {
+            List<SpuAttributeValue> spuAttributeValueList = attrValList.stream().map(item -> {
+                SpuAttributeValue spuAttributeValue = new SpuAttributeValue();
+                BeanUtils.copyProperties(item, spuAttributeValue);
+                spuAttributeValue.setSpuId(goodsId);
+                spuAttributeValue.setType(AttributeTypeEnum.ATTRIBUTE.getValue());
+                return spuAttributeValue;
+            }).collect(Collectors.toList());
+            if (CollectionUtils.isNotEmpty(spuAttributeValueList)) {
+                spuAttributeValueService.saveOrUpdateBatch(spuAttributeValueList);
+            }
+        }
+    }
+
+    private Long saveSpu(GoodsDto goodsDto) {
+        Spu spu = new Spu();
+        BeanUtil.copyProperties(goodsDto, spu);
+        // 商品图册
+        spu.setAlbum(JSONUtil.toJsonStr(goodsDto.getSubPicUrls()));
+        boolean result = this.saveOrUpdate(spu);
+        return result ? spu.getId() : 0;
+    }
 
 }
