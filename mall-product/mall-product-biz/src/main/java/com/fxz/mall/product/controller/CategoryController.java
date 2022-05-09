@@ -79,7 +79,8 @@ public class CategoryController {
 	 */
 	@GetMapping(value = "/page")
 	public Result<PageResult<Category>> pageCategory(Page<Category> pageParam, Category category) {
-		return Result.success(PageResult.success(categoryService.pageCategory(pageParam, category)));
+		PageResult<Category> success = PageResult.success(categoryService.pageCategory(pageParam, category));
+		return Result.success();
 	}
 
 }

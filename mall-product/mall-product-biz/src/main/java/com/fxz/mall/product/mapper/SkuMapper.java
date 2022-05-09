@@ -3,6 +3,9 @@ package com.fxz.mall.product.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.fxz.mall.product.entity.Sku;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 商品库存表
@@ -12,5 +15,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface SkuMapper extends BaseMapper<Sku> {
+
+	List<Sku> listSkuBySpuId(@Param("id") Long id);
 
 }

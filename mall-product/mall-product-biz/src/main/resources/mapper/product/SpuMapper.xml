@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fxz.mall.product.mapper.SpuMapper">
+
+    <resultMap id="BaseResultMap" type="com.fxz.mall.product.vo.GoodsVo">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="categoryId" column="category_id" jdbcType="BIGINT"/>
+        <result property="brandId" column="brand_id" jdbcType="BIGINT"/>
+        <result property="originPrice" column="origin_price" jdbcType="BIGINT"/>
+        <result property="price" column="price" jdbcType="BIGINT"/>
+        <result property="sales" column="sales" jdbcType="INTEGER"/>
+        <result property="picUrl" column="pic_url" jdbcType="VARCHAR"/>
+        <result property="album" column="album" jdbcType="OTHER"/>
+        <result property="unit" column="unit" jdbcType="VARCHAR"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="detail" column="detail" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="TINYINT"/>
+        <result property="createTime" column="gmt_create" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="gmt_modified" jdbcType="TIMESTAMP"/>
+        <result property="categoryName" column="categoryName" jdbcType="VARCHAR"/>
+        <result property="brandName" column="brandName" jdbcType="VARCHAR"/>
+        <collection property="skuList" column="id" select="com.fxz.mall.product.mapper.SkuMapper.listSkuBySpuId">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="skuSn" column="sku_sn" jdbcType="VARCHAR"/>
+            <result property="picUrl" column="pic_url" jdbcType="VARCHAR"/>
+            <result property="price" column="price" jdbcType="BIGINT"/>
+            <result property="stockNum" column="stock_num" jdbcType="INTEGER"/>
+            <result property="lockedStockNum" column="locked_stock_num" jdbcType="INTEGER"/>
+        </collection>
+    </resultMap>
+
+    <select id="listGoods" resultMap="BaseResultMap">
+        SELECT
+        t1.id,
+        t1.name,
+        t1.pic_url,
+        t1.origin_price,
+        t1.price,
+        t1.sales,
+        t1.unit,
+        t1.detail,
+        t1.description,
+        t3.NAME categoryName,
+        t4.NAME brandName
+        FROM spu t1
+        LEFT JOIN category t3 ON t1.category_id = t3.id
+        LEFT JOIN brand t4 ON t1.brand_id = t4.id
+        <where>
+            <if test="categoryId!=null">
+                AND t1.category_id =#{categoryId}
+            </if>
+            <if test='name!=null and name neq ""'>
+                AND t1.name like concat('%',#{name},'%')
+            </if>
+        </where>
+        ORDER BY t1.update_time DESC,t1.create_time DESC
+    </select>
+
+</mapper>

@@ -1,13 +1,13 @@
 package com.fxz.mall.product.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fxz.common.mp.result.PageResult;
 import com.fxz.common.mp.result.Result;
 import com.fxz.mall.product.dto.GoodsDto;
 import com.fxz.mall.product.service.impl.SpuServiceImpl;
+import com.fxz.mall.product.vo.GoodsVo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 商品管理
@@ -30,6 +30,14 @@ public class GoodsController {
 	@PostMapping("/add")
 	public Result<Boolean> addGoods(@RequestBody GoodsDto goodsDto) {
 		return Result.judge(spuService.addGoods(goodsDto));
+	}
+
+	/**
+	 * 分页
+	 */
+	@GetMapping("/page")
+	public Result<PageResult<GoodsVo>> page(Long current, Long pageSize, Long categoryId, String name) {
+		return Result.success(PageResult.success(spuService.listGoods(new Page(current, pageSize), name, categoryId)));
 	}
 
 }
