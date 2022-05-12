@@ -53,8 +53,10 @@ public class SecurityEndpoint {
 	public Result<Void> logout(HttpServletRequest request) {
 		// 获取请求头信息
 		String authorization = request.getHeader("Authorization");
+
 		// 提取token
 		String token = StringUtils.replace(authorization, FxzConstant.OAUTH2_TOKEN_TYPE, "");
+		token = StringUtils.replace(authorization, FxzConstant.OAUTH2_TOKEN_TYPE_LOW, "");
 		log.info("退出登录,token:{}", token);
 
 		return removeToken(token);

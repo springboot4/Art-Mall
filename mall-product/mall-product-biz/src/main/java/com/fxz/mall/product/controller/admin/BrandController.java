@@ -1,4 +1,4 @@
-package com.fxz.mall.product.controller;
+package com.fxz.mall.product.controller.admin;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fxz.common.mp.result.PageResult;
