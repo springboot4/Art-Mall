@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.fxz.common.redis.config.RedisCachingConfig,\
-  com.fxz.common.redis.config.RedisTemplateConfig

@@ -3,18 +3,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>fxz-mall</artifactId>
+        <artifactId>mall-order</artifactId>
         <groupId>com.fxz</groupId>
         <version>0.0.1</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>mall-product</artifactId>
-    <packaging>pom</packaging>
 
-    <modules>
-        <module>mall-product-api</module>
-        <module>mall-product-biz</module>
-    </modules>
+    <artifactId>mall-order-api</artifactId>
 
 </project>

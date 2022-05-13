@@ -10,14 +10,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>fxz-common</module>
-        <module>fxz-auth</module>
-        <module>fxz-gateway</module>
-        <module>fxz-server</module>
-        <module>fxz-tx-manager</module>
-        <module>fxz-generate</module>
-        <module>fxz-Job</module>
         <module>mall-product</module>
+        <module>mall-order</module>
     </modules>
 
     <properties>
@@ -85,22 +79,6 @@
                 <version>${com-alibaba-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <!-- tx-lcn依赖管理 -->
-            <dependency>
-                <groupId>com.codingapi.txlcn</groupId>
-                <artifactId>txlcn-tc</artifactId>
-                <version>${codingapi.txlcn.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.codingapi.txlcn</groupId>
-                <artifactId>txlcn-tm</artifactId>
-                <version>${codingapi.txlcn.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.codingapi.txlcn</groupId>
-                <artifactId>txlcn-txmsg-netty</artifactId>
-                <version>${codingapi.txlcn.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.whvcse</groupId>

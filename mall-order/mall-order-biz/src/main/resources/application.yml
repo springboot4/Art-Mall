@@ -1,6 +1,6 @@
 spring:
   application:
-    name: fxz-mall-product
+    name: fxz-mall-order
   cloud:
     nacos:
       config:
