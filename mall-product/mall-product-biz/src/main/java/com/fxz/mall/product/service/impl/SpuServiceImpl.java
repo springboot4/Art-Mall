@@ -1,7 +1,11 @@
 package com.fxz.mall.product.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -18,6 +22,7 @@ import com.fxz.mall.product.enums.AttributeTypeEnum;
 import com.fxz.mall.product.mapper.SpuMapper;
 import com.fxz.mall.product.query.SpuPageQuery;
 import com.fxz.mall.product.service.SpuService;
+import com.fxz.mall.product.vo.GoodsDetailVO;
 import com.fxz.mall.product.vo.GoodsPageVO;
 import com.fxz.mall.product.vo.GoodsVo;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -118,6 +123,100 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
 		List<GoodsPageVO> list = this.baseMapper.listAppSpuPage(page, queryParams);
 		page.setRecords(list);
 		return page;
+	}
+
+	/**
+	 * app端获取商品详情
+	 */
+	@Override
+	public GoodsDetailVO getAppSpuDetail(Long spuId) {
+		Spu spu = this.getById(spuId);
+		Assert.isTrue(spu != null, "商品不存在");
+
+		GoodsDetailVO goodsDetailVO = new GoodsDetailVO();
+
+		// 商品基本信息
+		GoodsDetailVO.GoodsInfo goodsInfo = new GoodsDetailVO.GoodsInfo();
+		BeanUtil.copyProperties(spu, goodsInfo, "album");
+
+		List<String> album = new ArrayList<>();
+
+		if (StrUtil.isNotBlank(spu.getPicUrl())) {
+			album.add(spu.getPicUrl());
+		}
+		if (spu.getAlbum() != null && spu.getAlbum().length() > 0) {
+			String[] strings = JSONUtil.parseArray(spu.getAlbum()).toArray(new String[0]);
+			album.addAll(Arrays.asList(strings));
+			goodsInfo.setAlbum(album);
+		}
+		goodsDetailVO.setGoodsInfo(goodsInfo);
+
+		// 商品属性列表
+		List<GoodsDetailVO.Attribute> attributeList = spuAttributeValueService
+				.list(new LambdaQueryWrapper<SpuAttributeValue>()
+						.eq(SpuAttributeValue::getType, AttributeTypeEnum.ATTRIBUTE.getValue())
+						.eq(SpuAttributeValue::getSpuId, spuId)
+						.select(SpuAttributeValue::getId, SpuAttributeValue::getName, SpuAttributeValue::getValue))
+				.stream().map(item -> {
+					GoodsDetailVO.Attribute attribute = new GoodsDetailVO.Attribute();
+					BeanUtil.copyProperties(item, attribute);
+					return attribute;
+				}).collect(Collectors.toList());
+		goodsDetailVO.setAttributeList(attributeList);
+
+		// 商品规格列表
+		List<SkuAttributeValue> specSourceList = skuAttributeValueService
+				.list(new LambdaQueryWrapper<SkuAttributeValue>()
+						.eq(SkuAttributeValue::getType, AttributeTypeEnum.SPECIFICATION.getValue())
+						.eq(SkuAttributeValue::getSpuId, spuId).select(SkuAttributeValue::getId,
+								SkuAttributeValue::getName, SkuAttributeValue::getValue, SkuAttributeValue::getSkuId));
+
+		List<GoodsDetailVO.Specification> specList = new ArrayList<>();
+		// 规格Map [key:"颜色",value:[{id:1,value:"黑"},{id:2,value:"白"}]]
+		Map<String, List<SkuAttributeValue>> specValueMap = specSourceList.stream()
+				.collect(Collectors.groupingBy(SkuAttributeValue::getName));
+
+		for (Map.Entry<String, List<SkuAttributeValue>> entry : specValueMap.entrySet()) {
+			String specName = entry.getKey();
+			List<SkuAttributeValue> specValueSourceList = entry.getValue();
+
+			// 规格映射处理
+			GoodsDetailVO.Specification spec = new GoodsDetailVO.Specification();
+			spec.setName(specName);
+			if (CollectionUtil.isNotEmpty(specValueSourceList)) {
+				List<GoodsDetailVO.Specification.Value> specValueList = specValueSourceList.stream().map(item -> {
+					GoodsDetailVO.Specification.Value specValue = new GoodsDetailVO.Specification.Value();
+					specValue.setId(item.getId());
+					specValue.setValue(item.getValue());
+					return specValue;
+				}).collect(Collectors.toList());
+				spec.setValues(specValueList);
+				specList.add(spec);
+			}
+		}
+		goodsDetailVO.setSpecList(specList);
+
+		// sku 对应的 规格
+		Map<Long, List<SkuAttributeValue>> specBySkuIdMap = specSourceList.stream()
+				.collect(Collectors.groupingBy(SkuAttributeValue::getSkuId));
+
+		// 商品SKU列表
+		List<Sku> skuSourceList = skuService.list(new LambdaQueryWrapper<Sku>().eq(Sku::getSpuId, spuId)).stream()
+				.map(item -> {
+					List<SkuAttributeValue> skuAttributeValues = specBySkuIdMap.get(item.getId());
+					if (Objects.nonNull(skuAttributeValues)) {
+						String sprcIds = skuAttributeValues.stream().map(attr -> {
+							return String.valueOf(attr);
+						}).collect(Collectors.joining("_"));
+						item.setSpecIds(sprcIds);
+					}
+					return item;
+				}).collect(Collectors.toList());
+		goodsDetailVO.setSkuList(skuSourceList);
+
+		// todo 添加用户浏览历史记录
+
+		return goodsDetailVO;
 	}
 
 	/**

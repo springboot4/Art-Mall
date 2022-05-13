@@ -1,5 +1,6 @@
 package com.fxz.mall.product.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fxz.common.mp.base.BaseEntity;
 import lombok.Data;
@@ -59,5 +60,8 @@ public class Sku extends BaseEntity {
 	 * 商品图片地址
 	 */
 	private String picUrl;
+
+	@TableField(exist = false)
+	private String specIds;
 
 }
