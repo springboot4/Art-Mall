@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fxz.mall.product.dto.SkuDto;
+import com.fxz.mall.product.dto.SkuInfoDTO;
 import com.fxz.mall.product.entity.Sku;
 
 import java.util.List;
@@ -45,5 +46,10 @@ public interface SkuService extends IService<Sku> {
 	 * 删除
 	 */
 	Boolean deleteSku(Long id);
+
+	/**
+	 * 获取商品库存信息
+	 */
+	SkuInfoDTO getSkuInfo(Long skuId);
 
 }

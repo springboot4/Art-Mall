@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fxz.mall.product.dto.SkuDto;
+import com.fxz.mall.product.dto.SkuInfoDTO;
 import com.fxz.mall.product.entity.Sku;
 import com.fxz.mall.product.mapper.SkuMapper;
 import com.fxz.mall.product.service.SkuService;
@@ -81,6 +82,14 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
 	public Boolean deleteSku(Long id) {
 		skuMapper.deleteById(id);
 		return Boolean.TRUE;
+	}
+
+	/**
+	 * 获取商品库存信息
+	 */
+	@Override
+	public SkuInfoDTO getSkuInfo(Long skuId) {
+		return skuMapper.getSkuInfo(skuId);
 	}
 
 }

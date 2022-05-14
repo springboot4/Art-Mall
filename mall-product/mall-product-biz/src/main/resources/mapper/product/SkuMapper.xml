@@ -13,4 +13,18 @@
         WHERE spu_id = #{id}
     </select>
 
+    <select id="getSkuInfo" resultType="com.fxz.mall.product.dto.SkuInfoDTO">
+        select
+            t1.id skuId,
+            t1.sku_sn,
+            concat(t2.name,' ',t1.name) skuName,
+            t1.pic_url,
+            t1.price,
+            t1.stock_num,
+            t2.name as spuName
+        from sku t1
+        left join spu t2 on t1.spu_id = t2.id
+        where t1.id = #{skuId}
+    </select>
+
 </mapper>
