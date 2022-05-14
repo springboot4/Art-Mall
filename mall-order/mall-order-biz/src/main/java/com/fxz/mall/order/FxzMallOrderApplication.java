@@ -11,14 +11,14 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @author fxz
  */
 @EnableFxzCloudResourceServer
-@EnableFeignClients(basePackages = {"com.fxz"})
+@EnableFeignClients(basePackages = { "com.fxz" })
 @MapperScan("com.fxz")
 @EnableDiscoveryClient
 @SpringBootApplication
 public class FxzMallOrderApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(FxzMallOrderApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(FxzMallOrderApplication.class, args);
+	}
 
 }

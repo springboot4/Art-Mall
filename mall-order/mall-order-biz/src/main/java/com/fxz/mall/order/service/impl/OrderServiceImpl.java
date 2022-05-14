@@ -120,25 +120,22 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 		OrderConfirmVO orderConfirmVO = new OrderConfirmVO();
 
 		// 获取订单的商品明细信息
-		List<OrderItemDto> orderItems = this.getOrderItems(skuId);
-		orderConfirmVO.setOrderItems(orderItems);
 		CompletableFuture<Void> orderItemsCompletableFuture = CompletableFuture.runAsync(() -> {
-
+			List<OrderItemDto> orderItems = this.getOrderItems(skuId);
+			orderConfirmVO.setOrderItems(orderItems);
 		}, threadPoolExecutor);
 
 		// 获取会员收获地址
-		List<AddressDto> addresses = remoteAddressService.findAll().getData();
-		orderConfirmVO.setAddresses(addresses);
 		CompletableFuture<Void> addressesCompletableFuture = CompletableFuture.runAsync(() -> {
-
+			List<AddressDto> addresses = remoteAddressService.findAll().getData();
+			orderConfirmVO.setAddresses(addresses);
 		}, threadPoolExecutor);
 
 		// 生成唯一token，防止订单重复提交
-		String orderToken = businessNoGenerator.generate(BusinessTypeEnum.ORDER);
-		orderConfirmVO.setOrderToken(orderToken);
-		redisTemplate.opsForValue().set(OrderConstants.ORDER_TOKEN_PREFIX + orderToken, orderToken);
 		CompletableFuture<Void> orderTokenCompletableFuture = CompletableFuture.runAsync(() -> {
-
+			String orderToken = businessNoGenerator.generate(BusinessTypeEnum.ORDER);
+			orderConfirmVO.setOrderToken(orderToken);
+			redisTemplate.opsForValue().set(OrderConstants.ORDER_TOKEN_PREFIX + orderToken, orderToken);
 		}, threadPoolExecutor);
 
 		CompletableFuture.allOf(orderItemsCompletableFuture, addressesCompletableFuture, orderTokenCompletableFuture)
