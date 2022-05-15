@@ -1,4 +1,3 @@
-
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -183,7 +182,7 @@ CREATE TABLE `QRTZ_SCHEDULER_STATE` (
 -- Records of QRTZ_SCHEDULER_STATE
 -- ----------------------------
 BEGIN;
-INSERT INTO `QRTZ_SCHEDULER_STATE` (`sched_name`, `instance_name`, `last_checkin_time`, `checkin_interval`) VALUES ('FxzScheduler', 'fxzdeMacBook-Pro.local1650723238755', 1650725951177, 15000);
+INSERT INTO `QRTZ_SCHEDULER_STATE` (`sched_name`, `instance_name`, `last_checkin_time`, `checkin_interval`) VALUES ('FxzScheduler', 'fxzdeMacBook-Pro.local1652546773349', 1652548092369, 15000);
 INSERT INTO `QRTZ_SCHEDULER_STATE` (`sched_name`, `instance_name`, `last_checkin_time`, `checkin_interval`) VALUES ('RuoyiScheduler', 'fxz1648969728061', 1648977616500, 15000);
 COMMIT;
 
@@ -267,7 +266,7 @@ CREATE TABLE `QRTZ_TRIGGERS` (
 -- Records of QRTZ_TRIGGERS
 -- ----------------------------
 BEGIN;
-INSERT INTO `QRTZ_TRIGGERS` (`sched_name`, `trigger_name`, `trigger_group`, `job_name`, `job_group`, `description`, `next_fire_time`, `prev_fire_time`, `priority`, `trigger_state`, `trigger_type`, `start_time`, `end_time`, `calendar_name`, `misfire_instr`, `job_data`) VALUES ('FxzScheduler', 'TASK_CLASS_NAME108', 'default', 'TASK_CLASS_NAME108', 'default', NULL, 1649061546000, 1649061545000, 5, 'PAUSED', 'CRON', 1649060574000, 0, NULL, -1, '');
+INSERT INTO `QRTZ_TRIGGERS` (`sched_name`, `trigger_name`, `trigger_group`, `job_name`, `job_group`, `description`, `next_fire_time`, `prev_fire_time`, `priority`, `trigger_state`, `trigger_type`, `start_time`, `end_time`, `calendar_name`, `misfire_instr`, `job_data`) VALUES ('FxzScheduler', 'TASK_CLASS_NAME108', 'default', 'TASK_CLASS_NAME108', 'default', NULL, 1649061555000, 1649061554000, 5, 'PAUSED', 'CRON', 1649060574000, 0, NULL, -1, '');
 INSERT INTO `QRTZ_TRIGGERS` (`sched_name`, `trigger_name`, `trigger_group`, `job_name`, `job_group`, `description`, `next_fire_time`, `prev_fire_time`, `priority`, `trigger_state`, `trigger_type`, `start_time`, `end_time`, `calendar_name`, `misfire_instr`, `job_data`) VALUES ('FxzScheduler', 'TASK_CLASS_NAME109', 'fxz', 'TASK_CLASS_NAME109', 'fxz', NULL, 1649060797000, 1649060796000, 5, 'PAUSED', 'CRON', 1649056363000, 0, NULL, 2, '');
 INSERT INTO `QRTZ_TRIGGERS` (`sched_name`, `trigger_name`, `trigger_group`, `job_name`, `job_group`, `description`, `next_fire_time`, `prev_fire_time`, `priority`, `trigger_state`, `trigger_type`, `start_time`, `end_time`, `calendar_name`, `misfire_instr`, `job_data`) VALUES ('FxzScheduler', 'TASK_CLASS_NAME110', 'fxz', 'TASK_CLASS_NAME110', 'fxz', NULL, 1649062752000, 1649062751000, 5, 'PAUSED', 'CRON', 1649056365000, 0, NULL, 2, '');
 INSERT INTO `QRTZ_TRIGGERS` (`sched_name`, `trigger_name`, `trigger_group`, `job_name`, `job_group`, `description`, `next_fire_time`, `prev_fire_time`, `priority`, `trigger_state`, `trigger_type`, `start_time`, `end_time`, `calendar_name`, `misfire_instr`, `job_data`) VALUES ('FxzScheduler', 'TASK_CLASS_NAMEnull', 'default', 'TASK_CLASS_NAMEnull', 'default', NULL, 1648996000000, -1, 5, 'PAUSED', 'CRON', 1648995997000, 0, NULL, -1, '');
@@ -305,7 +304,7 @@ CREATE TABLE `sys_job` (
 -- Records of sys_job
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_job` (`job_id`, `job_name`, `job_group`, `invoke_target`, `cron_expression`, `misfire_policy`, `concurrent`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (108, 'test', 'default', 'fxzTask.fxzNoParams', '* * * * * ?', '1', '1', '1', 'fxz', '2022-04-03 22:52:55', 'fxz', '2022-04-23 22:51:19', '');
+INSERT INTO `sys_job` (`job_id`, `job_name`, `job_group`, `invoke_target`, `cron_expression`, `misfire_policy`, `concurrent`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (108, 'test', 'default', 'fxzTask.fxzNoParams', '* * * * * ?', '1', '1', '1', 'fxz', '2022-04-03 22:52:55', 'fxz', '2022-05-15 00:48:20', '');
 INSERT INTO `sys_job` (`job_id`, `job_name`, `job_group`, `invoke_target`, `cron_expression`, `misfire_policy`, `concurrent`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (109, 'fxz', 'fxz', 'fxzTask.fxzParams(\'fxz\')', '* * * * * ?', '3', '1', '1', 'fxz', '2022-04-03 23:22:45', 'fxz', '2022-04-04 16:26:37', '');
 INSERT INTO `sys_job` (`job_id`, `job_name`, `job_group`, `invoke_target`, `cron_expression`, `misfire_policy`, `concurrent`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (110, 'fxz1', 'fxz', 'fxzTask.fxzMultipleParams(\'fxz\', true, 2000L, 316.50D, 100)', '* * * * * ?', '3', '0', '1', 'fxz', '2022-04-03 23:23:44', 'fxz', '2022-04-04 16:59:12', '');
 COMMIT;
@@ -324,7 +323,7 @@ CREATE TABLE `sys_job_log` (
   `exception_info` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '异常信息',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`job_log_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1517878789883580418 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='定时任务调度日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=1525518380576915459 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='定时任务调度日志表';
 
 -- ----------------------------
 -- Records of sys_job_log
@@ -337,6 +336,15 @@ INSERT INTO `sys_job_log` (`job_log_id`, `job_name`, `job_group`, `invoke_target
 INSERT INTO `sys_job_log` (`job_log_id`, `job_name`, `job_group`, `invoke_target`, `job_message`, `status`, `exception_info`, `create_time`) VALUES (1517878779301351425, 'test', 'default', 'fxzTask.fxzNoParams', 'test 总共耗时：1毫秒', '0', '', '2022-04-23 22:51:16');
 INSERT INTO `sys_job_log` (`job_log_id`, `job_name`, `job_group`, `invoke_target`, `job_message`, `status`, `exception_info`, `create_time`) VALUES (1517878784724586498, 'test', 'default', 'fxzTask.fxzNoParams', 'test 总共耗时：44毫秒', '0', '', '2022-04-23 22:51:18');
 INSERT INTO `sys_job_log` (`job_log_id`, `job_name`, `job_group`, `invoke_target`, `job_message`, `status`, `exception_info`, `create_time`) VALUES (1517878789883580417, 'test', 'default', 'fxzTask.fxzNoParams', 'test 总共耗时：2毫秒', '0', '', '2022-04-23 22:51:19');
+INSERT INTO `sys_job_log` (`job_log_id`, `job_name`, `job_group`, `invoke_target`, `job_message`, `status`, `exception_info`, `create_time`) VALUES (1525515693877682178, 'test', 'default', 'fxzTask.fxzNoParams', 'test 总共耗时：11毫秒', '0', '', '2022-05-15 00:37:39');
+INSERT INTO `sys_job_log` (`job_log_id`, `job_name`, `job_group`, `invoke_target`, `job_message`, `status`, `exception_info`, `create_time`) VALUES (1525515697409286145, 'test', 'default', 'fxzTask.fxzNoParams', 'test 总共耗时：5毫秒', '0', '', '2022-05-15 00:37:40');
+INSERT INTO `sys_job_log` (`job_log_id`, `job_name`, `job_group`, `invoke_target`, `job_message`, `status`, `exception_info`, `create_time`) VALUES (1525515700877975554, 'test', 'default', 'fxzTask.fxzNoParams', 'test 总共耗时：1毫秒', '0', '', '2022-05-15 00:37:40');
+INSERT INTO `sys_job_log` (`job_log_id`, `job_name`, `job_group`, `invoke_target`, `job_message`, `status`, `exception_info`, `create_time`) VALUES (1525515704334082050, 'test', 'default', 'fxzTask.fxzNoParams', 'test 总共耗时：0毫秒', '0', '', '2022-05-15 00:37:41');
+INSERT INTO `sys_job_log` (`job_log_id`, `job_name`, `job_group`, `invoke_target`, `job_message`, `status`, `exception_info`, `create_time`) VALUES (1525515707634999298, 'test', 'default', 'fxzTask.fxzNoParams', 'test 总共耗时：4毫秒', '0', '', '2022-05-15 00:37:42');
+INSERT INTO `sys_job_log` (`job_log_id`, `job_name`, `job_group`, `invoke_target`, `job_message`, `status`, `exception_info`, `create_time`) VALUES (1525515710889779201, 'test', 'default', 'fxzTask.fxzNoParams', 'test 总共耗时：2毫秒', '0', '', '2022-05-15 00:37:43');
+INSERT INTO `sys_job_log` (`job_log_id`, `job_name`, `job_group`, `invoke_target`, `job_message`, `status`, `exception_info`, `create_time`) VALUES (1525515714601738242, 'test', 'default', 'fxzTask.fxzNoParams', 'test 总共耗时：0毫秒', '0', '', '2022-05-15 00:37:44');
+INSERT INTO `sys_job_log` (`job_log_id`, `job_name`, `job_group`, `invoke_target`, `job_message`, `status`, `exception_info`, `create_time`) VALUES (1525515718707961857, 'test', 'default', 'fxzTask.fxzNoParams', 'test 总共耗时：13毫秒', '0', '', '2022-05-15 00:37:45');
+INSERT INTO `sys_job_log` (`job_log_id`, `job_name`, `job_group`, `invoke_target`, `job_message`, `status`, `exception_info`, `create_time`) VALUES (1525518380576915458, 'test', 'default', 'fxzTask.fxzNoParams', 'test 总共耗时：8毫秒', '0', '', '2022-05-15 00:48:19');
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
