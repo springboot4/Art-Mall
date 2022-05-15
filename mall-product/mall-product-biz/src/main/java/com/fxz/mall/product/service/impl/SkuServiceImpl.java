@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fxz.common.core.exception.FxzException;
 import com.fxz.mall.product.constant.ProductConstant;
 import com.fxz.mall.product.dto.CheckPriceDTO;
 import com.fxz.mall.product.dto.LockStockDTO;
@@ -183,6 +184,38 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
 
 		// 无异常直接返回true
 		return Boolean.TRUE;
+	}
+
+	/**
+	 * 扣减库存 - 支付成功
+	 */
+	@Override
+	public Boolean deductStock(String orderToken) {
+		log.info("扣减库存，orderToken:{}", orderToken);
+
+		// 获取缓存的此订单锁定库存信息
+		String lockedSkuJsonStr = (String) redisTemplate.opsForValue()
+				.get(ProductConstant.LOCKED_STOCK_PREFIX + orderToken);
+		List<LockStockDTO.LockedSku> lockedSkuList = JSONUtil.toList(lockedSkuJsonStr, LockStockDTO.LockedSku.class);
+
+		// 扣减库存
+		lockedSkuList.forEach(item -> {
+			boolean result = this.update(new LambdaUpdateWrapper<Sku>().eq(Sku::getId, item.getSkuId())
+					.setSql("stock_num = stock_num - " + item.getCount())
+					.setSql("locked_stock_num = locked_stock_num - " + item.getCount()));
+			if (!result) {
+				try {
+					throw new FxzException("扣减库存失败,商品" + item.getSkuId() + "库存不足");
+				}
+				catch (FxzException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		});
+
+		// 删除redis中锁定的库存
+		redisTemplate.delete(ProductConstant.LOCKED_STOCK_PREFIX + orderToken);
+		return true;
 	}
 
 }

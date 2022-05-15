@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
 @TableName("order_item")
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class Item extends BaseEntity {
+public class OrderItem extends BaseEntity {
 
 	private static final long serialVersionUID = -1L;
 

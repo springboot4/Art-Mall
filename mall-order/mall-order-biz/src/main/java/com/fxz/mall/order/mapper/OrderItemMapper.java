@@ -1,7 +1,7 @@
 package com.fxz.mall.order.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.fxz.mall.order.entity.Item;
+import com.fxz.mall.order.entity.OrderItem;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -11,6 +11,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2022-05-15
  */
 @Mapper
-public interface ItemMapper extends BaseMapper<Item> {
+public interface OrderItemMapper extends BaseMapper<OrderItem> {
 
 }

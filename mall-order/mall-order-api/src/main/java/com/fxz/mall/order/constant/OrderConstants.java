@@ -7,7 +7,11 @@ package com.fxz.mall.order.constant;
  */
 public interface OrderConstants {
 
+	String CART_PREFIX = "cart:";
+
 	String ORDER_TOKEN_PREFIX = "order:token:";
+
+	String ORDER_SN_PREFIX = "order:sn:";
 
 	/**
 	 * 释放锁lua脚本

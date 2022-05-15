@@ -13,10 +13,11 @@ import com.fxz.common.security.util.SecurityUtil;
 import com.fxz.mall.order.constant.OrderConstants;
 import com.fxz.mall.order.dto.OrderItemDto;
 import com.fxz.mall.order.dto.OrderSubmitDto;
-import com.fxz.mall.order.entity.Item;
+import com.fxz.mall.order.entity.OrderItem;
 import com.fxz.mall.order.entity.Order;
 import com.fxz.mall.order.enums.OrderStatusEnum;
 import com.fxz.mall.order.enums.OrderTypeEnum;
+import com.fxz.mall.order.enums.PayTypeEnum;
 import com.fxz.mall.order.mapper.OrderMapper;
 import com.fxz.mall.order.service.OrderService;
 import com.fxz.mall.order.vo.OrderConfirmVo;
@@ -27,14 +28,18 @@ import com.fxz.mall.product.dto.SkuInfoDTO;
 import com.fxz.mall.product.feign.RemoteSkuService;
 import com.fxz.mall.user.dto.AddressDto;
 import com.fxz.mall.user.feign.RemoteAddressService;
+import com.fxz.mall.user.feign.RemoteMemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -54,7 +59,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements OrderService {
 
-	private final ItemServiceImpl orderItemService;
+	private final OrderOrderItemServiceImpl orderItemService;
 
 	private final ThreadPoolExecutor threadPoolExecutor;
 
@@ -62,9 +67,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
 	private final RemoteAddressService remoteAddressService;
 
+	private final RemoteMemberService remoteMemberService;
+
 	private final BusinessNoGenerator businessNoGenerator;
 
 	private final RedisTemplate redisTemplate;
+
+	private final RedissonClient redissonClient;
 
 	/**
 	 * 获取购买商品明细、用户默认收货地址、防重提交唯一token 进入订单创建页面有两个入口，1：立即购买；2：购物车结算
@@ -144,14 +153,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
 			// 添加订单明细
 			if (result) {
-				List<Item> saveOrderItems = orderItems.stream().map(orderFormItem -> {
-					Item orderItem = new Item();
+				List<OrderItem> saveOrderOrderItems = orderItems.stream().map(orderFormItem -> {
+					OrderItem orderItem = new OrderItem();
 					BeanUtil.copyProperties(orderFormItem, orderItem);
 					orderItem.setOrderId(order.getId());
 					orderItem.setTotalAmount(orderFormItem.getPrice() * orderFormItem.getCount());
 					return orderItem;
 				}).collect(Collectors.toList());
-				result = orderItemService.saveBatch(saveOrderItems);
+				result = orderItemService.saveBatch(saveOrderOrderItems);
 				if (result) {
 					// todo 订单超时取消
 				}
@@ -168,6 +177,68 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 		submitVO.setOrderId(order.getId());
 		submitVO.setOrderSn(order.getOrderSn());
 		return submitVO;
+	}
+
+	/**
+	 * 订单支付 todo 分布式事务 todo 微信支付
+	 * @param orderId 订单id
+	 * @param payTypeEnum 支付方式
+	 * @param appId 小程序appId
+	 */
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public <T> T pay(Long orderId, String appId, PayTypeEnum payTypeEnum) {
+		Order order = this.getById(orderId);
+
+		Assert.isTrue(order != null, "订单不存在");
+		Assert.isTrue(OrderStatusEnum.PENDING_PAYMENT.getValue().equals(order.getStatus()), "订单不可支付，请检查订单状态");
+
+		RLock lock = redissonClient.getLock(OrderConstants.ORDER_SN_PREFIX + order.getOrderSn());
+		try {
+
+			lock.lock();
+			T result = null;
+			switch (payTypeEnum) {
+			case WX_JSAPI:
+				// result = (T) wxJsapiPay(appId, order);
+				break;
+			default:
+				result = (T) balancePay(order);
+				break;
+			}
+
+			// 扣减库存
+			Result<?> deductStockResult = remoteSkuService.deductStock(order.getOrderSn());
+			Assert.isTrue(Result.isSuccess(deductStockResult), "扣减商品库存失败");
+			return result;
+		}
+		finally {
+			// 释放锁
+			if (lock.isLocked()) {
+				lock.unlock();
+			}
+		}
+	}
+
+	/**
+	 * 余额支付
+	 * @param order 订单
+	 * @return 是否支付成功
+	 */
+	private Boolean balancePay(Order order) {
+		// 扣减余额
+		Long payAmount = order.getPayAmount();
+		Result<?> deductBalanceResult = remoteMemberService.deductBalance(payAmount);
+		Assert.isTrue(Result.isSuccess(deductBalanceResult), "扣减账户余额失败");
+
+		// 更新订单状态
+		order.setStatus(OrderStatusEnum.PAYED.getValue());
+		order.setPayType(PayTypeEnum.BALANCE.getValue());
+		order.setPayTime(LocalDateTime.now());
+		this.updateById(order);
+		// todo 支付成功删除购物车已勾选的商品
+
+		return Boolean.TRUE;
 	}
 
 	/**

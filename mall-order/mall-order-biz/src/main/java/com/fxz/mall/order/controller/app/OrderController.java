@@ -1,8 +1,10 @@
 package com.fxz.mall.order.controller.app;
 
+import com.fxz.common.core.enums.IBaseEnum;
 import com.fxz.common.mp.result.Result;
 import com.fxz.common.security.annotation.Ojbk;
 import com.fxz.mall.order.dto.OrderSubmitDto;
+import com.fxz.mall.order.enums.PayTypeEnum;
 import com.fxz.mall.order.service.impl.OrderServiceImpl;
 import com.fxz.mall.order.vo.OrderConfirmVo;
 import com.fxz.mall.order.vo.OrderSubmitVo;
@@ -40,6 +42,22 @@ public class OrderController {
 	@PostMapping("/submit")
 	public Result<OrderSubmitVo> submit(@RequestBody OrderSubmitDto orderSubmitDto) {
 		return Result.success(orderService.submit(orderSubmitDto));
+	}
+
+	/**
+	 * 订单支付
+	 * @param orderId 订单id
+	 * @param payType 支付方式
+	 * @param appId 小程序appId
+	 */
+	@PostMapping("/{orderId}/pay")
+	public <T> Result<T> pay(@PathVariable Long orderId, Integer payType, String appId) {
+
+		PayTypeEnum payTypeEnum = IBaseEnum.getEnumByValue(payType, PayTypeEnum.class);
+		if (payTypeEnum == null) {
+			return Result.failed("系统暂不支持该支付方式~");
+		}
+		return Result.success(orderService.pay(orderId, appId, payTypeEnum));
 	}
 
 }

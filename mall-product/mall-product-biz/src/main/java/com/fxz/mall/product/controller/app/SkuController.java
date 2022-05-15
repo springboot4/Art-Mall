@@ -30,6 +30,11 @@ public class SkuController {
 		return Result.success(skuService.lockStock(lockStockDTO));
 	}
 
+	@PutMapping("/deduct")
+	public Result<Boolean> deductStock(String orderToken) {
+		return Result.judge(skuService.deductStock(orderToken));
+	}
+
 	/**
 	 * 获取商品库存信息
 	 */

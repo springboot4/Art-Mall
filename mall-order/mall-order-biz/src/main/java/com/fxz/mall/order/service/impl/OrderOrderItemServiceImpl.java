@@ -1,9 +1,9 @@
 package com.fxz.mall.order.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.fxz.mall.order.entity.Item;
-import com.fxz.mall.order.mapper.ItemMapper;
-import com.fxz.mall.order.service.ItemService;
+import com.fxz.mall.order.entity.OrderItem;
+import com.fxz.mall.order.mapper.OrderItemMapper;
+import com.fxz.mall.order.service.OrderItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,6 +17,6 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements ItemService {
+public class OrderOrderItemServiceImpl extends ServiceImpl<OrderItemMapper, OrderItem> implements OrderItemService {
 
 }

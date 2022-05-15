@@ -3,6 +3,7 @@ package com.fxz.mall.order.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fxz.mall.order.dto.OrderSubmitDto;
 import com.fxz.mall.order.entity.Order;
+import com.fxz.mall.order.enums.PayTypeEnum;
 import com.fxz.mall.order.vo.OrderConfirmVo;
 import com.fxz.mall.order.vo.OrderSubmitVo;
 
@@ -27,5 +28,13 @@ public interface OrderService extends IService<Order> {
 	 * 订单提交
 	 */
 	OrderSubmitVo submit(OrderSubmitDto orderSubmitDto);
+
+	/**
+	 * 订单支付
+	 * @param orderId 订单id
+	 * @param payTypeEnum 支付方式
+	 * @param appId 小程序appId
+	 */
+	<T> T pay(Long orderId, String appId, PayTypeEnum payTypeEnum);
 
 }

@@ -67,4 +67,9 @@ public interface SkuService extends IService<Sku> {
 	 */
 	Boolean lockStock(LockStockDTO lockStockDTO);
 
+	/**
+	 * 扣减库存 - 支付成功
+	 */
+	Boolean deductStock(String orderToken);
+
 }

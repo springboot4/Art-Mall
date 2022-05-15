@@ -25,4 +25,7 @@ public interface RemoteSkuService {
 	@PutMapping("/app/sku/lock")
 	public Result<Boolean> lockStock(@RequestBody LockStockDTO lockStockDTO);
 
+	@PutMapping("/app/sku/deduct")
+	public Result<Boolean> deductStock(String orderToken);
+
 }
