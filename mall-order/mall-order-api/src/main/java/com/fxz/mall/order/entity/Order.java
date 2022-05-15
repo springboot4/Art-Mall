@@ -12,10 +12,10 @@ import java.time.LocalDateTime;
  * 订单详情表
  *
  * @author fxz
- * @date 2022-05-14
+ * @date 2022-05-15
  */
 @Data
-@TableName("order")
+@TableName("fxz_order")
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 public class Order extends BaseEntity {

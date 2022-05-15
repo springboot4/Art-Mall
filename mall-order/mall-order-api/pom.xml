@@ -12,15 +12,23 @@
     <artifactId>mall-order-api</artifactId>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.fxz</groupId>
             <artifactId>mall-user-api</artifactId>
             <version>0.0.1</version>
         </dependency>
+
         <dependency>
             <groupId>com.fxz</groupId>
             <artifactId>fxz-common-mp</artifactId>
         </dependency>
+
     </dependencies>
 
 </project>

@@ -12,7 +12,7 @@ import java.util.List;
  * @date 2022/5/14 17:50
  */
 @Data
-public class OrderConfirmVO {
+public class OrderConfirmVo {
 
 	/**
 	 * 订单token

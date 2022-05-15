@@ -3,6 +3,8 @@ package com.fxz.mall.product.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.fxz.mall.product.dto.CheckPriceDTO;
+import com.fxz.mall.product.dto.LockStockDTO;
 import com.fxz.mall.product.dto.SkuDto;
 import com.fxz.mall.product.dto.SkuInfoDTO;
 import com.fxz.mall.product.entity.Sku;
@@ -51,5 +53,18 @@ public interface SkuService extends IService<Sku> {
 	 * 获取商品库存信息
 	 */
 	SkuInfoDTO getSkuInfo(Long skuId);
+
+	/**
+	 * 商品验价
+	 * @param checkPriceDTO 校验价格dto
+	 * @return 价格是否相同
+	 */
+	Boolean checkPrice(CheckPriceDTO checkPriceDTO);
+
+	/**
+	 * 锁定库存
+	 * @return 锁定是否成功
+	 */
+	Boolean lockStock(LockStockDTO lockStockDTO);
 
 }

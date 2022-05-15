@@ -2,13 +2,12 @@ package com.fxz.mall.order.controller.app;
 
 import com.fxz.common.mp.result.Result;
 import com.fxz.common.security.annotation.Ojbk;
+import com.fxz.mall.order.dto.OrderSubmitDto;
 import com.fxz.mall.order.service.impl.OrderServiceImpl;
-import com.fxz.mall.order.vo.OrderConfirmVO;
+import com.fxz.mall.order.vo.OrderConfirmVo;
+import com.fxz.mall.order.vo.OrderSubmitVo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Fxz
@@ -31,9 +30,16 @@ public class OrderController {
 	 */
 	@Ojbk
 	@PostMapping("/confirm")
-	public Result<OrderConfirmVO> confirm(@RequestParam(required = false) Long skuId) {
-		OrderConfirmVO result = orderService.confirm(skuId);
-		return Result.success(result);
+	public Result<OrderConfirmVo> confirm(@RequestParam(required = false) Long skuId) {
+		return Result.success(orderService.confirm(skuId));
+	}
+
+	/**
+	 * 订单提交
+	 */
+	@PostMapping("/submit")
+	public Result<OrderSubmitVo> submit(@RequestBody OrderSubmitDto orderSubmitDto) {
+		return Result.success(orderService.submit(orderSubmitDto));
 	}
 
 }

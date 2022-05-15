@@ -1,13 +1,12 @@
 package com.fxz.mall.product.controller.app;
 
 import com.fxz.common.mp.result.Result;
+import com.fxz.mall.product.dto.CheckPriceDTO;
+import com.fxz.mall.product.dto.LockStockDTO;
 import com.fxz.mall.product.dto.SkuInfoDTO;
 import com.fxz.mall.product.service.impl.SkuServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * [移动端]商品管理
@@ -23,11 +22,30 @@ public class SkuController {
 	private final SkuServiceImpl skuService;
 
 	/**
+	 * 锁定库存
+	 * @return 锁定是否成功
+	 */
+	@PutMapping("/lock")
+	public Result<Boolean> lockStock(@RequestBody LockStockDTO lockStockDTO) {
+		return Result.success(skuService.lockStock(lockStockDTO));
+	}
+
+	/**
 	 * 获取商品库存信息
 	 */
 	@GetMapping("/{skuId}/info")
 	public Result<SkuInfoDTO> getSkuInfo(@PathVariable("skuId") Long skuId) {
 		return Result.success(skuService.getSkuInfo(skuId));
+	}
+
+	/**
+	 * 商品验价
+	 * @param checkPriceDTO 校验价格dto
+	 * @return 价格是否相同
+	 */
+	@PostMapping("/price/check")
+	public Result<Boolean> checkPrice(@RequestBody CheckPriceDTO checkPriceDTO) {
+		return Result.success(skuService.checkPrice(checkPriceDTO));
 	}
 
 }
