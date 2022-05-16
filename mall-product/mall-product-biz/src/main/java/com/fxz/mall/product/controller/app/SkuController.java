@@ -36,7 +36,7 @@ public class SkuController {
 	 * @param orderToken 订单号
 	 * @return 是否释放成功
 	 */
-	@Ojbk
+	@Ojbk(inner = true)
 	@PutMapping("/unlock")
 	public Result<Boolean> unlockStock(String orderToken) {
 		return Result.judge(skuService.unlockStock(orderToken));
