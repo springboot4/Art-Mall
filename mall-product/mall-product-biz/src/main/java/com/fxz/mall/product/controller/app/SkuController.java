@@ -1,6 +1,7 @@
 package com.fxz.mall.product.controller.app;
 
 import com.fxz.common.mp.result.Result;
+import com.fxz.common.security.annotation.Ojbk;
 import com.fxz.mall.product.dto.CheckPriceDTO;
 import com.fxz.mall.product.dto.LockStockDTO;
 import com.fxz.mall.product.dto.SkuInfoDTO;
@@ -28,6 +29,17 @@ public class SkuController {
 	@PutMapping("/lock")
 	public Result<Boolean> lockStock(@RequestBody LockStockDTO lockStockDTO) {
 		return Result.success(skuService.lockStock(lockStockDTO));
+	}
+
+	/**
+	 * 释放库存 todo mq调用无权限
+	 * @param orderToken 订单号
+	 * @return 是否释放成功
+	 */
+	@Ojbk
+	@PutMapping("/unlock")
+	public Result<Boolean> unlockStock(String orderToken) {
+		return Result.judge(skuService.unlockStock(orderToken));
 	}
 
 	@PutMapping("/deduct")

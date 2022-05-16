@@ -72,4 +72,11 @@ public interface SkuService extends IService<Sku> {
 	 */
 	Boolean deductStock(String orderToken);
 
+	/**
+	 * 释放库存
+	 * @param orderToken 订单号
+	 * @return 是否释放成功
+	 */
+	Boolean unlockStock(String orderToken);
+
 }

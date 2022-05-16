@@ -28,4 +28,7 @@ public interface RemoteSkuService {
 	@PutMapping("/app/sku/deduct")
 	public Result<Boolean> deductStock(String orderToken);
 
+	@PutMapping("/app/sku/unlock")
+	public Result<Boolean> unlockStock(String orderToken);
+
 }

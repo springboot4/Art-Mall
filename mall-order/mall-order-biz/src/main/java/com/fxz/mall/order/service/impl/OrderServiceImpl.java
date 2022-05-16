@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fxz.common.core.enums.BusinessTypeEnum;
 import com.fxz.common.core.exception.FxzException;
@@ -13,8 +14,8 @@ import com.fxz.common.security.util.SecurityUtil;
 import com.fxz.mall.order.constant.OrderConstants;
 import com.fxz.mall.order.dto.OrderItemDto;
 import com.fxz.mall.order.dto.OrderSubmitDto;
-import com.fxz.mall.order.entity.OrderItem;
 import com.fxz.mall.order.entity.Order;
+import com.fxz.mall.order.entity.OrderItem;
 import com.fxz.mall.order.enums.OrderStatusEnum;
 import com.fxz.mall.order.enums.OrderTypeEnum;
 import com.fxz.mall.order.enums.PayTypeEnum;
@@ -34,6 +35,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
@@ -74,6 +76,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 	private final RedisTemplate redisTemplate;
 
 	private final RedissonClient redissonClient;
+
+	private final RabbitTemplate rabbitTemplate;
 
 	/**
 	 * 获取购买商品明细、用户默认收货地址、防重提交唯一token 进入订单创建页面有两个入口，1：立即购买；2：购物车结算
@@ -162,7 +166,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 				}).collect(Collectors.toList());
 				result = orderItemService.saveBatch(saveOrderOrderItems);
 				if (result) {
-					// todo 订单超时取消
+					// todo 通过死信队列实现订单超时取消
+					log.info("发送延时消息:{}", orderToken);
+					rabbitTemplate.convertAndSend("order.exchange", "order.create.routing.key", orderToken);
 				}
 			}
 			Assert.isTrue(result, "订单提交失败");
@@ -218,6 +224,27 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 				lock.unlock();
 			}
 		}
+	}
+
+	/**
+	 * 超时未支付关闭订单
+	 * @param orderToken 订单号
+	 * @return 是否关闭成功
+	 */
+	@Override
+	public Boolean closeOrder(String orderToken) {
+		log.info("订单超时取消，orderToken:{}", orderToken);
+
+		// 根据订单号查询订单信息
+		Order order = this.getOne(new LambdaQueryWrapper<Order>().eq(Order::getOrderSn, orderToken));
+		if (order == null || !OrderStatusEnum.PENDING_PAYMENT.getValue().equals(order.getStatus())) {
+			return false;
+		}
+
+		// 设置订单状态
+		order.setStatus(OrderStatusEnum.AUTO_CANCEL.getValue());
+
+		return this.updateById(order);
 	}
 
 	/**

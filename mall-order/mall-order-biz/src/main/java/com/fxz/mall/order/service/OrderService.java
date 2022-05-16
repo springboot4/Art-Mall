@@ -37,4 +37,11 @@ public interface OrderService extends IService<Order> {
 	 */
 	<T> T pay(Long orderId, String appId, PayTypeEnum payTypeEnum);
 
+	/**
+	 * 超时未支付关闭订单
+	 * @param orderToken 订单号
+	 * @return 是否关闭成功
+	 */
+	Boolean closeOrder(String orderToken);
+
 }

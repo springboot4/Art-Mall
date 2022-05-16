@@ -25,6 +25,11 @@
 
         <dependency>
             <groupId>com.fxz</groupId>
+            <artifactId>fxz-common-mq-rabbit</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fxz</groupId>
             <artifactId>fxz-common-redis</artifactId>
         </dependency>
 

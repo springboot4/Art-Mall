@@ -218,4 +218,25 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
 		return true;
 	}
 
+	/**
+	 * 释放库存
+	 * @param orderToken 订单号
+	 * @return 是否释放成功
+	 */
+	@Override
+	public Boolean unlockStock(String orderToken) {
+		log.info("释放库存,orderToken:{}", orderToken);
+
+		// 获取缓存中锁定库存的信息
+		String lockedSkuJsonStr = (String) redisTemplate.opsForValue()
+				.get(ProductConstant.LOCKED_STOCK_PREFIX + orderToken);
+		List<LockStockDTO.LockedSku> lockedSkuList = JSONUtil.toList(lockedSkuJsonStr, LockStockDTO.LockedSku.class);
+		lockedSkuList.forEach(item -> this.update(new LambdaUpdateWrapper<Sku>().eq(Sku::getId, item.getSkuId())
+				.setSql("locked_stock_num = locked_stock_num - " + item.getCount())));
+
+		// 删除redis中锁定的库存
+		redisTemplate.delete(ProductConstant.LOCKED_STOCK_PREFIX + orderToken);
+		return Boolean.TRUE;
+	}
+
 }

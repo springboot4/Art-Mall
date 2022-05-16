@@ -6,8 +6,8 @@ import com.fxz.mall.user.entity.Member;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author Fxz
@@ -25,7 +25,6 @@ public interface RemoteMemberService {
 
 	/**
 	 * 根据会员名查询用户信息
-	 * @param username 会员名
 	 * @return 会员信息
 	 */
 	@GetMapping("/member/auth/loadUserByUsername/{username}")
