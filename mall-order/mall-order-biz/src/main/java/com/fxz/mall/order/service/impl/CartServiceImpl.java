@@ -10,10 +10,10 @@ import com.fxz.mall.product.dto.SkuInfoDTO;
 import com.fxz.mall.product.feign.RemoteSkuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.BoundHashOperations;
-import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -69,6 +69,16 @@ public class CartServiceImpl implements CartService {
         Assert.isTrue(cartItem.getSkuId() != null, "商品不存在");
         cartHashOperations.put(hKey, cartItem);
         return Boolean.TRUE;
+    }
+
+    /**
+     * 获取购物车
+     *
+     * @return 购物车
+     */
+    @Override
+    public List<CartItemDTO> listCartItemByMemberId(Long memberId) {
+        return getCartHashOperations(memberId).values();
     }
 
     /**

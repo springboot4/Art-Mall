@@ -1,13 +1,13 @@
 package com.fxz.mall.order.controller.app;
 
 import com.fxz.common.mp.result.Result;
-import com.fxz.mall.order.service.CartService;
+import com.fxz.common.security.util.SecurityUtil;
+import com.fxz.mall.order.dto.CartItemDTO;
 import com.fxz.mall.order.service.impl.CartServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author Fxz
@@ -23,12 +23,24 @@ public class CartController {
 
     /**
      * 添加商品到购物车
+     *
      * @param skuId 商品id
      * @return 添加是否成功
      */
     @PostMapping
-    public Result<Boolean> addCartItem(@RequestParam Long skuId){
+    public Result<Boolean> addCartItem(@RequestParam Long skuId) {
         return Result.success(cartService.addCartItem(skuId));
+    }
+
+    /**
+     * 获取购物车
+     *
+     * @return 购物车
+     */
+    @GetMapping
+    public Result<List<CartItemDTO>> getCart() {
+        Long memberId = SecurityUtil.getUser().getUserId();
+        return Result.success(cartService.listCartItemByMemberId(memberId));
     }
 
 }
