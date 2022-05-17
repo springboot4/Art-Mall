@@ -29,4 +29,9 @@ public interface CartService {
      * 清空购物车
      */
     Boolean deleteCart();
+
+    /**
+     * 更新购物车
+     */
+    Boolean updateCartItem(CartItemDTO cartItem);
 }

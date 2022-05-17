@@ -90,6 +90,31 @@ public class CartServiceImpl implements CartService {
     }
 
     /**
+     * 更新购物车
+     */
+    @Override
+    public Boolean updateCartItem(CartItemDTO cartItem) {
+        Long memberId = SecurityUtil.getUser().getUserId();
+
+        BoundHashOperations cartHashOperations = getCartHashOperations(memberId);
+        String hKey = String.valueOf(cartItem.getSkuId());
+
+        if (cartHashOperations.get(hKey) != null) {
+            CartItemDTO cacheCartItem = (CartItemDTO) cartHashOperations.get(hKey);
+
+            if (cartItem.getChecked() != null) {
+                cacheCartItem.setChecked(cartItem.getChecked());
+            }
+            if (cartItem.getCount() != null) {
+                cacheCartItem.setCount(cartItem.getCount());
+            }
+
+            cartHashOperations.put(hKey, cacheCartItem);
+        }
+        return Boolean.TRUE;
+    }
+
+    /**
      * 获取第一层，即某个用户的购物车
      */
     private BoundHashOperations getCartHashOperations(Long memberId) {

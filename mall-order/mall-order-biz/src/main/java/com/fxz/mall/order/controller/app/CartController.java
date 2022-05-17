@@ -44,6 +44,16 @@ public class CartController {
     }
 
     /**
+     * 更新购物车
+     */
+    @PutMapping("/skuId/{skuId}")
+    public <T> Result<T> updateCartItem(@PathVariable Long skuId, @RequestBody CartItemDTO cartItem) {
+        cartItem.setSkuId(skuId);
+        boolean result = cartService.updateCartItem(cartItem);
+        return Result.judge(result);
+    }
+
+    /**
      * 清空购物车
      */
     @DeleteMapping
