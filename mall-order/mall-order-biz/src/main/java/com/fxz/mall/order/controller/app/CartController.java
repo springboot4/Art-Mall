@@ -54,6 +54,14 @@ public class CartController {
     }
 
     /**
+     * 全选 OR 取消全选
+     */
+    @PatchMapping("/check")
+    public <T> Result<T> check(Boolean checked) {
+        return Result.judge(cartService.checkAll(checked));
+    }
+
+    /**
      * 删除购物车商品
      */
     @DeleteMapping("/skuId/{skuId}")

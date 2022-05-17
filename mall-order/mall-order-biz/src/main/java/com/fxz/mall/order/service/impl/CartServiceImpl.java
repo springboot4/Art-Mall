@@ -132,6 +132,24 @@ public class CartServiceImpl implements CartService {
     }
 
     /**
+     * 全选 OR 取消全选
+     */
+    @Override
+    public Boolean checkAll(Boolean checked) {
+        Long memberId = SecurityUtil.getUser().getUserId();
+        BoundHashOperations cartHashOperations = getCartHashOperations(memberId);
+
+        for (Object val : cartHashOperations.values()) {
+            CartItemDTO cartItemDTO = (CartItemDTO) val;
+            cartItemDTO.setChecked(checked);
+            String hKey = String.valueOf(cartItemDTO.getSkuId());
+            cartHashOperations.put(hKey, cartItemDTO);
+        }
+
+        return Boolean.TRUE;
+    }
+
+    /**
      * 获取第一层，即某个用户的购物车
      */
     private BoundHashOperations getCartHashOperations(Long memberId) {

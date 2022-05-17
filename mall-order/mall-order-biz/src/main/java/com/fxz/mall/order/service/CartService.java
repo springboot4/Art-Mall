@@ -40,4 +40,8 @@ public interface CartService {
      */
     Boolean removeCartItem(Long skuId);
 
+    /**
+     * 全选 OR 取消全选
+     */
+    Boolean checkAll(Boolean checked);
 }
