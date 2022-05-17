@@ -4,6 +4,7 @@ import cn.hutool.core.lang.tree.Tree;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fxz.common.mp.result.PageResult;
 import com.fxz.common.mp.result.Result;
+import com.fxz.common.security.annotation.Ojbk;
 import com.fxz.mall.product.dto.CategoryDto;
 import com.fxz.mall.product.entity.Category;
 import com.fxz.mall.product.service.impl.CategoryServiceImpl;
@@ -29,6 +30,7 @@ public class CategoryController {
 	 * 查询分类列表
 	 * @return 商品分类列表
 	 */
+	@Ojbk
 	@GetMapping("list")
 	public Result<List<Tree<Long>>> list(Long parentId) {
 		return Result.success(categoryService.listCategory(parentId));

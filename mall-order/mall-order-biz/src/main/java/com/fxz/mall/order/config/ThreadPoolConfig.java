@@ -9,6 +9,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 线程池配置
+ *
  * @author Fxz
  * @version 1.0
  * @date 2022/5/14 17:57

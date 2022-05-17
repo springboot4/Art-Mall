@@ -8,7 +8,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fxz.common.core.constant.FxzConstant;
-import com.fxz.common.security.entity.FxzAuthUser;
 import com.fxz.common.security.util.SecurityUtil;
 import com.fxz.mall.user.dto.AddressDto;
 import com.fxz.mall.user.entity.Address;
@@ -16,7 +15,6 @@ import com.fxz.mall.user.mapper.AddressMapper;
 import com.fxz.mall.user.service.AddressService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -104,8 +102,7 @@ public class AddressServiceImpl extends ServiceImpl<AddressMapper, Address> impl
 	 */
 	@Override
 	public List<AddressDto> findAll() {
-		FxzAuthUser fxzAuthUser = SecurityUtil.getUser();
-		Long userId = fxzAuthUser.getUserId();
+		Long userId = SecurityUtil.getUser().getUserId();
 
 		List<Address> umsAddressList = this.list(
 				new LambdaQueryWrapper<Address>().eq(Address::getMemberId, userId).orderByDesc(Address::getDefaulted));

@@ -32,7 +32,7 @@ public class SkuController {
 	}
 
 	/**
-	 * 释放库存 todo mq调用无权限
+	 * 释放库存
 	 * @param orderToken 订单号
 	 * @return 是否释放成功
 	 */

@@ -30,6 +30,7 @@ import com.fxz.mall.product.feign.RemoteSkuService;
 import com.fxz.mall.user.dto.AddressDto;
 import com.fxz.mall.user.feign.RemoteAddressService;
 import com.fxz.mall.user.feign.RemoteMemberService;
+import io.seata.spring.annotation.GlobalTransactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -80,7 +81,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 	private final RabbitTemplate rabbitTemplate;
 
 	/**
-	 * 获取购买商品明细、用户默认收货地址、防重提交唯一token 进入订单创建页面有两个入口，1：立即购买；2：购物车结算
+	 * 获取购买商品明细、用户默认收货地址、防重提交唯一token
+	 * <p/>
+	 * 进入订单创建页面有两个入口，1：立即购买；2：购物车结算
 	 * @param skuId 直接购买必填，购物车结算不填
 	 * @return OrderConfirmVO
 	 */
@@ -115,10 +118,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 	}
 
 	/**
-	 * 订单提交 todo 分布式事务
+	 * 订单提交
 	 */
 	@SneakyThrows
-	@Transactional(rollbackFor = Exception.class)
+	@GlobalTransactional(rollbackFor = Exception.class)
 	@Override
 	public OrderSubmitVo submit(OrderSubmitDto orderSubmitDto) {
 		log.info("订单提交数据:{}", JSONUtil.toJsonStr(orderSubmitDto));
@@ -166,7 +169,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 				}).collect(Collectors.toList());
 				result = orderItemService.saveBatch(saveOrderOrderItems);
 				if (result) {
-					// todo 通过死信队列实现订单超时取消
+					// 通过死信队列实现订单超时取消
 					log.info("发送延时消息:{}", orderToken);
 					rabbitTemplate.convertAndSend("order.exchange", "order.create.routing.key", orderToken);
 				}
@@ -182,16 +185,17 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 		OrderSubmitVo submitVO = new OrderSubmitVo();
 		submitVO.setOrderId(order.getId());
 		submitVO.setOrderSn(order.getOrderSn());
+
 		return submitVO;
 	}
 
 	/**
-	 * 订单支付 todo 分布式事务 todo 微信支付
+	 * 订单支付 todo 微信支付
 	 * @param orderId 订单id
 	 * @param payTypeEnum 支付方式
 	 * @param appId 小程序appId
 	 */
-	@Transactional(rollbackFor = Exception.class)
+	@GlobalTransactional(rollbackFor = Exception.class)
 	@Override
 	public <T> T pay(Long orderId, String appId, PayTypeEnum payTypeEnum) {
 		Order order = this.getById(orderId);

@@ -7,6 +7,8 @@ import lombok.Data;
 import java.util.List;
 
 /**
+ * 订单确认视图对象
+ *
  * @author Fxz
  * @version 1.0
  * @date 2022/5/14 17:50

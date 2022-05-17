@@ -17,19 +17,19 @@ import org.springframework.web.bind.annotation.*;
 @FeignClient(contextId = "remoteSkuService", value = FxzServerConstant.FXZ_MALL_PRODUCT)
 public interface RemoteSkuService {
 
-    @GetMapping("/app/sku/{skuId}/info")
-    public Result<SkuInfoDTO> getSkuInfo(@PathVariable("skuId") Long skuId);
+	@GetMapping("/app/sku/{skuId}/info")
+	public Result<SkuInfoDTO> getSkuInfo(@PathVariable("skuId") Long skuId);
 
-    @PostMapping("/app/sku/price/check")
-    public Result<Boolean> checkPrice(@RequestBody CheckPriceDTO checkPriceDTO);
+	@PostMapping("/app/sku/price/check")
+	public Result<Boolean> checkPrice(@RequestBody CheckPriceDTO checkPriceDTO);
 
-    @PutMapping("/app/sku/lock")
-    public Result<Boolean> lockStock(@RequestBody LockStockDTO lockStockDTO);
+	@PutMapping("/app/sku/lock")
+	public Result<Boolean> lockStock(@RequestBody LockStockDTO lockStockDTO);
 
-    @PutMapping("/app/sku/deduct")
-    public Result<Boolean> deductStock(String orderToken);
+	@PutMapping("/app/sku/deduct")
+	public Result<Boolean> deductStock(String orderToken);
 
-    @PutMapping("/app/sku/unlock")
-    public Result<Boolean> unlockStock(String orderToken, @RequestHeader(SecurityConstants.FROM) String form);
+	@PutMapping("/app/sku/unlock")
+	public Result<Boolean> unlockStock(String orderToken, @RequestHeader(SecurityConstants.FROM) String form);
 
 }
