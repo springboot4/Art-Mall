@@ -61,6 +61,7 @@ public class CartServiceImpl implements CartService {
             if (skuInfo != null) {
                 BeanUtil.copyProperties(skuInfo, cartItem);
                 cartItem.setCount(1);
+                cartItem.setStock(skuInfo.getStockNum());
                 cartItem.setChecked(true);
             }
         });
@@ -111,6 +112,22 @@ public class CartServiceImpl implements CartService {
 
             cartHashOperations.put(hKey, cacheCartItem);
         }
+        return Boolean.TRUE;
+    }
+
+    /**
+     * 删除购物车商品
+     */
+    @Override
+    public Boolean removeCartItem(Long skuId) {
+        Long memberId = SecurityUtil.getUser().getUserId();
+
+        BoundHashOperations cartHashOperations = getCartHashOperations(memberId);
+
+        String hKey = String.valueOf(skuId);
+
+        cartHashOperations.delete(hKey);
+
         return Boolean.TRUE;
     }
 

@@ -34,4 +34,10 @@ public interface CartService {
      * 更新购物车
      */
     Boolean updateCartItem(CartItemDTO cartItem);
+
+    /**
+     * 删除购物车商品
+     */
+    Boolean removeCartItem(Long skuId);
+
 }

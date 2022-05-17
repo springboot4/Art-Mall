@@ -54,10 +54,18 @@ public class CartController {
     }
 
     /**
+     * 删除购物车商品
+     */
+    @DeleteMapping("/skuId/{skuId}")
+    public <T> Result<T> removeCartItem(@PathVariable Long skuId) {
+        return Result.judge(cartService.removeCartItem(skuId));
+    }
+
+    /**
      * 清空购物车
      */
     @DeleteMapping
-    public Result<Boolean> deleteCart(){
+    public Result<Boolean> deleteCart() {
         return Result.judge(cartService.deleteCart());
     }
 
