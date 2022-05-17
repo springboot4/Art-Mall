@@ -50,4 +50,9 @@ public class OrderSubmitDto {
 	 */
 	private AddressDto deliveryAddress;
 
+	/**
+	 * 订单来源
+	 */
+	private Integer sourceType;
+
 }

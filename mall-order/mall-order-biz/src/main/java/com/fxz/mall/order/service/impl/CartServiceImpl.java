@@ -25,136 +25,152 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
 
-    private final RedisTemplate redisTemplate;
+	private final RedisTemplate redisTemplate;
 
-    private final RemoteSkuService remoteSkuService;
+	private final RemoteSkuService remoteSkuService;
 
-    /**
-     * 添加商品到购物车
-     *
-     * @param skuId 商品id
-     * @return 添加是否成功
-     */
-    @Override
-    public Boolean addCartItem(Long skuId) {
-        Long memberId = SecurityUtil.getUser().getUserId();
+	/**
+	 * 添加商品到购物车
+	 * @param skuId 商品id
+	 * @return 添加是否成功
+	 */
+	@Override
+	public Boolean addCartItem(Long skuId) {
+		Long memberId = SecurityUtil.getUser().getUserId();
 
-        BoundHashOperations cartHashOperations = getCartHashOperations(memberId);
+		BoundHashOperations cartHashOperations = getCartHashOperations(memberId);
 
-        String hKey = String.valueOf(skuId);
+		String hKey = String.valueOf(skuId);
 
-        CartItemDTO cartItem;
+		CartItemDTO cartItem;
 
-        // 购物车已存在该商品，更新商品数量
-        if (cartHashOperations.get(hKey) != null) {
-            cartItem = (CartItemDTO) cartHashOperations.get(hKey);
-            cartItem.setCount(cartItem.getCount() + 1);
-            cartItem.setChecked(true);
-            cartHashOperations.put(hKey, cartItem);
-            return Boolean.TRUE;
-        }
+		// 购物车已存在该商品，更新商品数量
+		if (cartHashOperations.get(hKey) != null) {
+			cartItem = (CartItemDTO) cartHashOperations.get(hKey);
+			cartItem.setCount(cartItem.getCount() + 1);
+			cartItem.setChecked(true);
+			cartHashOperations.put(hKey, cartItem);
+			return Boolean.TRUE;
+		}
 
-        // 购物车不存在该商品，添加商品至购物车
-        cartItem = new CartItemDTO();
-        CompletableFuture<Void> cartItemCompletableFuture = CompletableFuture.runAsync(() -> {
-            SkuInfoDTO skuInfo = remoteSkuService.getSkuInfo(skuId).getData();
-            if (skuInfo != null) {
-                BeanUtil.copyProperties(skuInfo, cartItem);
-                cartItem.setCount(1);
-                cartItem.setStock(skuInfo.getStockNum());
-                cartItem.setChecked(true);
-            }
-        });
-        CompletableFuture.allOf(cartItemCompletableFuture).join();
+		// 购物车不存在该商品，添加商品至购物车
+		cartItem = new CartItemDTO();
+		CompletableFuture<Void> cartItemCompletableFuture = CompletableFuture.runAsync(() -> {
+			SkuInfoDTO skuInfo = remoteSkuService.getSkuInfo(skuId).getData();
+			if (skuInfo != null) {
+				BeanUtil.copyProperties(skuInfo, cartItem);
+				cartItem.setCount(1);
+				cartItem.setStock(skuInfo.getStockNum());
+				cartItem.setChecked(true);
+			}
+		});
+		CompletableFuture.allOf(cartItemCompletableFuture).join();
 
-        Assert.isTrue(cartItem.getSkuId() != null, "商品不存在");
-        cartHashOperations.put(hKey, cartItem);
-        return Boolean.TRUE;
-    }
+		Assert.isTrue(cartItem.getSkuId() != null, "商品不存在");
+		cartHashOperations.put(hKey, cartItem);
+		return Boolean.TRUE;
+	}
 
-    /**
-     * 获取购物车
-     *
-     * @return 购物车
-     */
-    @Override
-    public List<CartItemDTO> listCartItemByMemberId(Long memberId) {
-        return getCartHashOperations(memberId).values();
-    }
+	/**
+	 * 获取购物车
+	 * @return 购物车
+	 */
+	@Override
+	public List<CartItemDTO> listCartItemByMemberId(Long memberId) {
+		return getCartHashOperations(memberId).values();
+	}
 
-    /**
-     * 清空购物车
-     */
-    @Override
-    public Boolean deleteCart() {
-        return redisTemplate.delete(OrderConstants.CART_PREFIX + SecurityUtil.getUser().getUserId());
-    }
+	/**
+	 * 清空购物车
+	 */
+	@Override
+	public Boolean deleteCart() {
+		return redisTemplate.delete(OrderConstants.CART_PREFIX + SecurityUtil.getUser().getUserId());
+	}
 
-    /**
-     * 更新购物车
-     */
-    @Override
-    public Boolean updateCartItem(CartItemDTO cartItem) {
-        Long memberId = SecurityUtil.getUser().getUserId();
+	/**
+	 * 更新购物车
+	 */
+	@Override
+	public Boolean updateCartItem(CartItemDTO cartItem) {
+		Long memberId = SecurityUtil.getUser().getUserId();
 
-        BoundHashOperations cartHashOperations = getCartHashOperations(memberId);
-        String hKey = String.valueOf(cartItem.getSkuId());
+		BoundHashOperations cartHashOperations = getCartHashOperations(memberId);
+		String hKey = String.valueOf(cartItem.getSkuId());
 
-        if (cartHashOperations.get(hKey) != null) {
-            CartItemDTO cacheCartItem = (CartItemDTO) cartHashOperations.get(hKey);
+		if (cartHashOperations.get(hKey) != null) {
+			CartItemDTO cacheCartItem = (CartItemDTO) cartHashOperations.get(hKey);
 
-            if (cartItem.getChecked() != null) {
-                cacheCartItem.setChecked(cartItem.getChecked());
-            }
-            if (cartItem.getCount() != null) {
-                cacheCartItem.setCount(cartItem.getCount());
-            }
+			if (cartItem.getChecked() != null) {
+				cacheCartItem.setChecked(cartItem.getChecked());
+			}
+			if (cartItem.getCount() != null) {
+				cacheCartItem.setCount(cartItem.getCount());
+			}
 
-            cartHashOperations.put(hKey, cacheCartItem);
-        }
-        return Boolean.TRUE;
-    }
+			cartHashOperations.put(hKey, cacheCartItem);
+		}
+		return Boolean.TRUE;
+	}
 
-    /**
-     * 删除购物车商品
-     */
-    @Override
-    public Boolean removeCartItem(Long skuId) {
-        Long memberId = SecurityUtil.getUser().getUserId();
+	/**
+	 * 删除购物车商品
+	 */
+	@Override
+	public Boolean removeCartItem(Long skuId) {
+		Long memberId = SecurityUtil.getUser().getUserId();
 
-        BoundHashOperations cartHashOperations = getCartHashOperations(memberId);
+		BoundHashOperations cartHashOperations = getCartHashOperations(memberId);
 
-        String hKey = String.valueOf(skuId);
+		String hKey = String.valueOf(skuId);
 
-        cartHashOperations.delete(hKey);
+		cartHashOperations.delete(hKey);
 
-        return Boolean.TRUE;
-    }
+		return Boolean.TRUE;
+	}
 
-    /**
-     * 全选 OR 取消全选
-     */
-    @Override
-    public Boolean checkAll(Boolean checked) {
-        Long memberId = SecurityUtil.getUser().getUserId();
-        BoundHashOperations cartHashOperations = getCartHashOperations(memberId);
+	/**
+	 * 全选 OR 取消全选
+	 */
+	@Override
+	public Boolean checkAll(Boolean checked) {
+		Long memberId = SecurityUtil.getUser().getUserId();
+		BoundHashOperations cartHashOperations = getCartHashOperations(memberId);
 
-        for (Object val : cartHashOperations.values()) {
-            CartItemDTO cartItemDTO = (CartItemDTO) val;
-            cartItemDTO.setChecked(checked);
-            String hKey = String.valueOf(cartItemDTO.getSkuId());
-            cartHashOperations.put(hKey, cartItemDTO);
-        }
+		for (Object val : cartHashOperations.values()) {
+			CartItemDTO cartItemDTO = (CartItemDTO) val;
+			cartItemDTO.setChecked(checked);
+			String hKey = String.valueOf(cartItemDTO.getSkuId());
+			cartHashOperations.put(hKey, cartItemDTO);
+		}
 
-        return Boolean.TRUE;
-    }
+		return Boolean.TRUE;
+	}
 
-    /**
-     * 获取第一层，即某个用户的购物车
-     */
-    private BoundHashOperations getCartHashOperations(Long memberId) {
-        String cartKey = OrderConstants.CART_PREFIX + memberId;
-        return redisTemplate.boundHashOps(cartKey);
-    }
+	/**
+	 * 删除购物车已经选择的商品
+	 */
+	@Override
+	public void removeCheckedItem() {
+		Long memberId = SecurityUtil.getUser().getUserId();
+
+		BoundHashOperations cartHashOperations = getCartHashOperations(memberId);
+
+		// 删除购物车已经选中的商品
+		for (Object value : cartHashOperations.values()) {
+			CartItemDTO cartItem = (CartItemDTO) value;
+			if (cartItem.getChecked()) {
+				cartHashOperations.delete(String.valueOf(cartItem.getSkuId()));
+			}
+		}
+	}
+
+	/**
+	 * 获取第一层，即某个用户的购物车
+	 */
+	private BoundHashOperations getCartHashOperations(Long memberId) {
+		String cartKey = OrderConstants.CART_PREFIX + memberId;
+		return redisTemplate.boundHashOps(cartKey);
+	}
 
 }

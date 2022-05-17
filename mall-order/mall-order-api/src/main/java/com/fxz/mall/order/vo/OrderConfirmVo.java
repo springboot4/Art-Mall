@@ -31,4 +31,9 @@ public class OrderConfirmVo {
 	 */
 	private List<AddressDto> addresses;
 
+	/**
+	 * 订单来源
+	 */
+	private Integer sourceType;
+
 }

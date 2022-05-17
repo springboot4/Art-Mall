@@ -17,9 +17,14 @@ public enum OrderTypeEnum implements IBaseEnum<Integer> {
 	WEB(0, "PC"),
 
 	/**
-	 * app订单
+	 * app购物车订单
 	 */
-	APP(1, "APP");
+	APP_CART(1, "APP_CART"),
+
+	/**
+	 * app直接购买
+	 */
+	APP(2, "APP");
 
 	@Getter
 	private final Integer value;

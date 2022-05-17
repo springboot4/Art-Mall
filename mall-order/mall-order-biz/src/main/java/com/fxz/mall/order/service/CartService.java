@@ -10,38 +10,43 @@ import java.util.List;
  * @date 2022/5/17 17:23
  */
 public interface CartService {
-    /**
-     * 添加商品到购物车
-     *
-     * @param skuId 商品id
-     * @return 添加是否成功
-     */
-    Boolean addCartItem(Long skuId);
 
-    /**
-     * 获取购物车
-     *
-     * @return 购物车
-     */
-    List<CartItemDTO> listCartItemByMemberId(Long memberId);
+	/**
+	 * 添加商品到购物车
+	 * @param skuId 商品id
+	 * @return 添加是否成功
+	 */
+	Boolean addCartItem(Long skuId);
 
-    /**
-     * 清空购物车
-     */
-    Boolean deleteCart();
+	/**
+	 * 获取购物车
+	 * @return 购物车
+	 */
+	List<CartItemDTO> listCartItemByMemberId(Long memberId);
 
-    /**
-     * 更新购物车
-     */
-    Boolean updateCartItem(CartItemDTO cartItem);
+	/**
+	 * 清空购物车
+	 */
+	Boolean deleteCart();
 
-    /**
-     * 删除购物车商品
-     */
-    Boolean removeCartItem(Long skuId);
+	/**
+	 * 更新购物车
+	 */
+	Boolean updateCartItem(CartItemDTO cartItem);
 
-    /**
-     * 全选 OR 取消全选
-     */
-    Boolean checkAll(Boolean checked);
+	/**
+	 * 删除购物车商品
+	 */
+	Boolean removeCartItem(Long skuId);
+
+	/**
+	 * 全选 OR 取消全选
+	 */
+	Boolean checkAll(Boolean checked);
+
+	/**
+	 * 删除购物车已经选择的商品
+	 */
+	void removeCheckedItem();
+
 }
