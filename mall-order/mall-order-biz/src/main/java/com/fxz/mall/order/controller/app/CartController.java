@@ -43,4 +43,12 @@ public class CartController {
         return Result.success(cartService.listCartItemByMemberId(memberId));
     }
 
+    /**
+     * 清空购物车
+     */
+    @DeleteMapping
+    public Result<Boolean> deleteCart(){
+        return Result.judge(cartService.deleteCart());
+    }
+
 }

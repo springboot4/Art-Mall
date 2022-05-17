@@ -82,6 +82,14 @@ public class CartServiceImpl implements CartService {
     }
 
     /**
+     * 清空购物车
+     */
+    @Override
+    public Boolean deleteCart() {
+        return redisTemplate.delete(OrderConstants.CART_PREFIX + SecurityUtil.getUser().getUserId());
+    }
+
+    /**
      * 获取第一层，即某个用户的购物车
      */
     private BoundHashOperations getCartHashOperations(Long memberId) {

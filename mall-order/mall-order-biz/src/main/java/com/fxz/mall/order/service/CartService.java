@@ -25,4 +25,8 @@ public interface CartService {
      */
     List<CartItemDTO> listCartItemByMemberId(Long memberId);
 
+    /**
+     * 清空购物车
+     */
+    Boolean deleteCart();
 }
