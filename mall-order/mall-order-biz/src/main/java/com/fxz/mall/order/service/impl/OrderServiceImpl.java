@@ -5,7 +5,10 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fxz.common.core.constant.SecurityConstants;
 import com.fxz.common.core.enums.BusinessTypeEnum;
 import com.fxz.common.core.exception.FxzException;
 import com.fxz.common.mp.result.Result;
@@ -21,8 +24,10 @@ import com.fxz.mall.order.enums.OrderStatusEnum;
 import com.fxz.mall.order.enums.OrderTypeEnum;
 import com.fxz.mall.order.enums.PayTypeEnum;
 import com.fxz.mall.order.mapper.OrderMapper;
+import com.fxz.mall.order.query.OrderPageQuery;
 import com.fxz.mall.order.service.OrderService;
 import com.fxz.mall.order.vo.OrderConfirmVo;
+import com.fxz.mall.order.vo.OrderPageVO;
 import com.fxz.mall.order.vo.OrderSubmitVo;
 import com.fxz.mall.product.dto.CheckPriceDTO;
 import com.fxz.mall.product.dto.LockStockDTO;
@@ -266,6 +271,67 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 	}
 
 	/**
+	 * 删除订单
+	 * @param orderId 订单id
+	 */
+	@Override
+	public Boolean deleteOrder(Long orderId) {
+		log.info("=======================订单删除，订单ID：{}=======================", orderId);
+
+		Order order = this.getById(orderId);
+
+		if (order != null && !OrderStatusEnum.AUTO_CANCEL.getValue().equals(order.getStatus())
+				&& !OrderStatusEnum.USER_CANCEL.getValue().equals(order.getStatus())) {
+			throw new FxzException("订单删除失败，订单不存在或订单状态不支持删除");
+		}
+
+		return this.removeById(orderId);
+	}
+
+	/**
+	 * 订单取消
+	 * @param orderId 订单id
+	 */
+	@Override
+	public Boolean cancelOrder(Long orderId) {
+		log.info("订单超时取消，订单ID：{}", orderId);
+		Order order = this.getById(orderId);
+
+		if (order == null) {
+			throw new FxzException("订单不存在");
+		}
+
+		if (!OrderStatusEnum.PENDING_PAYMENT.getValue().equals(order.getStatus())) {
+			throw new FxzException("取消失败，订单状态不支持取消");
+		}
+
+		order.setStatus(OrderStatusEnum.USER_CANCEL.getValue());
+		boolean result = this.updateById(order);
+
+		if (result) {
+			// 释放被锁定的库存
+			Result<?> unlockResult = remoteSkuService.unlockStock(order.getOrderSn(), SecurityConstants.FROM_IN);
+			if (!Result.isSuccess(unlockResult)) {
+				throw new FxzException(unlockResult.getMsg());
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * 分页查询
+	 * @param queryParams 分页参数
+	 */
+	@Override
+	public IPage<OrderPageVO> listOrderPages(OrderPageQuery queryParams) {
+		Page<OrderPageVO> page = new Page<>(queryParams.getPageNum(), queryParams.getPageSize());
+		List<OrderPageVO> list = this.baseMapper.listOrderPages(page, queryParams);
+		page.setRecords(list);
+		return page;
+	}
+
+	/**
 	 * 余额支付
 	 * @param order 订单
 	 * @return 是否支付成功
@@ -282,7 +348,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 		order.setPayTime(LocalDateTime.now());
 		this.updateById(order);
 
-		// todo 支付成功删除购物车已勾选的商品
+		// 支付成功删除购物车已勾选的商品
 		if (order.getSourceType().equals(OrderTypeEnum.APP_CART.getValue())) {
 			cartService.removeCheckedItem();
 		}

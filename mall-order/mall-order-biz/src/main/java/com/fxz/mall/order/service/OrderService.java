@@ -1,10 +1,13 @@
 package com.fxz.mall.order.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fxz.mall.order.dto.OrderSubmitDto;
 import com.fxz.mall.order.entity.Order;
 import com.fxz.mall.order.enums.PayTypeEnum;
+import com.fxz.mall.order.query.OrderPageQuery;
 import com.fxz.mall.order.vo.OrderConfirmVo;
+import com.fxz.mall.order.vo.OrderPageVO;
 import com.fxz.mall.order.vo.OrderSubmitVo;
 
 /**
@@ -43,5 +46,23 @@ public interface OrderService extends IService<Order> {
 	 * @return 是否关闭成功
 	 */
 	Boolean closeOrder(String orderToken);
+
+	/**
+	 * 删除订单
+	 * @param orderId 订单id
+	 */
+	Boolean deleteOrder(Long orderId);
+
+	/**
+	 * 订单取消
+	 * @param orderId 订单id
+	 */
+	Boolean cancelOrder(Long orderId);
+
+	/**
+	 * 分页查询
+	 * @param queryParams 分页参数
+	 */
+	IPage<OrderPageVO> listOrderPages(OrderPageQuery queryParams);
 
 }

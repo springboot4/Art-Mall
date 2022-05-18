@@ -1,5 +1,6 @@
 package com.fxz.mall.order.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fxz.common.mp.base.BaseEntity;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 订单详情表
@@ -132,5 +134,11 @@ public class Order extends BaseEntity {
 	 * 逻辑删除【0->正常；1->已删除】
 	 */
 	private Integer deleted;
+
+	/**
+	 * 订单项
+	 */
+	@TableField(exist = false)
+	private List<OrderItem> orderItems;
 
 }
