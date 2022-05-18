@@ -27,7 +27,7 @@ public class OrderPageVO {
 
 	private Integer totalQuantity;
 
-	private Date gmtCreate;
+	private Date createTime;
 
 	private Long memberId;
 

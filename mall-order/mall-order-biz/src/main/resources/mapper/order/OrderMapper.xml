@@ -10,7 +10,7 @@
         <result property="payType" column="pay_type" jdbcType="TINYINT"/>
         <result property="status" column="status" jdbcType="TINYINT"/>
         <result property="totalQuantity" column="total_quantity" jdbcType="TINYINT"/>
-        <result property="gmtCreate" column="gmt_create" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="VARCHAR"/>
         <result property="memberId" column="member_id" jdbcType="BIGINT"/>
         <result property="sourceType" column="source_type" jdbcType="TINYINT"/>
         <collection property="orderItems"
