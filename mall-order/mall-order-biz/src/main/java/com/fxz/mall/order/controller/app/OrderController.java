@@ -1,5 +1,6 @@
 package com.fxz.mall.order.controller.app;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fxz.common.core.enums.IBaseEnum;
 import com.fxz.common.mp.result.PageResult;
 import com.fxz.common.mp.result.Result;
@@ -85,7 +86,8 @@ public class OrderController {
 	 */
 	@GetMapping
 	public Result<PageResult<OrderPageVO>> listOrderPages(OrderPageQuery queryParams) {
-		return Result.success(PageResult.success(orderService.listOrderPages(queryParams)));
+		Page<OrderPageVO> page = new Page<>(queryParams.getPageNum(), queryParams.getPageSize());
+		return Result.success(PageResult.success(orderService.listOrderPages(page,queryParams)));
 	}
 
 }

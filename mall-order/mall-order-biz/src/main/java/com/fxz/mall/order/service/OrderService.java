@@ -1,6 +1,7 @@
 package com.fxz.mall.order.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fxz.mall.order.dto.OrderSubmitDto;
 import com.fxz.mall.order.entity.Order;
@@ -63,6 +64,6 @@ public interface OrderService extends IService<Order> {
 	 * 分页查询
 	 * @param queryParams 分页参数
 	 */
-	IPage<OrderPageVO> listOrderPages(OrderPageQuery queryParams);
+	IPage<OrderPageVO> listOrderPages(Page<OrderPageVO> page, OrderPageQuery queryParams);
 
 }
