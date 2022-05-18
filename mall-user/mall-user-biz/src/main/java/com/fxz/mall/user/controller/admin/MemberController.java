@@ -1,6 +1,8 @@
 package com.fxz.mall.user.controller.admin;
 
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fxz.common.mp.result.PageResult;
 import com.fxz.common.mp.result.Result;
 import com.fxz.common.security.annotation.Ojbk;
 import com.fxz.common.security.util.SecurityUtil;
@@ -20,6 +22,15 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
 	private final MemberServiceImpl memberService;
+
+	/**
+	 * 分页查询会员信息
+	 * @param nickName 会员昵称
+	 */
+	@GetMapping("/page")
+	public Result<PageResult<Member>> listMembersWithPage(Page<Member> page, String nickName) {
+		return Result.success(PageResult.success(memberService.listMembersWithPage(page, nickName)));
+	}
 
 	/**
 	 * 扣减会员余额

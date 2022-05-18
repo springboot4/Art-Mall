@@ -91,4 +91,14 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 		return this.getOne(Wrappers.<Member>lambdaQuery().eq(Member::getNickName, username));
 	}
 
+	/**
+	 * 分页查询会员信息
+	 * @param nickName 会员昵称
+	 */
+	@Override
+	public Page<Member> listMembersWithPage(Page<Member> page, String nickName) {
+		page.setRecords(memberMapper.listMembersWithPage(page, nickName));
+		return page;
+	}
+
 }

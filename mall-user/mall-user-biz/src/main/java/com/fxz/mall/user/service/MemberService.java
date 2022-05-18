@@ -51,4 +51,10 @@ public interface MemberService extends IService<Member> {
 	 */
 	Member loadUserByUsername(String username);
 
+	/**
+	 * 分页查询会员信息
+	 * @param nickName 会员昵称
+	 */
+	Page<Member> listMembersWithPage(Page<Member> page, String nickName);
+
 }
