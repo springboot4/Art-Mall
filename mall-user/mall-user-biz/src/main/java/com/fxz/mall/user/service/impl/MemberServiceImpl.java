@@ -101,4 +101,14 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 		return page;
 	}
 
+	/**
+	 * 根据手机号查询会员信息
+	 * @param mobile 手机号
+	 * @return 会员信息
+	 */
+	@Override
+	public Member loadUserByMobile(String mobile) {
+		return this.getOne(Wrappers.<Member>lambdaQuery().eq(Member::getMobile, mobile));
+	}
+
 }

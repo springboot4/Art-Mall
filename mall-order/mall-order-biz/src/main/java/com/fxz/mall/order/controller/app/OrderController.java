@@ -87,7 +87,7 @@ public class OrderController {
 	@GetMapping
 	public Result<PageResult<OrderPageVO>> listOrderPages(OrderPageQuery queryParams) {
 		Page<OrderPageVO> page = new Page<>(queryParams.getPageNum(), queryParams.getPageSize());
-		return Result.success(PageResult.success(orderService.listOrderPages(page,queryParams)));
+		return Result.success(PageResult.success(orderService.listOrderPages(page, queryParams)));
 	}
 
 }

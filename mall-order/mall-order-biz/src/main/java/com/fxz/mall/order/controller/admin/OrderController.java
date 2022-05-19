@@ -21,16 +21,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class OrderController {
 
-    private final OrderServiceImpl orderService;
+	private final OrderServiceImpl orderService;
 
-    /**
-     * 分页查询
-     *
-     * @param queryParams 分页参数
-     */
-    @GetMapping("/page")
-    public Result<PageResult<OrderPageVO>> listOrderPages(Page<OrderPageVO> page, OrderPageQuery queryParams) {
-        return Result.success(PageResult.success(orderService.listOrderPages(page, queryParams)));
-    }
+	/**
+	 * 分页查询
+	 * @param queryParams 分页参数
+	 */
+	@GetMapping("/page")
+	public Result<PageResult<OrderPageVO>> listOrderPages(Page<OrderPageVO> page, OrderPageQuery queryParams) {
+		return Result.success(PageResult.success(orderService.listOrderPages(page, queryParams)));
+	}
 
 }

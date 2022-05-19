@@ -48,10 +48,21 @@ public class MemberController {
 	 * @param username 会员名
 	 * @return 会员信息
 	 */
-	@Ojbk
+	@Ojbk(inner = true)
 	@GetMapping("/auth/loadUserByUsername/{username}")
 	public Result<Member> loadUserByUsername(@PathVariable("username") String username) {
 		return Result.success(memberService.loadUserByUsername(username));
+	}
+
+	/**
+	 * 根据手机号查询会员信息
+	 * @param mobile 手机号
+	 * @return 会员信息
+	 */
+	@Ojbk(inner = true)
+	@GetMapping("/auth/loadUserByMobile/{mobile}")
+	public Result<Member> loadUserByMobile(@PathVariable("mobile") String mobile) {
+		return Result.success(memberService.loadUserByMobile(mobile));
 	}
 
 }
