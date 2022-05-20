@@ -29,7 +29,8 @@ public interface RemoteMemberService {
 	 * @return 会员信息
 	 */
 	@GetMapping("/member/auth/loadUserByUsername/{username}")
-	public Result<Member> loadUserByUsername(@PathVariable("username") String username);
+	public Result<Member> loadUserByUsername(@PathVariable("username") String username,
+			@RequestHeader(SecurityConstants.FROM) String form);
 
 	/**
 	 * 根据会员手机号查询用户信息
