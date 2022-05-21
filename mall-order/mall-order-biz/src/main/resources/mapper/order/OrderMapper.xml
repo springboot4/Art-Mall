@@ -13,6 +13,7 @@
         <result property="createTime" column="create_time" jdbcType="VARCHAR"/>
         <result property="memberId" column="member_id" jdbcType="BIGINT"/>
         <result property="sourceType" column="source_type" jdbcType="TINYINT"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
         <collection property="orderItems"
                     column="id" select="com.fxz.mall.order.mapper.OrderItemMapper.listOrderItemsByOrderId">
             <id property="id" column="id" jdbcType="BIGINT"/>
@@ -38,6 +39,7 @@
         total_amount,
         total_quantity,
         create_time,
+        remark,
         member_id,
         source_type
         FROM fxz_order

@@ -29,6 +29,8 @@ public class OrderPageVO {
 
 	private Date createTime;
 
+	private String remark;
+
 	private Long memberId;
 
 	private Integer sourceType;
