@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fxz.common.mp.result.PageResult;
 import com.fxz.common.mp.result.Result;
+import com.fxz.common.mp.result.ResultCode;
 import com.fxz.common.security.annotation.Ojbk;
 import com.fxz.common.security.util.SecurityUtil;
 import com.fxz.mall.user.entity.Member;
@@ -55,6 +56,17 @@ public class MemberController {
 	}
 
 	/**
+	 * 根据会员id查询用户信息
+	 * @param id 会员id
+	 * @return 会员信息
+	 */
+	@Ojbk(inner = true)
+	@GetMapping("/auth/loadUserByUserId/{id}")
+	public Result<Member> loadUserByUserId(@PathVariable("id") Long id) {
+		return Result.success(memberService.loadUserByUserId(id));
+	}
+
+	/**
 	 * 根据手机号查询会员信息
 	 * @param mobile 手机号
 	 * @return 会员信息
@@ -63,6 +75,32 @@ public class MemberController {
 	@GetMapping("/auth/loadUserByMobile/{mobile}")
 	public Result<Member> loadUserByMobile(@PathVariable("mobile") String mobile) {
 		return Result.success(memberService.loadUserByMobile(mobile));
+	}
+
+	/**
+	 * 根据会员openId查询用户信息
+	 * @return 会员信息
+	 */
+	@Ojbk(inner = true)
+	@GetMapping("/auth/loadUserByOpenId/{openId}")
+	public Result<Member> loadUserByOpenId(@PathVariable("openId") String openId) {
+		Member member = memberService.loadUserByOpenId(openId);
+
+		if (member == null) {
+			return Result.failed(ResultCode.USER_NOT_EXIST);
+		}
+
+		return Result.success(member);
+	}
+
+	/**
+	 * 新增会员
+	 * @param member 会员信息
+	 */
+	@Ojbk(inner = true)
+	@PostMapping("/add")
+	public Result<Boolean> addMember(@RequestBody Member member) {
+		return Result.success(memberService.addMember(member));
 	}
 
 }

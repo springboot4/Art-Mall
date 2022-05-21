@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fxz.common.core.constant.FxzConstant;
 import com.fxz.mall.user.dto.MemberDto;
 import com.fxz.mall.user.entity.Member;
 import com.fxz.mall.user.mapper.MemberMapper;
@@ -30,10 +31,11 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 	 * 添加
 	 */
 	@Override
-	public Boolean addMember(MemberDto memberDto) {
-		Member member = new Member();
-		BeanUtils.copyProperties(memberDto, member);
+	public Boolean addMember(Member member) {
+		member.setStatus(FxzConstant.STATUS_YES);
+
 		memberMapper.insert(member);
+
 		return Boolean.TRUE;
 	}
 
@@ -109,6 +111,25 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 	@Override
 	public Member loadUserByMobile(String mobile) {
 		return this.getOne(Wrappers.<Member>lambdaQuery().eq(Member::getMobile, mobile));
+	}
+
+	/**
+	 * 根据会员openId查询用户信息
+	 * @return 会员信息
+	 */
+	@Override
+	public Member loadUserByOpenId(String openId) {
+		return this.getOne(Wrappers.<Member>lambdaQuery().eq(Member::getOpenid, openId));
+	}
+
+	/**
+	 * 根据会员id查询用户信息
+	 * @param id 会员id
+	 * @return 会员信息
+	 */
+	@Override
+	public Member loadUserByUserId(Long id) {
+		return this.getOne(Wrappers.<Member>lambdaQuery().eq(Member::getId, id));
 	}
 
 }

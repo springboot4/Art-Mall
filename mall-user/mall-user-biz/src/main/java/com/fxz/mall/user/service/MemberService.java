@@ -17,7 +17,7 @@ public interface MemberService extends IService<Member> {
 	/**
 	 * 添加
 	 */
-	Boolean addMember(MemberDto memberDto);
+	Boolean addMember(Member member);
 
 	/**
 	 * 修改
@@ -63,5 +63,18 @@ public interface MemberService extends IService<Member> {
 	 * @return 会员信息
 	 */
 	Member loadUserByMobile(String mobile);
+
+	/**
+	 * 根据会员openId查询用户信息
+	 * @return 会员信息
+	 */
+	Member loadUserByOpenId(String openId);
+
+	/**
+	 * 根据会员id查询用户信息
+	 * @param id 会员id
+	 * @return 会员信息
+	 */
+	Member loadUserByUserId(Long id);
 
 }

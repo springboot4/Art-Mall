@@ -33,11 +33,6 @@
             <artifactId>fxz-common-seata</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.fxz</groupId>
-            <artifactId>fxz-common-jackson</artifactId>
-        </dependency>
-
         <!-- LB 扩展 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

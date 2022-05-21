@@ -5,10 +5,7 @@ import com.fxz.common.core.constant.SecurityConstants;
 import com.fxz.common.mp.result.Result;
 import com.fxz.mall.user.entity.Member;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Fxz
@@ -33,11 +30,35 @@ public interface RemoteMemberService {
 			@RequestHeader(SecurityConstants.FROM) String form);
 
 	/**
+	 * 根据会员id查询用户信息
+	 * @param id 会员id
+	 * @return 会员信息
+	 */
+	@GetMapping("/member/auth/loadUserByUserId/{id}")
+	public Result<Member> loadUserByUserId(@PathVariable("id") Long id,
+			@RequestHeader(SecurityConstants.FROM) String form);
+
+	/**
 	 * 根据会员手机号查询用户信息
 	 * @return 会员信息
 	 */
 	@GetMapping("/member/auth/loadUserByMobile/{mobile}")
 	public Result<Member> loadUserByMobile(@PathVariable("mobile") String mobile,
 			@RequestHeader(SecurityConstants.FROM) String form);
+
+	/**
+	 * 根据会员openId查询用户信息
+	 * @return 会员信息
+	 */
+	@GetMapping("/member/auth/loadUserByOpenId/{openId}")
+	public Result<Member> loadUserByOpenId(@PathVariable("openId") String openId,
+			@RequestHeader(SecurityConstants.FROM) String form);
+
+	/**
+	 * 新增会员
+	 * @param member 会员信息
+	 */
+	@PostMapping("/member/add")
+	public Result<Boolean> addMember(@RequestBody Member member, @RequestHeader(SecurityConstants.FROM) String form);
 
 }
