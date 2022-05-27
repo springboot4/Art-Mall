@@ -21,6 +21,12 @@
         <dependency>
             <groupId>com.fxz</groupId>
             <artifactId>fxz-common-mp</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.baomidou</groupId>
+                    <artifactId>mybatis-plus-boot-starter</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
     </dependencies>

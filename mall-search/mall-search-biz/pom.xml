@@ -30,6 +30,16 @@
 
         <dependency>
             <groupId>com.fxz</groupId>
+            <artifactId>fxz-common-es</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fxz</groupId>
+            <artifactId>fxz-common-canal</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fxz</groupId>
             <artifactId>fxz-common-seata</artifactId>
         </dependency>
 
