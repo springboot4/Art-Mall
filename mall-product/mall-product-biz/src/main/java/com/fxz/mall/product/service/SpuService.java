@@ -19,11 +19,6 @@ import com.fxz.mall.product.vo.GoodsVo;
 public interface SpuService extends IService<Spu> {
 
 	/**
-	 * 分页
-	 */
-	IPage<Spu> pageSpu(Page<Spu> pageParam, Spu spu);
-
-	/**
 	 * 保存商品
 	 * @param goodsDto 商品信息
 	 * @return 是否保存成功

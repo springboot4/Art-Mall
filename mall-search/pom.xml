@@ -2,22 +2,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
     <parent>
-        <artifactId>fxz-cloud</artifactId>
+        <artifactId>fxz-mall</artifactId>
         <groupId>com.fxz</groupId>
         <version>0.0.1</version>
     </parent>
 
-    <artifactId>fxz-mall</artifactId>
     <packaging>pom</packaging>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>mall-search</artifactId>
 
     <modules>
-        <module>mall-product</module>
-        <module>mall-order</module>
-        <module>mall-user</module>
-        <module>mall-search</module>
+        <module>mall-search-biz</module>
+        <module>mall-search-api</module>
     </modules>
 
 </project>

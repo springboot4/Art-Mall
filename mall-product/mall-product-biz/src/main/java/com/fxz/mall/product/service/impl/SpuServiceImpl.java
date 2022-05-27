@@ -54,14 +54,6 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
 	private final SkuAttributeValueServiceImpl skuAttributeValueService;
 
 	/**
-	 * 分页
-	 */
-	@Override
-	public IPage<Spu> pageSpu(Page<Spu> pageParam, Spu spu) {
-		return spuMapper.selectPage(pageParam, Wrappers.emptyWrapper());
-	}
-
-	/**
 	 * 保存商品
 	 * @param goodsDto 商品信息
 	 * @return 是否保存成功

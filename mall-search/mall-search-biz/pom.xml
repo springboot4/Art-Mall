@@ -3,20 +3,15 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>mall-product</artifactId>
+        <artifactId>mall-search</artifactId>
         <groupId>com.fxz</groupId>
         <version>0.0.1</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mall-product-biz</artifactId>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>mall-search-biz</artifactId>
 
     <dependencies>
-
-        <dependency>
-            <groupId>com.fxz</groupId>
-            <artifactId>fxz-common-redis</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
@@ -56,11 +51,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.fxz</groupId>
-            <artifactId>fxz-common-file</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
@@ -68,13 +58,13 @@
 
         <dependency>
             <groupId>com.fxz</groupId>
-            <artifactId>fxz-system-api</artifactId>
+            <artifactId>fxz-common-security</artifactId>
         </dependency>
 
     </dependencies>
 
     <build>
-        <finalName>fxz-mall-product</finalName>
+        <finalName>fxz-mall-search</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
