@@ -70,7 +70,6 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
 		// sku保存
 		List<SkuDto> skuList = goodsDto.getSkuList();
 
-		// todo 商品上架同步到es
 		return this.saveSku(goodsId, skuList);
 	}
 
@@ -209,6 +208,51 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
 		// todo 添加用户浏览历史记录
 
 		return goodsDetailVO;
+	}
+
+	/**
+	 * 根据spuId获取商品详情
+	 */
+	@Override
+	public GoodsDto getSpuDetail(Long spuId) {
+		GoodsDto goodsDto = new GoodsDto();
+
+		Spu spu = spuMapper.selectById(spuId);
+		BeanUtil.copyProperties(spu, goodsDto);
+		String[] strings = JSONUtil.parseArray(spu.getAlbum()).toArray(new String[0]);
+		goodsDto.setSubPicUrls(strings);
+
+		List<AttributeValueDto> spuAttributeValue = spuAttributeValueService
+				.list(Wrappers.<SpuAttributeValue>lambdaQuery().eq(SpuAttributeValue::getSpuId, spuId)).stream()
+				.map(item -> {
+					AttributeValueDto attributeValueDto = new AttributeValueDto();
+					BeanUtil.copyProperties(item, attributeValueDto);
+					return attributeValueDto;
+				}).collect(Collectors.toList());
+		goodsDto.setAttrList(spuAttributeValue);
+
+		List<SkuDto> skuDtoList = skuService.list(Wrappers.<Sku>lambdaQuery().eq(Sku::getSpuId, spuId)).stream()
+				.map(item -> {
+					SkuDto skuDto = new SkuDto();
+					BeanUtil.copyProperties(item, skuDto);
+					return skuDto;
+				}).collect(Collectors.toList());
+		if (CollectionUtil.isNotEmpty(skuDtoList)) {
+			skuDtoList.forEach(skuDto -> {
+				Long skuId = skuDto.getId();
+				List<AttributeValueDto> skuAttributeValue = skuAttributeValueService
+						.list(Wrappers.<SkuAttributeValue>lambdaQuery().eq(SkuAttributeValue::getSkuId, skuId)).stream()
+						.map(item -> {
+							AttributeValueDto attributeValueDto = new AttributeValueDto();
+							BeanUtil.copyProperties(skuDto, attributeValueDto);
+							return attributeValueDto;
+						}).collect(Collectors.toList());
+				skuDto.setSpecValList(skuAttributeValue);
+			});
+		}
+		goodsDto.setSkuList(skuDtoList);
+
+		return goodsDto;
 	}
 
 	/**

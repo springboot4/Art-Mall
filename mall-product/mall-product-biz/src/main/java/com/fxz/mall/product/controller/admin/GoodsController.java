@@ -3,6 +3,7 @@ package com.fxz.mall.product.controller.admin;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fxz.common.mp.result.PageResult;
 import com.fxz.common.mp.result.Result;
+import com.fxz.common.security.annotation.Ojbk;
 import com.fxz.mall.product.dto.GoodsDto;
 import com.fxz.mall.product.service.impl.SpuServiceImpl;
 import com.fxz.mall.product.vo.GoodsVo;
@@ -46,6 +47,15 @@ public class GoodsController {
 	@DeleteMapping("/delete")
 	public Result<Boolean> delete(Long id) {
 		return Result.success(spuService.delete(id));
+	}
+
+	/**
+	 * 根据spuId获取商品详情
+	 */
+	@Ojbk(inner = true)
+	@GetMapping("/{spuId}/detail")
+	public Result<GoodsDto> getSpuDetail(@PathVariable("spuId") Long spuId) {
+		return Result.success(spuService.getSpuDetail(spuId));
 	}
 
 }

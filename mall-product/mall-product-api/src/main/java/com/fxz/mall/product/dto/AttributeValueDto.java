@@ -16,8 +16,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class AttributeValueDto extends BaseEntity {
 
-	private static final long serialVersionUID = -1L;
-
 	private Long id;
 
 	private Long spuId;

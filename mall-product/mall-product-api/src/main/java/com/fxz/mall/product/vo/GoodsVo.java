@@ -3,6 +3,7 @@ package com.fxz.mall.product.vo;
 import com.fxz.mall.product.entity.Sku;
 import com.fxz.mall.product.entity.Spu;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
  * @date 2022/5/9 09:57
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class GoodsVo extends Spu {
 
 	/**

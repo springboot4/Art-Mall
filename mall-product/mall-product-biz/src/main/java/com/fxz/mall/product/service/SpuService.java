@@ -45,4 +45,9 @@ public interface SpuService extends IService<Spu> {
 	 */
 	GoodsDetailVO getAppSpuDetail(Long spuId);
 
+	/**
+	 * 根据spuId获取商品详情
+	 */
+	GoodsDto getSpuDetail(Long spuId);
+
 }

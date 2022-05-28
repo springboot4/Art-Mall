@@ -1,25 +1,24 @@
-package com.fxz.mall.order.entity;
+package com.fxz.mall.search.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.fxz.common.canal.annotation.CanalModel;
+import com.fxz.common.canal.common.FieldNamingPolicy;
 import com.fxz.common.mp.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
- * 订单详情表
+ * 订单
  *
  * @author fxz
- * @date 2022-05-15
+ * @date 2022-05-28
  */
 @Data
-@TableName("fxz_order")
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
+@CanalModel(database = "fxz_mall_order", table = "fxz_order", fieldNamingPolicy = FieldNamingPolicy.LOWER_UNDERSCORE)
 public class Order extends BaseEntity {
 
 	/**
@@ -132,11 +131,5 @@ public class Order extends BaseEntity {
 	 * 逻辑删除【0->正常；1->已删除】
 	 */
 	private Integer deleted;
-
-	/**
-	 * 订单项
-	 */
-	@TableField(exist = false)
-	private List<OrderItem> orderItems;
 
 }
