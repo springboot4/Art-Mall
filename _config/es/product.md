@@ -65,8 +65,14 @@ put product
             "categoryId":{
                 "type":"long"
             },
+            "categoryName":{
+                "type":"keyword"
+            },
             "brandId":{
                 "type":"long"
+            },
+            "brandName":{
+               "type":"keyword"
             },
             "originPrice":{
                 "type":"long"

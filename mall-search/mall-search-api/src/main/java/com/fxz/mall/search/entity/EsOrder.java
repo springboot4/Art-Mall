@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @CanalModel(database = "fxz_mall_order", table = "fxz_order", fieldNamingPolicy = FieldNamingPolicy.LOWER_UNDERSCORE)
-public class Order extends BaseEntity {
+public class EsOrder extends BaseEntity {
 
 	/**
 	 * id

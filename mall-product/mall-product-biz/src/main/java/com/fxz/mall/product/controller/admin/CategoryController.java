@@ -4,6 +4,7 @@ import cn.hutool.core.lang.tree.Tree;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fxz.common.mp.result.PageResult;
 import com.fxz.common.mp.result.Result;
+import com.fxz.common.security.annotation.Ojbk;
 import com.fxz.mall.product.dto.CategoryDto;
 import com.fxz.mall.product.entity.Category;
 import com.fxz.mall.product.service.impl.CategoryServiceImpl;
@@ -61,6 +62,7 @@ public class CategoryController {
 	/**
 	 * 获取单条
 	 */
+	@Ojbk(inner = true)
 	@GetMapping(value = "/findById")
 	public Result<Category> findById(Long id) {
 		return Result.success(categoryService.findById(id));
@@ -79,8 +81,7 @@ public class CategoryController {
 	 */
 	@GetMapping(value = "/page")
 	public Result<PageResult<Category>> pageCategory(Page<Category> pageParam, Category category) {
-		PageResult<Category> success = PageResult.success(categoryService.pageCategory(pageParam, category));
-		return Result.success();
+		return Result.success(PageResult.success(categoryService.pageCategory(pageParam, category)));
 	}
 
 }

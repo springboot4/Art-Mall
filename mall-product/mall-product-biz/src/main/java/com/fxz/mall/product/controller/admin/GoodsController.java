@@ -34,7 +34,7 @@ public class GoodsController {
 	}
 
 	/**
-	 * 分页
+	 * pc端分页
 	 */
 	@GetMapping("/page")
 	public Result<PageResult<GoodsVo>> page(Long current, Long pageSize, Long categoryId, String name) {

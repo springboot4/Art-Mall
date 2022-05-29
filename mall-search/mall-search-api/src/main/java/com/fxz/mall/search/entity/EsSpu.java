@@ -17,7 +17,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @CanalModel(database = "fxz_mall_product", table = "spu", fieldNamingPolicy = FieldNamingPolicy.LOWER_UNDERSCORE)
-public class Spu extends BaseEntity {
+public class EsSpu extends BaseEntity {
 
 	/**
 	 * 主键

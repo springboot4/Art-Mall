@@ -13,13 +13,13 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @date 2022/5/27 21:53
  */
 @EnableFxzCloudResourceServer
-@EnableFeignClients(basePackages = {"com.fxz"})
+@EnableFeignClients(basePackages = { "com.fxz" })
 @EnableDiscoveryClient
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 public class FxzMallSearchApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(FxzMallSearchApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(FxzMallSearchApplication.class, args);
+	}
 
 }

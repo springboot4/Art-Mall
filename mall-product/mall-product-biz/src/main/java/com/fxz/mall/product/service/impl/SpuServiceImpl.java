@@ -197,7 +197,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
 					List<SkuAttributeValue> skuAttributeValues = specBySkuIdMap.get(item.getId());
 					if (Objects.nonNull(skuAttributeValues)) {
 						String sprcIds = skuAttributeValues.stream().map(attr -> {
-							return String.valueOf(attr);
+							return String.valueOf(attr.getId());
 						}).collect(Collectors.joining("_"));
 						item.setSpecIds(sprcIds);
 					}
@@ -244,7 +244,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
 						.list(Wrappers.<SkuAttributeValue>lambdaQuery().eq(SkuAttributeValue::getSkuId, skuId)).stream()
 						.map(item -> {
 							AttributeValueDto attributeValueDto = new AttributeValueDto();
-							BeanUtil.copyProperties(skuDto, attributeValueDto);
+							BeanUtil.copyProperties(item, attributeValueDto);
 							return attributeValueDto;
 						}).collect(Collectors.toList());
 				skuDto.setSpecValList(skuAttributeValue);
