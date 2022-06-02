@@ -3,13 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>mall-order</artifactId>
+        <artifactId>mall-member</artifactId>
         <groupId>com.fxz</groupId>
         <version>0.0.1</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mall-order-biz</artifactId>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>mall-member-biz</artifactId>
 
     <dependencies>
 
@@ -24,28 +24,13 @@
         </dependency>
 
         <dependency>
-            <groupId>com.fxz</groupId>
-            <artifactId>fxz-common-seata</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fxz</groupId>
-            <artifactId>fxz-common-mq-rabbit</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fxz</groupId>
-            <artifactId>fxz-common-redis</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.fxz</groupId>
-            <artifactId>fxz-common-jackson</artifactId>
+            <artifactId>fxz-common-seata</artifactId>
         </dependency>
 
         <!-- LB 扩展 -->
@@ -61,23 +46,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.fxz</groupId>
-            <artifactId>mall-order-api</artifactId>
-            <version>0.0.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fxz</groupId>
-            <artifactId>mall-product-api</artifactId>
-            <version>0.0.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fxz</groupId>
-            <artifactId>fxz-common-file</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
@@ -88,15 +56,10 @@
             <artifactId>fxz-common-security</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.fxz</groupId>
-            <artifactId>fxz-system-api</artifactId>
-        </dependency>
-
     </dependencies>
 
     <build>
-        <finalName>fxz-mall-order</finalName>
+        <finalName>fxz-mall-product</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

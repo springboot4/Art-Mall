@@ -1,7 +1,7 @@
 package com.fxz.mall.order.vo;
 
 import com.fxz.mall.order.dto.OrderItemDto;
-import com.fxz.mall.user.dto.AddressDto;
+import com.fxz.mall.member.dto.AddressDto;
 import lombok.Data;
 
 import java.util.List;

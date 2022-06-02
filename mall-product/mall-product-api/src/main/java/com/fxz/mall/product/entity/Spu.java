@@ -1,6 +1,7 @@
 package com.fxz.mall.product.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fxz.common.core.serializer.ImgUrl;
 import com.fxz.common.mp.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -58,6 +59,7 @@ public class Spu extends BaseEntity {
 	/**
 	 * 商品主图
 	 */
+	@ImgUrl
 	private String picUrl;
 
 	/**

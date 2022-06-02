@@ -1,5 +1,6 @@
 package com.fxz.mall.order.vo;
 
+import com.fxz.common.core.serializer.ImgUrl;
 import lombok.Data;
 
 import java.util.Date;
@@ -48,6 +49,7 @@ public class OrderPageVO {
 
 		private String skuName;
 
+		@ImgUrl
 		private String picUrl;
 
 		private Long price;

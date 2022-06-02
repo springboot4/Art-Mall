@@ -1,6 +1,6 @@
 spring:
   application:
-    name: fxz-mall-order
+    name: fxz-mall-user
   cloud:
     nacos:
       config:
@@ -11,4 +11,3 @@ spring:
     import:
       - optional:nacos:${spring.application.name}.yaml
       - optional:nacos:fxz-application-common.yaml
-
