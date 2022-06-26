@@ -23,7 +23,7 @@ public interface MemberMapper extends BaseMapper<Member> {
 			+ "       WHERE nick_name like concat('%',#{nickname},'%')" + " </if>"
 			+ " ORDER BY update_time DESC, create_time DESC" + "</script>")
 	@Results({ @Result(id = true, column = "id", property = "id"), @Result(property = "addressList", column = "id",
-			many = @Many(select = "com.fxz.mall.user.mapper.AddressMapper.listByUserId")) })
+			many = @Many(select = "com.fxz.mall.member.mapper.AddressMapper.listByUserId")) })
 	List<Member> listMembersWithPage(Page<Member> page, @Param("nickname") String nickname);
 
 }
