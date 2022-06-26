@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
  * @version 1.0
  * @date 2022/5/14 20:46
  */
-@FeignClient(value = FxzServerConstant.FXZ_MALL_USER, contextId = "remoteMemberService")
+@FeignClient(value = FxzServerConstant.FXZ_MALL_MEMBER, contextId = "remoteMemberService")
 public interface RemoteMemberService {
 
 	/**

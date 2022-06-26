@@ -13,7 +13,7 @@ import java.util.List;
  * @version 1.0
  * @date 2022/5/14 20:46
  */
-@FeignClient(value = FxzServerConstant.FXZ_MALL_USER, contextId = "remoteAddressService")
+@FeignClient(value = FxzServerConstant.FXZ_MALL_MEMBER, contextId = "remoteAddressService")
 public interface RemoteAddressService {
 
 	/**

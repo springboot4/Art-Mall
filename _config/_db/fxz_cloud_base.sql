@@ -1,4 +1,3 @@
-
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -16,7 +15,7 @@ CREATE TABLE `sys_dept` (
   `create_by` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '创建人',
   `update_by` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '更新人',
   PRIMARY KEY (`dept_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='部门表';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='部门表';
 
 -- ----------------------------
 -- Records of sys_dept
@@ -410,7 +409,7 @@ CREATE TABLE `sys_oper_log` (
   `update_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '更新人',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1528014546971414530 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1541029052018450434 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -844,6 +843,7 @@ INSERT INTO `sys_oper_log` (`id`, `title`, `business_type`, `method`, `request_m
 INSERT INTO `sys_oper_log` (`id`, `title`, `business_type`, `method`, `request_method`, `oper_name`, `oper_url`, `oper_ip`, `oper_param`, `status`, `error_msg`, `time`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (1527975001613684737, '用户登录', 4, NULL, 'POST', 'fxznb', NULL, '0:0:0:0:0:0:0:1', 'fxznb', 0, NULL, NULL, 'fxznb', '2022-05-21 19:30:03', 'anonymousUser', '2022-05-21 19:30:03');
 INSERT INTO `sys_oper_log` (`id`, `title`, `business_type`, `method`, `request_method`, `oper_name`, `oper_url`, `oper_ip`, `oper_param`, `status`, `error_msg`, `time`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (1528014232226684929, '用户登录', 4, NULL, 'POST', 'fxz', NULL, '127.0.0.1', 'fxz', 0, NULL, NULL, 'fxz', '2022-05-21 22:05:57', 'anonymousUser', '2022-05-21 22:05:56');
 INSERT INTO `sys_oper_log` (`id`, `title`, `business_type`, `method`, `request_method`, `oper_name`, `oper_url`, `oper_ip`, `oper_param`, `status`, `error_msg`, `time`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (1528014546971414529, '用户登录', 4, NULL, 'POST', 'fxz', NULL, '127.0.0.1', 'fxz', 0, NULL, NULL, 'fxz', '2022-05-21 22:07:12', 'anonymousUser', '2022-05-21 22:07:11');
+INSERT INTO `sys_oper_log` (`id`, `title`, `business_type`, `method`, `request_method`, `oper_name`, `oper_url`, `oper_ip`, `oper_param`, `status`, `error_msg`, `time`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (1541029052018450433, '用户登录', 4, NULL, 'POST', 'fxz', NULL, '127.0.0.1', 'fxz', 0, NULL, NULL, 'fxz', '2022-06-26 20:02:12', 'anonymousUser', '2022-06-26 20:02:11');
 COMMIT;
 
 -- ----------------------------

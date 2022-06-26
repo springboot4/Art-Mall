@@ -15,10 +15,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @MapperScan("com.fxz")
 @EnableDiscoveryClient
 @SpringBootApplication
-public class FxzMallUserApplication {
+public class FxzMallMemberApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FxzMallUserApplication.class, args);
+		SpringApplication.run(FxzMallMemberApplication.class, args);
 	}
 
 }
