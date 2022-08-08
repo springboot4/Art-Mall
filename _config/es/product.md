@@ -62,6 +62,9 @@ put product
                 "analyzer":"ik_max_word",
                 "search_analyzer":"ik_smart"
             },
+            "promotionMapJson": {
+                "type": "text"
+            },
             "categoryId":{
                 "type":"long"
             },
