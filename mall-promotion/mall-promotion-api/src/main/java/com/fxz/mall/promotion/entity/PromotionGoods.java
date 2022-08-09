@@ -3,6 +3,7 @@ package com.fxz.mall.promotion.entity;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fxz.common.mp.base.BaseEntity;
+import com.fxz.mall.product.dto.SkuInfoDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -27,6 +28,11 @@ public class PromotionGoods extends BaseEntity {
 	private Long id;
 
 	/**
+	 * 活动开始时间
+	 */
+	private LocalDateTime startTime;
+
+	/**
 	 * 活动结束时间
 	 */
 	private LocalDateTime endTime;
@@ -49,12 +55,12 @@ public class PromotionGoods extends BaseEntity {
 	/**
 	 * 原价
 	 */
-	private Double originalPrice;
+	private Long originalPrice;
 
 	/**
 	 * 促销价格
 	 */
-	private Double price;
+	private Long price;
 
 	/**
 	 * 活动ID
@@ -82,11 +88,6 @@ public class PromotionGoods extends BaseEntity {
 	private Long skuId;
 
 	/**
-	 * 活动开始时间
-	 */
-	private LocalDateTime startTime;
-
-	/**
 	 * 缩略图
 	 */
 	private String thumbnail;
@@ -106,5 +107,17 @@ public class PromotionGoods extends BaseEntity {
 	 */
 	@TableLogic
 	private Boolean deleteFlag;
+
+	public PromotionGoods(SkuInfoDTO skuInfoDTO) {
+		this.goodsName = skuInfoDTO.getSpuName();
+		this.num = 0;
+		this.originalPrice = skuInfoDTO.getPrice();
+		this.goodsId = skuInfoDTO.getSkuId();
+		this.skuId = skuInfoDTO.getSkuId();
+		this.thumbnail = skuInfoDTO.getPicUrl();
+	}
+
+	public PromotionGoods() {
+	}
 
 }

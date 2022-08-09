@@ -41,12 +41,12 @@ public class SeckillApply extends BaseEntity {
 	/**
 	 * 商品原始价格
 	 */
-	private Double originalPrice;
+	private Long originalPrice;
 
 	/**
 	 * 价格
 	 */
-	private Double price;
+	private Long price;
 
 	/**
 	 * 促销活动申请状态

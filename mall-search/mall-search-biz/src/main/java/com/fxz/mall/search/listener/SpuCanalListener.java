@@ -70,7 +70,12 @@ public class SpuCanalListener extends BaseCanalBinlogEventProcessor<EsSpu> {
 
 		EsGoodsDto esGoodsDto = loadEsGoodsDto(spuId);
 
-		elasticsearchClient.update(u -> u.index("product").id(spuId.toString()).doc(esGoodsDto), EsGoodsDto.class);
+		try {
+			elasticsearchClient.update(u -> u.index("product").id(spuId.toString()).doc(esGoodsDto), EsGoodsDto.class);
+		}
+		catch (Exception e) {
+		}
+
 	}
 
 	/**

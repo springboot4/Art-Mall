@@ -21,7 +21,7 @@ public interface RemoteGoodService {
 	 * 根据spuId获取商品详情
 	 */
 	@GetMapping("/goods/{spuId}/detail")
-	public Result<GoodsDto> getSpuDetail(@PathVariable("spuId") Long spuId,
+	Result<GoodsDto> getSpuDetail(@PathVariable("spuId") Long spuId,
 			@RequestHeader(SecurityConstants.FROM) String from);
 
 }

@@ -18,18 +18,18 @@ import org.springframework.web.bind.annotation.*;
 public interface RemoteSkuService {
 
 	@GetMapping("/app/sku/{skuId}/info")
-	public Result<SkuInfoDTO> getSkuInfo(@PathVariable("skuId") Long skuId);
+	Result<SkuInfoDTO> getSkuInfo(@PathVariable("skuId") Long skuId);
 
 	@PostMapping("/app/sku/price/check")
-	public Result<Boolean> checkPrice(@RequestBody CheckPriceDTO checkPriceDTO);
+	Result<Boolean> checkPrice(@RequestBody CheckPriceDTO checkPriceDTO);
 
 	@PutMapping("/app/sku/lock")
-	public Result<Boolean> lockStock(@RequestBody LockStockDTO lockStockDTO);
+	Result<Boolean> lockStock(@RequestBody LockStockDTO lockStockDTO);
 
 	@PutMapping("/app/sku/deduct")
-	public Result<Boolean> deductStock(String orderToken);
+	Result<Boolean> deductStock(String orderToken);
 
 	@PutMapping("/app/sku/unlock")
-	public Result<Boolean> unlockStock(String orderToken, @RequestHeader(SecurityConstants.FROM) String form);
+	Result<Boolean> unlockStock(String orderToken, @RequestHeader(SecurityConstants.FROM) String form);
 
 }

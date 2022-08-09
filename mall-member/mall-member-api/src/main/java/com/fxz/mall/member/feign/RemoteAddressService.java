@@ -20,6 +20,6 @@ public interface RemoteAddressService {
 	 * 获取当前会员全部地址
 	 */
 	@GetMapping(value = "/app/address/findAll")
-	public Result<List<AddressDto>> findAll();
+	Result<List<AddressDto>> findAll();
 
 }

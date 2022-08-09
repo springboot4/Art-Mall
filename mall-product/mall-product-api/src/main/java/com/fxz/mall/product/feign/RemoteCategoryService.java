@@ -18,6 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface RemoteCategoryService {
 
 	@GetMapping(value = "/category/findById")
-	public Result<Category> findById(@RequestParam("id") Long id, @RequestHeader(SecurityConstants.FROM) String from);
+	Result<Category> findById(@RequestParam("id") Long id, @RequestHeader(SecurityConstants.FROM) String from);
 
 }

@@ -18,6 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface RemoteBrandService {
 
 	@GetMapping(value = "/brand/findById")
-	public Result<Brand> findById(@RequestParam("id") Long id, @RequestHeader(SecurityConstants.FROM) String from);
+	Result<Brand> findById(@RequestParam("id") Long id, @RequestHeader(SecurityConstants.FROM) String from);
 
 }

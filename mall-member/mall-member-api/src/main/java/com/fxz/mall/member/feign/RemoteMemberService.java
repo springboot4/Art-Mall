@@ -19,14 +19,14 @@ public interface RemoteMemberService {
 	 * 扣减会员余额
 	 */
 	@PutMapping("/member/current/balances/deduct")
-	public <T> Result<T> deductBalance(Long balances);
+	<T> Result<T> deductBalance(Long balances);
 
 	/**
 	 * 根据会员名查询用户信息
 	 * @return 会员信息
 	 */
 	@GetMapping("/member/auth/loadUserByUsername/{username}")
-	public Result<Member> loadUserByUsername(@PathVariable("username") String username,
+	Result<Member> loadUserByUsername(@PathVariable("username") String username,
 			@RequestHeader(SecurityConstants.FROM) String form);
 
 	/**
@@ -35,15 +35,14 @@ public interface RemoteMemberService {
 	 * @return 会员信息
 	 */
 	@GetMapping("/member/auth/loadUserByUserId/{id}")
-	public Result<Member> loadUserByUserId(@PathVariable("id") Long id,
-			@RequestHeader(SecurityConstants.FROM) String form);
+	Result<Member> loadUserByUserId(@PathVariable("id") Long id, @RequestHeader(SecurityConstants.FROM) String form);
 
 	/**
 	 * 根据会员手机号查询用户信息
 	 * @return 会员信息
 	 */
 	@GetMapping("/member/auth/loadUserByMobile/{mobile}")
-	public Result<Member> loadUserByMobile(@PathVariable("mobile") String mobile,
+	Result<Member> loadUserByMobile(@PathVariable("mobile") String mobile,
 			@RequestHeader(SecurityConstants.FROM) String form);
 
 	/**
@@ -51,7 +50,7 @@ public interface RemoteMemberService {
 	 * @return 会员信息
 	 */
 	@GetMapping("/member/auth/loadUserByOpenId/{openId}")
-	public Result<Member> loadUserByOpenId(@PathVariable("openId") String openId,
+	Result<Member> loadUserByOpenId(@PathVariable("openId") String openId,
 			@RequestHeader(SecurityConstants.FROM) String form);
 
 	/**
@@ -59,6 +58,6 @@ public interface RemoteMemberService {
 	 * @param member 会员信息
 	 */
 	@PostMapping("/member/add")
-	public Result<Boolean> addMember(@RequestBody Member member, @RequestHeader(SecurityConstants.FROM) String form);
+	Result<Boolean> addMember(@RequestBody Member member, @RequestHeader(SecurityConstants.FROM) String form);
 
 }

@@ -1,12 +1,18 @@
 package com.fxz.mall.promotion.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fxz.mall.promotion.entity.Setting;
+import com.fxz.mall.promotion.enums.SettingEnum;
 import com.fxz.mall.promotion.mapper.SettingMapper;
 import com.fxz.mall.promotion.service.SettingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 /**
  * @author fxz
@@ -14,7 +20,21 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
+@CacheConfig(cacheNames = "setting")
 @RequiredArgsConstructor
 public class SettingServiceImpl extends ServiceImpl<SettingMapper, Setting> implements SettingService {
+
+	/**
+	 * 获取设置的规则
+	 */
+	@Cacheable(key = "#seckillSetting.getValue()")
+	@Override
+	public Setting findSetting(SettingEnum seckillSetting) {
+		if (Objects.isNull(seckillSetting)) {
+			return null;
+		}
+
+		return this.getOne(Wrappers.<Setting>lambdaQuery().eq(Setting::getSettingValue, seckillSetting.getValue()));
+	}
 
 }
