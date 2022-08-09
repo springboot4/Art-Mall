@@ -25,28 +25,28 @@ services:
     ports:  #端口映射
       - 5601:5601
     volumes:
-      - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml
+      - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml #数据卷挂载
     links:
       - fxz-elasticsearch:elasticsearch
     depends_on:
       - fxz-elasticsearch
 
   fxz-minio:
-    image: minio/minio:RELEASE.2021-06-17T00-10-46Z
-    container_name: fxz-minio
+    image: minio/minio:RELEASE.2021-06-17T00-10-46Z #镜像版本
+    container_name: fxz-minio #容器名
     restart: unless-stopped # 指定容器退出后的重启策略为始终重启，但是不考虑在Docker守护进程启动时就已经停止了的容器
     command: server /data
     ports:
       - 9000:9000
     volumes:
-      - ./minio/data:/data
+      - ./minio/data:/data #数据卷挂载
     environment:
-      - MINIO_ROOT_USER=admin
-      - MINIO_ROOT_PASSWORD=admin123456
+      - MINIO_ROOT_USER=admin #登录账号
+      - MINIO_ROOT_PASSWORD=admin123456 #登录密码
 
   fxz-rabbitmq:
-    image: rabbitmq:3.7.8-management
-    container_name: fxz-rabbitmq            # 容器名为'rabbitmq'
+    image: rabbitmq:3.7.8-management #镜像版本
+    container_name: fxz-rabbitmq   # 容器名
     hostname: fxz-rabbit
     restart: unless-stopped   # 指定容器退出后的重启策略为始终重启，但是不考虑在Docker守护进程启动时就已经停止了的容器
     environment: # 设置环境变量,相当于docker run命令中的-e
