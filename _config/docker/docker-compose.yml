@@ -1,7 +1,7 @@
 version: '3'
 services:
   fxz-elasticsearch:
-    image: elasticsearch:7.13.2 #镜像版本
+    image: elasticsearch:7.17.3 #镜像版本
     container_name: fxz-elasticsearch #容器名称
     restart: unless-stopped  # 指定容器退出后的重启策略为始终重启，但是不考虑在Docker守护进程启动时就已经停止了的容器
     ports:  #端口映射
@@ -19,7 +19,7 @@ services:
       ELASTIC_PASSWORD: "123456" # elastic账号密码
 
   fxz-kibana:
-    image: kibana:7.13.2 #镜像版本
+    image: kibana:7.17.3 #镜像版本
     container_name: fxz-kibana #容器名称
     restart: unless-stopped # 指定容器退出后的重启策略为始终重启，但是不考虑在Docker守护进程启动时就已经停止了的容器
     ports:  #端口映射
@@ -60,3 +60,74 @@ services:
     ports: # 映射端口
       - 5672:5672
       - 15672:15672
+  fxz-mysql:
+    image: mysql:8.0  # 镜像版本
+    container_name: fxz-mysql8.0  # 容器名
+    restart: unless-stopped    # 指定容器退出后的重启策略为始终重启，但是不考虑在Docker守护进程启动时就已经停止了的容器
+    volumes: # 数据卷挂载路径设置,将本机目录映射到容器目录
+      - "./mysql8.0/my.cnf:/etc/mysql/my.cnf"
+      - "./mysql8.0/data:/var/lib/mysql"
+      #      - "./mysql8.0/conf.d:/etc/mysql/conf.d"
+      - "./mysql8.0/mysql-files:/var/lib/mysql-files"
+    environment: # 设置环境变量,相当于docker run命令中的-e
+      TZ: Asia/Shanghai
+      LANG: en_US.UTF-8
+      MYSQL_ROOT_PASSWORD: fxzcloud-mysql-password         # 设置root用户密码
+    ports: # 映射端口
+      - "3306:3306"
+
+  canal_admin:
+    image: canal/canal-admin:v1.1.5     # 镜像
+    container_name: canal_admin               # 容器名为'canal_admin'
+    restart: unless-stopped                   # 指定容器退出后的重启策略为始终重启，但是不考虑在Docker守护进程启动时就已经停止了的容器
+    volumes: # 数据卷挂载路径设置,将本机目录映射到容器目录
+      - "./canal/canal-admin/conf/application.yml:/home/admin/canal-admin/conf/application.yml"
+      # 如果需要jvm内存控制可放开下面注释，修改`JAVA_OPTS`参数
+      #      - "./canal/canal-admin/bin/startup.sh:/home/admin/canal-admin/bin/startup.sh"
+      - "./canal/canal-admin/logs:/home/admin/canal-admin/logs"
+    environment: # 设置环境变量,相当于docker run命令中的-e
+      TZ: Asia/Shanghai
+      LANG: en_US.UTF-8
+      canal.adminUser: admin
+      canal.adminPasswd: 123456
+      spring.datasource.address: 124.71.58.118:3306
+      spring.datasource.database: canal_manager
+      spring.datasource.username: root
+      spring.datasource.password: fxzcloud-mysql-password
+    ports:
+      - "8089:8089"
+    networks:
+      - canal
+
+  canal_server:
+    image: canal/canal-server:v1.1.5 # 镜像
+    container_name: canal_server              # 容器名为'canal_server'
+    restart: unless-stopped                   # 指定容器退出后的重启策略为始终重启，但是不考虑在Docker守护进程启动时就已经停止了的容器
+    volumes: # 数据卷挂载路径设置,将本机目录映射到容器目录
+      - "./canal/canal-server/conf/example/instance.properties:/home/admin/canal-server/conf/example/instance.properties"
+      - "./canal/canal-server/conf/canal.properties:/home/admin/canal-server/conf/canal.properties"
+      #- "./canal/canal-server/conf/canal_local.properties:/home/admin/canal-server/conf/canal_local.properties"
+      - "./canal/canal-server/logs:/home/admin/canal-server/logs"
+    environment: # 设置环境变量,相当于docker run命令中的-e
+      TZ: Asia/Shanghai
+      LANG: en_US.UTF-8
+      canal.register.ip: 124.71.58.118
+      canal.admin.manager: canal_admin:8089
+      canal.admin.port: 11110
+      canal.admin.user: admin
+      canal.admin.passwd: 6BB4837EB74329105EE4568DDA7DC67ED2CA2AD9
+    #      canal.admin.register.cluster: online
+    ports:
+      - "11110:11110"
+      - "11111:11111"
+      - "11112:11112"
+    depends_on:
+      - canal_admin
+    links:
+      - canal_admin
+    networks:
+      - canal
+
+# 网桥canal -> 方便相互通讯
+networks:
+  canal:
