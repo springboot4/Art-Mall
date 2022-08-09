@@ -2,6 +2,7 @@ package com.fxz.mall.promotion.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fxz.common.core.exception.FxzException;
 import com.fxz.mall.product.dto.SkuInfoDTO;
 import com.fxz.mall.product.feign.RemoteSkuService;
 import com.fxz.mall.promotion.entity.PromotionGoods;
@@ -11,6 +12,7 @@ import com.fxz.mall.promotion.enums.PromotionTypeEnum;
 import com.fxz.mall.promotion.mapper.SeckillApplyMapper;
 import com.fxz.mall.promotion.service.PromotionGoodsService;
 import com.fxz.mall.promotion.service.SeckillApplyService;
+import com.fxz.mall.promotion.service.SeckillService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,7 +33,7 @@ public class SeckillApplyServiceImpl extends ServiceImpl<SeckillApplyMapper, Sec
 
 	private final RemoteSkuService remoteSkuService;
 
-	private final SeckillApplyService seckillApplyService;
+	private final SeckillService seckillService;
 
 	private final PromotionGoodsService promotionGoodsService;
 
@@ -71,9 +73,34 @@ public class SeckillApplyServiceImpl extends ServiceImpl<SeckillApplyMapper, Sec
 		// todo 更新es中商品的促销信息
 
 		// 删掉修改后不在时间段下的商家请求
-		return seckillApplyService.remove(Wrappers.<SeckillApply>lambdaQuery()
-				.eq(SeckillApply::getSeckillId, seckill.getId()).notIn(SeckillApply::getSkuId,
-						promotionGoodsList.stream().map(PromotionGoods::getSkuId).collect(Collectors.toList())));
+		return this.remove(Wrappers.<SeckillApply>lambdaQuery().eq(SeckillApply::getSeckillId, seckill.getId()).notIn(
+				SeckillApply::getSkuId,
+				promotionGoodsList.stream().map(PromotionGoods::getSkuId).collect(Collectors.toList())));
+	}
+
+	/**
+	 * 删除秒杀活动申请
+	 */
+	@Override
+	public void removeSeckillApply(String seckillId, String id) {
+		SeckillApply apply = this.getById(id);
+		if (Objects.isNull(apply)) {
+			throw new FxzException("当前参与的秒杀活动不存在");
+		}
+		Seckill seckill = seckillService.getById(seckillId);
+		if (Objects.isNull(seckill)) {
+			throw new FxzException("当前秒杀活动不存在");
+		}
+
+		// 清除秒杀活动中的商品
+		this.remove(Wrappers.<SeckillApply>lambdaQuery().eq(SeckillApply::getSeckillId, seckillId)
+				.eq(SeckillApply::getId, id));
+
+		// todo 更新es商品中的促销信息
+
+		// 删除促销商品
+		promotionGoodsService.remove(Wrappers.<PromotionGoods>lambdaQuery()
+				.eq(PromotionGoods::getPromotionId, seckillId).eq(PromotionGoods::getSkuId, id));
 	}
 
 	/**

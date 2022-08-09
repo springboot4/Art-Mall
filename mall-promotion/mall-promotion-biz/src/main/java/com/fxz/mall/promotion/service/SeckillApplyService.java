@@ -17,4 +17,9 @@ public interface SeckillApplyService extends IService<SeckillApply> {
 	 */
 	boolean updateSeckillApplyTime(Seckill seckill);
 
+	/**
+	 * 删除秒杀活动申请
+	 */
+	void removeSeckillApply(String seckillId, String id);
+
 }
