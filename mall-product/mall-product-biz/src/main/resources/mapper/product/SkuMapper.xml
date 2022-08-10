@@ -21,7 +21,8 @@
             t1.pic_url,
             t1.price,
             t1.stock_num,
-            t2.name as spuName
+            t2.name as spuName,
+            t2.id as spuId
         from sku t1
         left join spu t2 on t1.spu_id = t2.id
         where t1.id = #{skuId}

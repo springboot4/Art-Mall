@@ -248,7 +248,7 @@ public class SeckillApplyServiceImpl extends ServiceImpl<SeckillApplyMapper, Sec
 			for (SeckillApply apply : seckillApplies) {
 				SkuInfoDTO skuInfoDTO = remoteSkuService.getSkuInfo(apply.getSkuId()).getData();
 				if (!Objects.isNull(skuInfoDTO)) {
-					SeckillGoodsVO seckillGoodsVO = new SeckillGoodsVO(seckillId, startTimeline, skuInfoDTO.getSkuId(),
+					SeckillGoodsVO seckillGoodsVO = new SeckillGoodsVO(seckillId, startTimeline, skuInfoDTO.getSpuId(),
 							skuInfoDTO.getSkuId(), skuInfoDTO.getSkuName(), skuInfoDTO.getPicUrl(), apply.getPrice(),
 							apply.getQuantity(), apply.getSalesNum(), apply.getOriginalPrice());
 					res.add(seckillGoodsVO);

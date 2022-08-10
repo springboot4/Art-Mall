@@ -43,4 +43,9 @@ public class SkuInfoDTO {
 	 */
 	private String spuName;
 
+	/**
+	 * spuId
+	 */
+	private Long spuId;
+
 }

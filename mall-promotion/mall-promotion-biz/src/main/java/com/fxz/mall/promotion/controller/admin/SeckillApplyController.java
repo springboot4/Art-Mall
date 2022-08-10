@@ -1,6 +1,7 @@
 package com.fxz.mall.promotion.controller.admin;
 
 import com.fxz.common.mp.result.Result;
+import com.fxz.common.security.annotation.Ojbk;
 import com.fxz.mall.promotion.service.SeckillApplyService;
 import com.fxz.mall.promotion.vo.SeckillApplyVO;
 import com.fxz.mall.promotion.vo.SeckillTimelineVO;
@@ -43,6 +44,7 @@ public class SeckillApplyController {
 	/**
 	 * 获取当天秒杀活动信息(时刻及对应时刻下的商品)
 	 */
+	@Ojbk
 	@GetMapping("/list")
 	public Result<List<SeckillTimelineVO>> listSeckillTime() {
 		return Result.success(seckillApplyService.listSeckillTime());

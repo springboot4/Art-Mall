@@ -50,6 +50,7 @@ public class SkuController {
 	/**
 	 * 获取商品库存信息
 	 */
+	@Ojbk
 	@GetMapping("/{skuId}/info")
 	public Result<SkuInfoDTO> getSkuInfo(@PathVariable("skuId") Long skuId) {
 		return Result.success(skuService.getSkuInfo(skuId));
