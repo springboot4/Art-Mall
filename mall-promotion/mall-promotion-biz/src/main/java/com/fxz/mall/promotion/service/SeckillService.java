@@ -21,9 +21,15 @@ public interface SeckillService extends IService<Seckill> {
 	boolean saveSeckill(Seckill seckill);
 
 	/**
-	 * 更新秒杀请求
+	 * 更新秒杀活动
 	 * @param seckill 秒杀活动视图对象
 	 */
 	boolean updateSeckill(Seckill seckill);
 
+	/**
+	 * 关闭秒杀活动
+	 *
+	 * @param id 秒杀活动id
+	 */
+	void closeSeckill(Long id);
 }
