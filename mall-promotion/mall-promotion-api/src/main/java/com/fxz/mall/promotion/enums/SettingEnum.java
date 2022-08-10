@@ -9,6 +9,7 @@ import lombok.Getter;
  * @version 1.0
  * @date 2022/8/9 16:07
  */
+@Getter
 @AllArgsConstructor
 public enum SettingEnum implements IBaseEnum<String> {
 
@@ -17,10 +18,8 @@ public enum SettingEnum implements IBaseEnum<String> {
 	 */
 	SECKILL_SETTING("seckill_setting", "秒杀规则设置");
 
-	@Getter
 	private final String value;
 
-	@Getter
 	private final String label;
 
 }

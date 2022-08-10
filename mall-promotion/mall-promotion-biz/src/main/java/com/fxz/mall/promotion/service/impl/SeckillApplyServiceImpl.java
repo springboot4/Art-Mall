@@ -23,6 +23,7 @@ import com.fxz.mall.promotion.vo.SeckillGoodsVO;
 import com.fxz.mall.promotion.vo.SeckillTimelineVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -44,9 +45,10 @@ import java.util.stream.Collectors;
 public class SeckillApplyServiceImpl extends ServiceImpl<SeckillApplyMapper, SeckillApply>
 		implements SeckillApplyService {
 
-	private final RemoteSkuService remoteSkuService;
+	@Autowired
+	private SeckillService seckillService;
 
-	private final SeckillService seckillService;
+	private final RemoteSkuService remoteSkuService;
 
 	private final PromotionGoodsService promotionGoodsService;
 
@@ -85,10 +87,10 @@ public class SeckillApplyServiceImpl extends ServiceImpl<SeckillApplyMapper, Sec
 
 		// todo 更新es中商品的促销信息
 
+		List<Long> collect = promotionGoodsList.stream().map(PromotionGoods::getSkuId).collect(Collectors.toList());
 		// 删掉修改后不在时间段下的商家请求
-		return this.remove(Wrappers.<SeckillApply>lambdaQuery().eq(SeckillApply::getSeckillId, seckill.getId()).notIn(
-				SeckillApply::getSkuId,
-				promotionGoodsList.stream().map(PromotionGoods::getSkuId).collect(Collectors.toList())));
+		return this.remove(Wrappers.<SeckillApply>lambdaQuery().eq(SeckillApply::getSeckillId, seckill.getId())
+				.notIn(CollectionUtils.isNotEmpty(collect), SeckillApply::getSkuId, collect));
 	}
 
 	/**
@@ -113,7 +115,10 @@ public class SeckillApplyServiceImpl extends ServiceImpl<SeckillApplyMapper, Sec
 
 		// 删除促销商品
 		promotionGoodsService.remove(Wrappers.<PromotionGoods>lambdaQuery()
-				.eq(PromotionGoods::getPromotionId, seckillId).eq(PromotionGoods::getSkuId, id));
+				.eq(PromotionGoods::getPromotionId, seckillId).eq(PromotionGoods::getSkuId, apply.getSkuId()));
+
+		// 更新当前秒杀活动商品数量
+		seckillService.countSeckillGoodsNum(seckillId);
 	}
 
 	/**
@@ -149,6 +154,7 @@ public class SeckillApplyServiceImpl extends ServiceImpl<SeckillApplyMapper, Sec
 			checkSeckillGoodsSku(seckill, applyVo, skuInfoDTO);
 
 			// 为秒杀请求设置默认值
+			applyVo.setSeckillId(seckillId);
 			applyVo.setOriginalPrice(skuInfoDTO.getPrice());
 			applyVo.setSalesNum(0);
 			applyVo.setPromotionApplyStatus(PromotionsApplyStatusEnum.PASS.getValue());
@@ -172,6 +178,7 @@ public class SeckillApplyServiceImpl extends ServiceImpl<SeckillApplyMapper, Sec
 					.eq(PromotionGoods::getPromotionType, PromotionTypeEnum.SECKILL.getValue())
 					.in(PromotionGoods::getGoodsId,
 							promotionGoodsList.stream().map(PromotionGoods::getSkuId).collect(Collectors.toList())));
+			promotionGoodsService.saveBatch(promotionGoodsList);
 		}
 
 		// 更新当前秒杀活动的参与商品数量
@@ -315,6 +322,10 @@ public class SeckillApplyServiceImpl extends ServiceImpl<SeckillApplyMapper, Sec
 	private PromotionGoods createSeckillGoods(SkuInfoDTO skuInfo, SeckillApply applie, Seckill seckill) {
 		// 促销商品默认信息
 		PromotionGoods promotionGoods = new PromotionGoods(skuInfo);
+		promotionGoods.setPromotionId(seckill.getId());
+		promotionGoods.setLimitNum(applie.getQuantity());
+		promotionGoods.setNum(0);
+		promotionGoods.setTitle(seckill.getPromotionName());
 		promotionGoods.setPrice(applie.getPrice());
 		promotionGoods.setQuantity(applie.getQuantity());
 		promotionGoods.setPromotionType(PromotionTypeEnum.SECKILL.getValue());

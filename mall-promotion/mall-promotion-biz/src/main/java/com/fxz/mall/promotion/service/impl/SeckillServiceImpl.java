@@ -15,6 +15,7 @@ import com.fxz.mall.promotion.service.SettingService;
 import io.seata.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,9 +38,10 @@ public class SeckillServiceImpl extends ServiceImpl<SeckillMapper, Seckill> impl
 	 */
 	private final Integer PRE_CREATION = 7;
 
-	private final SettingService settingService;
+	@Autowired
+	private SeckillApplyService seckillApplyService;
 
-	private final SeckillApplyService seckillApplyService;
+	private final SettingService settingService;
 
 	private final PromotionGoodsService promotionGoodsService;
 
@@ -56,7 +58,7 @@ public class SeckillServiceImpl extends ServiceImpl<SeckillMapper, Seckill> impl
 		SeckillSetting seckillSetting = JacksonUtil.parseObject(setting.getSettingValue(), SeckillSetting.class);
 
 		// 保存秒杀活动
-		for (int i = 1; i <= PRE_CREATION; i++) {
+		for (int i = 0; i <= PRE_CREATION; i++) {
 			Seckill seckill = new Seckill(i, seckillSetting.getHours(), seckillSetting.getSeckillRule());
 			this.saveSeckill(seckill);
 		}
@@ -71,15 +73,15 @@ public class SeckillServiceImpl extends ServiceImpl<SeckillMapper, Seckill> impl
 		LocalDateTime startTime = seckill.getStartTime();
 		LocalDateTime endTime = seckill.getEndTime();
 		LocalDateTime now = LocalDateTime.now();
-		if (now.isAfter(startTime)) {
-			throw new FxzException("活动起始时间不能小于当前时间");
-		}
-		if (now.isAfter(endTime)) {
-			throw new FxzException("活动结束时间不能小于当前时间");
-		}
-		if (startTime.isAfter(endTime)) {
-			throw new FxzException("活动起始时间必须大于结束时间");
-		}
+		// if (now.isAfter(startTime)) {
+		// throw new FxzException("活动起始时间不能小于当前时间");
+		// }
+		// if (now.isAfter(endTime)) {
+		// throw new FxzException("活动结束时间不能小于当前时间");
+		// }
+		// if (startTime.isAfter(endTime)) {
+		// throw new FxzException("活动起始时间必须大于结束时间");
+		// }
 
 		// 删除秒杀促销商品
 		promotionGoodsService.remove(Wrappers.emptyWrapper());

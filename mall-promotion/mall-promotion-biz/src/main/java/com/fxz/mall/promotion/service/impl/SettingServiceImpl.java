@@ -8,7 +8,6 @@ import com.fxz.mall.promotion.mapper.SettingMapper;
 import com.fxz.mall.promotion.service.SettingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -20,21 +19,21 @@ import java.util.Objects;
  */
 @Slf4j
 @Service
-@CacheConfig(cacheNames = "setting")
+// @CacheConfig(cacheNames = "setting")
 @RequiredArgsConstructor
 public class SettingServiceImpl extends ServiceImpl<SettingMapper, Setting> implements SettingService {
 
 	/**
 	 * 获取设置的规则
 	 */
-	@Cacheable(key = "#seckillSetting.getValue()")
+	@Cacheable(value = "setting", key = "#seckillSetting.value", unless = "#result==null")
 	@Override
 	public Setting findSetting(SettingEnum seckillSetting) {
 		if (Objects.isNull(seckillSetting)) {
 			return null;
 		}
 
-		return this.getOne(Wrappers.<Setting>lambdaQuery().eq(Setting::getSettingValue, seckillSetting.getValue()));
+		return this.getOne(Wrappers.<Setting>lambdaQuery().eq(Setting::getId, seckillSetting.getValue()));
 	}
 
 }

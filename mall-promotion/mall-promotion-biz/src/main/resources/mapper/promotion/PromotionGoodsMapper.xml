@@ -12,7 +12,10 @@
         AND sku_id = #{skuId}
         AND
             (
-             ( start_time < #{startTime} && end_time > #{startTime} ) || ( start_time < #{endTime} && end_time > #{endTime} ) || ( start_time < #{startTime} && end_time > #{endTime}  ) || ( start_time > #{startTime}  && end_time < #{endTime} )
+             ( <![CDATA[ start_time < #{startTime} AND end_time > #{startTime} ]]>  ) OR
+             ( <![CDATA[start_time < #{endTime} AND end_time > #{endTime} ]]>) OR
+             ( <![CDATA[start_time < #{startTime} AND end_time > #{endTime} ]]> ) OR
+             ( <![CDATA[start_time > #{startTime}  AND end_time < #{endTime} ]]>)
             )
         AND promotion_id != #{promotionId}
     </select>

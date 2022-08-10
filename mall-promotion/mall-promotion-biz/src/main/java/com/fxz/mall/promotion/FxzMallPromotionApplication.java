@@ -14,7 +14,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  */
 @EnableFxzCloudResourceServer
 @EnableFeignClients(basePackages = { "com.fxz" })
-@MapperScan("com.fxz")
+@MapperScan("com.fxz.mall.promotion.mapper")
 @EnableDiscoveryClient
 @SpringBootApplication
 public class FxzMallPromotionApplication {

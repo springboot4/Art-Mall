@@ -16,12 +16,10 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = true)
 public class Setting extends BaseEntity {
 
-	private static final long serialVersionUID = -1L;
-
 	/**
 	 * 主键
 	 */
-	private Long id;
+	private String id;
 
 	/**
 	 * 配置值value

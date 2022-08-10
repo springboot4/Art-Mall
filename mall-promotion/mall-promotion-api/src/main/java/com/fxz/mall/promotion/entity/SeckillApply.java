@@ -1,5 +1,6 @@
 package com.fxz.mall.promotion.entity;
 
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fxz.common.mp.base.BaseEntity;
 import lombok.Data;
@@ -22,16 +23,6 @@ public class SeckillApply extends BaseEntity {
 	 * ID
 	 */
 	private Long id;
-
-	/**
-	 * 删除标志
-	 */
-	private Boolean deleteFlag;
-
-	/**
-	 * 驳回原因
-	 */
-	private String failReason;
 
 	/**
 	 * 商品名称
@@ -77,5 +68,16 @@ public class SeckillApply extends BaseEntity {
 	 * 时刻
 	 */
 	private Integer timeLine;
+
+	/**
+	 * 删除标志
+	 */
+	@TableLogic
+	private Boolean deleteFlag;
+
+	/**
+	 * 驳回原因
+	 */
+	private String failReason;
 
 }
