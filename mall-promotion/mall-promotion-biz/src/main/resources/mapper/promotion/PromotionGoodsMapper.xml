@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fxz.mall.promotion.mapper.PromotionGoodsMapper">
+
+    <select id="findInnerOverlapPromotionGoods" resultType="Integer">
+        SELECT
+        count( 0 )
+        FROM
+        promotion_goods
+        WHERE
+        promotion_type = #{type}
+        AND sku_id = #{skuId}
+        AND
+            (
+             ( start_time < #{startTime} && end_time > #{startTime} ) || ( start_time < #{endTime} && end_time > #{endTime} ) || ( start_time < #{startTime} && end_time > #{endTime}  ) || ( start_time > #{startTime}  && end_time < #{endTime} )
+            )
+        AND promotion_id != #{promotionId}
+    </select>
+
+</mapper>

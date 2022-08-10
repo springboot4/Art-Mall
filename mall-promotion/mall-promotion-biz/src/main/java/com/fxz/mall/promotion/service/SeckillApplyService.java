@@ -3,6 +3,9 @@ package com.fxz.mall.promotion.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fxz.mall.promotion.entity.Seckill;
 import com.fxz.mall.promotion.entity.SeckillApply;
+import com.fxz.mall.promotion.vo.SeckillApplyVO;
+
+import java.util.List;
 
 /**
  * @author fxz
@@ -20,6 +23,13 @@ public interface SeckillApplyService extends IService<SeckillApply> {
 	/**
 	 * 删除秒杀活动申请
 	 */
-	void removeSeckillApply(String seckillId, String id);
+	void removeSeckillApply(Long seckillId, Long id);
+
+	/**
+	 * 添加秒杀活动申请
+	 * @param seckillId 秒杀活动id
+	 * @param applyVos 商家秒杀请求视图对象
+	 */
+	void addSeckillApply(Long seckillId, List<SeckillApplyVO> applyVos);
 
 }

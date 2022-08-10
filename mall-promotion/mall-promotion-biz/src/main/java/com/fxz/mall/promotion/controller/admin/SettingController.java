@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @author fxz
  * @date 2022-08-09
  */
-@RestController("appSettingController")
-@RequestMapping("/setting")
+@RestController("settingController")
+@RequestMapping("/admin/setting")
 @RequiredArgsConstructor
 public class SettingController {
 

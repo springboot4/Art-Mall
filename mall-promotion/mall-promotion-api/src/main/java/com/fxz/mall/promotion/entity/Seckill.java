@@ -5,7 +5,7 @@ import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fxz.common.mp.base.BaseEntity;
-import com.fxz.mall.promotion.SeckillVO;
+import com.fxz.mall.promotion.vo.SeckillVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;

@@ -1,7 +1,6 @@
 package com.fxz.mall.promotion.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.fxz.mall.promotion.SeckillVO;
 import com.fxz.mall.promotion.entity.Seckill;
 
 /**
@@ -28,8 +27,15 @@ public interface SeckillService extends IService<Seckill> {
 
 	/**
 	 * 关闭秒杀活动
-	 *
 	 * @param id 秒杀活动id
 	 */
 	void closeSeckill(Long id);
+
+	/**
+	 * 更新秒杀活动商品数量
+	 * @param seckillId 秒杀活动id
+	 * @return true or false
+	 */
+	boolean countSeckillGoodsNum(Long seckillId);
+
 }

@@ -5,18 +5,26 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 促销活动类型枚举
+ * 促销申请状态枚举
  * @author Fxz
  * @version 1.0
- * @date 2022/8/9 22:52
+ * @date 2022/8/10 11:32
  */
 @AllArgsConstructor
-public enum PromotionTypeEnum implements IBaseEnum<String> {
+public enum PromotionsApplyStatusEnum implements IBaseEnum<String> {
 
 	/**
-	 * 秒杀
+	 * 申请状态
 	 */
-	SECKILL("seckill", "秒杀");
+	APPLY("apply", "申请"),
+	/**
+	 * 通过状态
+	 */
+	PASS("pass", "通过"),
+	/**
+	 * 拒绝状态
+	 */
+	REFUSE("pass", "拒绝");
 
 	@Getter
 	private final String value;
