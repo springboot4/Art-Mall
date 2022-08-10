@@ -1,5 +1,7 @@
 package com.fxz.mall.promotion.service.impl;
 
+import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -17,12 +19,15 @@ import com.fxz.mall.promotion.service.PromotionGoodsService;
 import com.fxz.mall.promotion.service.SeckillApplyService;
 import com.fxz.mall.promotion.service.SeckillService;
 import com.fxz.mall.promotion.vo.SeckillApplyVO;
+import com.fxz.mall.promotion.vo.SeckillGoodsVO;
+import com.fxz.mall.promotion.vo.SeckillTimelineVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -173,6 +178,77 @@ public class SeckillApplyServiceImpl extends ServiceImpl<SeckillApplyMapper, Sec
 		seckillService.countSeckillGoodsNum(seckillId);
 
 		// todo 更新促销信息到es索引
+	}
+
+	/**
+	 * 获取当天秒杀活动信息(时刻及对应时刻下的商品)
+	 */
+	@Override
+	public List<SeckillTimelineVO> listSeckillTime() {
+		LocalDateTime now = LocalDateTime.now();
+		List<SeckillTimelineVO> timelineList = new ArrayList<>();
+
+		// 1.查询出当天的所有秒杀活动。
+		LambdaQueryWrapper<Seckill> lambdaQuery = Wrappers.lambdaQuery();
+		lambdaQuery.between(Seckill::getStartTime, LocalDateTime.of(now.toLocalDate(), LocalTime.MIN),
+				LocalDateTime.of(now.toLocalDate(), LocalTime.MAX));
+		lambdaQuery.le(Seckill::getEndTime, LocalDateTime.of(now.toLocalDate(), LocalTime.MAX));
+		List<Seckill> seckillList = seckillService.list(lambdaQuery);
+
+		// 2.遍历每一个秒杀活动，查询该秒杀活动的每一个时间点的秒杀商品信息。
+		seckillList.forEach(seckill -> {
+			// 获取当前秒杀活动的每个时刻
+			int[] split = Arrays.stream(seckill.getHours().split(StringPool.COMMA)).mapToInt(Integer::parseInt)
+					.toArray();
+			Arrays.sort(split);
+
+			// 遍历此秒杀活动的每个时刻
+			for (int s : split) {
+				// 每个未开始的秒杀活动
+				if (s >= now.getHour()) {
+					// 封装秒杀时刻视图对象
+					SeckillTimelineVO timelineVO = new SeckillTimelineVO();
+					timelineVO.setStartTime(
+							LocalDateTime.of(now.toLocalDate(), LocalTime.of(s, 0)).toEpochSecond(ZoneOffset.of("+8")));
+					timelineVO.setTimeLine(s);
+					timelineVO.setDistanceStartTime(
+							LocalDateTime.of(now.toLocalDate(), LocalTime.of(s, 0)).toEpochSecond(ZoneOffset.of("+8"))
+									- DateUtil.currentSeconds());
+					timelineVO.setSeckillGoodsList(wrapperSeckillGoods(s, seckill.getId()));
+					timelineList.add(timelineVO);
+				}
+			}
+		});
+
+		return timelineList;
+	}
+
+	/**
+	 * 组装当时间秒杀活动的商品数据
+	 * @param startTimeline 秒杀活动开始时刻
+	 * @param seckillId 秒杀活动id
+	 * @return 当时间秒杀活动的商品数据
+	 */
+	private List<SeckillGoodsVO> wrapperSeckillGoods(int startTimeline, Long seckillId) {
+		List<SeckillGoodsVO> res = new ArrayList<>();
+		List<SeckillApply> seckillApplyList = this
+				.list(Wrappers.<SeckillApply>lambdaQuery().eq(SeckillApply::getSeckillId, seckillId));
+		if (CollectionUtils.isNotEmpty(seckillApplyList)) {
+			List<SeckillApply> seckillApplies = seckillApplyList.stream()
+					.filter(seckillApply -> seckillApply.getTimeLine().equals(startTimeline)
+							&& seckillApply.getPromotionApplyStatus().equals(PromotionsApplyStatusEnum.PASS.getValue()))
+					.collect(Collectors.toList());
+			for (SeckillApply apply : seckillApplies) {
+				SkuInfoDTO skuInfoDTO = remoteSkuService.getSkuInfo(apply.getSkuId()).getData();
+				if (!Objects.isNull(skuInfoDTO)) {
+					SeckillGoodsVO seckillGoodsVO = new SeckillGoodsVO(seckillId, startTimeline, skuInfoDTO.getSkuId(),
+							skuInfoDTO.getSkuId(), skuInfoDTO.getSkuName(), skuInfoDTO.getPicUrl(), apply.getPrice(),
+							apply.getQuantity(), apply.getSalesNum(), apply.getOriginalPrice());
+					res.add(seckillGoodsVO);
+				}
+			}
+		}
+		return res;
 	}
 
 	/**

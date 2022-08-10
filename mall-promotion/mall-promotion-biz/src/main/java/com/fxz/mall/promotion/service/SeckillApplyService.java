@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.fxz.mall.promotion.entity.Seckill;
 import com.fxz.mall.promotion.entity.SeckillApply;
 import com.fxz.mall.promotion.vo.SeckillApplyVO;
+import com.fxz.mall.promotion.vo.SeckillTimelineVO;
 
 import java.util.List;
 
@@ -31,5 +32,10 @@ public interface SeckillApplyService extends IService<SeckillApply> {
 	 * @param applyVos 商家秒杀请求视图对象
 	 */
 	void addSeckillApply(Long seckillId, List<SeckillApplyVO> applyVos);
+
+	/**
+	 * 获取当天秒杀活动信息(时刻及对应时刻下的商品)
+	 */
+	List<SeckillTimelineVO> listSeckillTime();
 
 }
