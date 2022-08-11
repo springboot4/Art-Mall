@@ -38,4 +38,6 @@ public class SkuDto extends BaseEntity {
 
 	private List<AttributeValueDto> specValList;
 
+	private String promotionMapJson;
+
 }

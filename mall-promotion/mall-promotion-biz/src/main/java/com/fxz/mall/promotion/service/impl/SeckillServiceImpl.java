@@ -73,20 +73,18 @@ public class SeckillServiceImpl extends ServiceImpl<SeckillMapper, Seckill> impl
 		LocalDateTime startTime = seckill.getStartTime();
 		LocalDateTime endTime = seckill.getEndTime();
 		LocalDateTime now = LocalDateTime.now();
-		// if (now.isAfter(startTime)) {
-		// throw new FxzException("活动起始时间不能小于当前时间");
-		// }
-		// if (now.isAfter(endTime)) {
-		// throw new FxzException("活动结束时间不能小于当前时间");
-		// }
-		// if (startTime.isAfter(endTime)) {
-		// throw new FxzException("活动起始时间必须大于结束时间");
-		// }
+		if (now.isAfter(startTime)) {
+			throw new FxzException("活动起始时间不能小于当前时间");
+		}
+		if (now.isAfter(endTime)) {
+			throw new FxzException("活动结束时间不能小于当前时间");
+		}
+		if (startTime.isAfter(endTime)) {
+			throw new FxzException("活动起始时间必须大于结束时间");
+		}
 
 		// 删除秒杀促销商品
 		promotionGoodsService.remove(Wrappers.emptyWrapper());
-
-		// todo 更新es中商品的促销信息
 
 		// 保存秒杀活动
 		return this.save(seckill);
@@ -124,8 +122,6 @@ public class SeckillServiceImpl extends ServiceImpl<SeckillMapper, Seckill> impl
 
 		// 删除秒杀活动下的促销商品
 		promotionGoodsService.remove(Wrappers.<PromotionGoods>lambdaQuery().eq(PromotionGoods::getPromotionId, id));
-
-		// todo 更新es索引中商品的促销信息
 
 		// 将当前秒杀活动起始时间更新为null
 		this.update(Wrappers.<Seckill>lambdaUpdate().eq(Seckill::getId, id).set(Seckill::getStartTime, null)

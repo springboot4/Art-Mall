@@ -13,7 +13,3 @@ spring:
       - optional:nacos:fxz-application-common.yaml
   main:
     allow-circular-references: true
-
-mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

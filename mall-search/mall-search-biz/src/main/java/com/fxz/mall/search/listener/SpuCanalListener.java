@@ -7,7 +7,6 @@ import com.fxz.common.canal.model.CanalBinLogResult;
 import com.fxz.common.canal.support.processor.BaseCanalBinlogEventProcessor;
 import com.fxz.common.canal.support.processor.ExceptionHandler;
 import com.fxz.common.core.constant.SecurityConstants;
-import com.fxz.common.core.exception.FxzException;
 import com.fxz.mall.product.dto.GoodsDto;
 import com.fxz.mall.product.entity.Brand;
 import com.fxz.mall.product.entity.Category;
@@ -42,7 +41,7 @@ public class SpuCanalListener extends BaseCanalBinlogEventProcessor<EsSpu> {
 	private final RemoteBrandService remoteBrandService;
 
 	/**
-	 * 插入
+	 * 新增商品信息到es
 	 */
 	@SneakyThrows
 	@Override
@@ -58,7 +57,7 @@ public class SpuCanalListener extends BaseCanalBinlogEventProcessor<EsSpu> {
 	}
 
 	/**
-	 * 更新
+	 * 更新商品信息到es
 	 */
 	@SneakyThrows
 	@Override
@@ -74,7 +73,7 @@ public class SpuCanalListener extends BaseCanalBinlogEventProcessor<EsSpu> {
 	}
 
 	/**
-	 * 删除
+	 * 删除es中的商品信息
 	 */
 	@SneakyThrows
 	@Override
@@ -90,10 +89,13 @@ public class SpuCanalListener extends BaseCanalBinlogEventProcessor<EsSpu> {
 	@Override
 	protected ExceptionHandler exceptionHandler() {
 		return (CanalBinLogEvent event, Throwable throwable) -> {
-			throw new FxzException("异常", throwable);
+			log.info("异常信息:{}", throwable.getLocalizedMessage());
 		};
 	}
 
+	/**
+	 * 根据spuId组装商品信息
+	 */
 	private EsGoodsDto loadEsGoodsDto(Long spuId) {
 		EsGoodsDto esGoodsDto = new EsGoodsDto();
 

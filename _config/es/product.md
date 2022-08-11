@@ -51,6 +51,9 @@ put product
                         "type":"keyword",
                         "index":false,
                         "doc_values":false
+                    },
+                    "promotionMapJson": {
+                        "type": "text"
                     }
                 }
             },
@@ -61,9 +64,6 @@ put product
                 "type":"text",
                 "analyzer":"ik_max_word",
                 "search_analyzer":"ik_smart"
-            },
-            "promotionMapJson": {
-                "type": "text"
             },
             "categoryId":{
                 "type":"long"

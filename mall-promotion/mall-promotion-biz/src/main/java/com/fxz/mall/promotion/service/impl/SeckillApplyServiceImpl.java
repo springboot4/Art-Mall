@@ -61,7 +61,7 @@ public class SeckillApplyServiceImpl extends ServiceImpl<SeckillApplyMapper, Sec
 	public boolean updateSeckillApplyTime(Seckill seckill) {
 		// 查出当前秒杀活动下的商家请求
 		List<SeckillApply> seckillApplies = this
-				.list(Wrappers.<SeckillApply>lambdaQuery().eq(SeckillApply::getSeckillId, seckill));
+				.list(Wrappers.<SeckillApply>lambdaQuery().eq(SeckillApply::getSeckillId, seckill.getId()));
 		// 筛选出查询当前秒杀活动修改后在时间段内的商家请求
 		List<SeckillApply> applies = seckillApplies.stream()
 				.filter(seckillApply -> Objects.nonNull(seckillApply.getTimeLine())
@@ -76,16 +76,12 @@ public class SeckillApplyServiceImpl extends ServiceImpl<SeckillApplyMapper, Sec
 			return this.createSeckillGoods(skuInfo, applie, seckill);
 		}).collect(Collectors.toList());
 
-		if (!promotionGoodsList.isEmpty()) {
-			// 删掉之前的所有促销活动
-			promotionGoodsService
-					.remove(Wrappers.<PromotionGoods>lambdaQuery().eq(PromotionGoods::getPromotionId, seckill.getId())
-							.eq(PromotionGoods::getPromotionType, PromotionTypeEnum.SECKILL.getValue()));
-			// 保存本次构建的促销活动
-			promotionGoodsService.saveBatch(promotionGoodsList);
-		}
-
-		// todo 更新es中商品的促销信息
+		// 删掉之前的所有促销活动
+		promotionGoodsService
+				.remove(Wrappers.<PromotionGoods>lambdaQuery().eq(PromotionGoods::getPromotionId, seckill.getId())
+						.eq(PromotionGoods::getPromotionType, PromotionTypeEnum.SECKILL.getValue()));
+		// 保存本次构建的促销活动
+		promotionGoodsService.saveBatch(promotionGoodsList);
 
 		List<Long> collect = promotionGoodsList.stream().map(PromotionGoods::getSkuId).collect(Collectors.toList());
 		// 删掉修改后不在时间段下的商家请求
@@ -110,8 +106,6 @@ public class SeckillApplyServiceImpl extends ServiceImpl<SeckillApplyMapper, Sec
 		// 清除秒杀活动中的商品
 		this.remove(Wrappers.<SeckillApply>lambdaQuery().eq(SeckillApply::getSeckillId, seckillId)
 				.eq(SeckillApply::getId, id));
-
-		// todo 更新es商品中的促销信息
 
 		// 删除促销商品
 		promotionGoodsService.remove(Wrappers.<PromotionGoods>lambdaQuery()
@@ -164,6 +158,7 @@ public class SeckillApplyServiceImpl extends ServiceImpl<SeckillApplyMapper, Sec
 			return createSeckillGoods(skuInfoDTO, applyVo, seckill);
 		}).collect(Collectors.toList());
 
+		log.info("集合：{}", promotionGoodsList);
 		// 为了保证一个sku只能参加此秒杀的的一个时间段，删掉当前sku在此秒杀下的请求
 		this.remove(Wrappers.<SeckillApply>lambdaQuery().eq(SeckillApply::getSeckillId, seckillId).in(
 				SeckillApply::getSkuId, applyVos.stream().map(SeckillApply::getSkuId).collect(Collectors.toList())));
@@ -183,8 +178,6 @@ public class SeckillApplyServiceImpl extends ServiceImpl<SeckillApplyMapper, Sec
 
 		// 更新当前秒杀活动的参与商品数量
 		seckillService.countSeckillGoodsNum(seckillId);
-
-		// todo 更新促销信息到es索引
 	}
 
 	/**
