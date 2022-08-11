@@ -30,7 +30,7 @@ public class CategoryController {
 	 * 查询分类列表
 	 * @return 商品分类列表
 	 */
-	@GetMapping("list")
+	@GetMapping("/list")
 	public Result<List<Tree<Long>>> list() {
 		return Result.success(categoryService.listCategory(null));
 	}
@@ -62,7 +62,7 @@ public class CategoryController {
 	/**
 	 * 获取单条
 	 */
-	@Ojbk(inner = true)
+	@Ojbk
 	@GetMapping(value = "/findById")
 	public Result<Category> findById(Long id) {
 		return Result.success(categoryService.findById(id));

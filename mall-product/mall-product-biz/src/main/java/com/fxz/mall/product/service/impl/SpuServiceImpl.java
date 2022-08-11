@@ -29,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -58,6 +59,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
 	 * @param goodsDto 商品信息
 	 * @return 是否保存成功
 	 */
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public Boolean addGoods(GoodsDto goodsDto) {
 		// 保存spu信息

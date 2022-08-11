@@ -1,5 +1,6 @@
 package com.fxz.mall.product.vo;
 
+import com.fxz.common.core.serializer.ImgUrl;
 import com.fxz.mall.product.entity.Sku;
 import lombok.Data;
 
@@ -35,6 +36,7 @@ public class GoodsDetailVO {
 
 		private Integer sales;
 
+		@ImgUrl
 		private List<String> album;
 
 		private String detail;

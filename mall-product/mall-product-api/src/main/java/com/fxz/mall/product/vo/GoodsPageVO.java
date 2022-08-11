@@ -1,5 +1,6 @@
 package com.fxz.mall.product.vo;
 
+import com.fxz.common.core.serializer.ImgUrl;
 import lombok.Data;
 
 /**
@@ -33,6 +34,7 @@ public class GoodsPageVO {
 	/**
 	 * 图片地址
 	 */
+	@ImgUrl
 	private String picUrl;
 
 }

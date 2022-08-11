@@ -65,6 +65,7 @@ public class Spu extends BaseEntity {
 	/**
 	 * 商品图册
 	 */
+	@ImgUrl
 	private String album;
 
 	/**

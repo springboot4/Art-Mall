@@ -4,12 +4,10 @@ import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.lang.tree.TreeUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.fxz.common.file.OssProperties;
-import com.fxz.common.file.service.OssTemplate;
+import com.fxz.common.core.serializer.ImgUrlSerialize;
 import com.fxz.mall.product.dto.CategoryDto;
 import com.fxz.mall.product.entity.Category;
 import com.fxz.mall.product.mapper.CategoryMapper;
@@ -21,7 +19,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
  * @author fxz
  * @date 2022-05-04
  */
+@SuppressWarnings("all")
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -38,9 +40,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
 
 	private final CategoryMapper categoryMapper;
 
-	private final OssTemplate ossTemplate;
-
-	private final OssProperties ossProperties;
+	private final ImgUrlSerialize imgUrlSerialize;
 
 	/**
 	 * 添加
@@ -124,22 +124,12 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
 
 			// 扩展属性
 			Map<String, Object> extra = new HashMap<>();
-			extra.put("iconUrl", category.getIconUrl());
+			extra.put("iconUrl", imgUrlSerialize.buildString(category.getIconUrl()));
 			extra.put("visible", category.getVisible());
 			extra.put("level", category.getLevel());
 			Map<String, String> map = Maps.newHashMap();
 			map.put("title", "custom");
 			extra.put("scopedSlots", map);
-
-			// if(Objects.equals(category.getLevel(),3)&&Objects.nonNull(category.getIconUrl())){
-			// String[] split = category.getIconUrl().split("/");
-			// if(CollectionUtils.isNotEmpty(Arrays.asList(split))){
-			// String url = ossTemplate.getObjectURL(ossProperties.getBucketName(),
-			// category.getIconUrl(), 1);
-			// log.info(url);
-			// extra.put("iconUrl",url);
-			// }
-			// }
 
 			node.setExtra(extra);
 

@@ -54,7 +54,7 @@ public class BrandController {
 	/**
 	 * 获取单条
 	 */
-	@Ojbk(inner = true)
+	@Ojbk
 	@GetMapping(value = "/findById")
 	public Result<Brand> findById(Long id) {
 		return Result.success(brandService.findById(id));

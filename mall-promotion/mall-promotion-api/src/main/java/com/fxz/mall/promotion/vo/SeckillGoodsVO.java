@@ -1,5 +1,6 @@
 package com.fxz.mall.promotion.vo;
 
+import com.fxz.common.core.serializer.ImgUrl;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -48,6 +49,7 @@ public class SeckillGoodsVO implements Serializable {
 	/**
 	 * 商品图片
 	 */
+	@ImgUrl
 	private String goodsImage;
 
 	/**

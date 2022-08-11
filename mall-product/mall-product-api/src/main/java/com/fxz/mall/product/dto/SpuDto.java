@@ -1,5 +1,6 @@
 package com.fxz.mall.product.dto;
 
+import com.fxz.common.core.serializer.ImgUrl;
 import com.fxz.common.mp.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,6 +35,7 @@ public class SpuDto extends BaseEntity {
 
 	private String picUrl;
 
+	@ImgUrl
 	private String album;
 
 	private String unit;

@@ -2,6 +2,7 @@ package com.fxz.mall.search.entity;
 
 import com.fxz.common.canal.annotation.CanalModel;
 import com.fxz.common.canal.common.FieldNamingPolicy;
+import com.fxz.common.core.serializer.ImgUrl;
 import com.fxz.common.mp.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -62,6 +63,7 @@ public class EsSpu extends BaseEntity {
 	/**
 	 * 商品图册
 	 */
+	@ImgUrl
 	private String album;
 
 	/**
