@@ -19,7 +19,6 @@ import java.util.Objects;
  */
 @Slf4j
 @Service
-// @CacheConfig(cacheNames = "setting")
 @RequiredArgsConstructor
 public class SettingServiceImpl extends ServiceImpl<SettingMapper, Setting> implements SettingService {
 
