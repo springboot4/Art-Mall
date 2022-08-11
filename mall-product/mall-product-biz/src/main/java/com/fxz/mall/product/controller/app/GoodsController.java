@@ -36,7 +36,7 @@ public class GoodsController {
 	}
 
 	/**
-	 * todo es app端获取商品详情
+	 * 修改为 es app端获取商品详情
 	 */
 	@GetMapping("/{spuId}")
 	public Result<GoodsDetailVO> getSpuDetail(@PathVariable Long spuId) {

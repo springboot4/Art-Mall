@@ -45,6 +45,15 @@ public class Sku extends BaseEntity {
 	private Long price;
 
 	/**
+	 * 原始价格
+	 */
+	@TableField(exist = false)
+	private Long originPrice;
+
+	@TableField(exist = false)
+	private boolean isPromotion;
+
+	/**
 	 * 库存数量
 	 */
 	private Integer stockNum;
