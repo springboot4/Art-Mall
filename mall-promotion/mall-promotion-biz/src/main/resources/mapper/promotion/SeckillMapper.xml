@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fxz.mall.promotion.mapper.SeckillMapper">
+
+    <resultMap id="seckillDTO" type="com.fxz.mall.promotion.dto.SeckillDTO" autoMapping="true">
+        <collection property="seckillApplyList" column="{seckillId = id}" select="com.fxz.mall.promotion.mapper.SeckillApplyMapper.getSeckillApplyBySeckillId">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="goodsName" column="goods_name" jdbcType="VARCHAR"/>
+            <result property="originalPrice" column="original_price" jdbcType="BIGINT"/>
+            <result property="price" column="price" jdbcType="BIGINT"/>
+            <result property="quantity" column="quantity" jdbcType="INTEGER"/>
+            <result property="timeLine" column="time_line" jdbcType="INTEGER"/>
+            <result property="skuId" column="sku_id" jdbcType="BIGINT"/>
+        </collection>
+    </resultMap>
+
+    <select id="getSeckillAndApplyById" resultMap="seckillDTO">
+        SELECT
+            s.id,
+            s.promotion_name,
+            s.start_time,
+            s.apply_end_time,
+            s.hours,
+            s.seckill_rule
+        FROM
+            seckill s
+        WHERE
+            s.id = #{seckillId}
+    </select>
+
+</mapper>

@@ -1,10 +1,13 @@
 package com.fxz.mall.promotion.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fxz.common.core.exception.FxzException;
 import com.fxz.common.jackson.util.JacksonUtil;
+import com.fxz.mall.promotion.dto.SeckillDTO;
 import com.fxz.mall.promotion.entity.*;
 import com.fxz.mall.promotion.enums.SettingEnum;
 import com.fxz.mall.promotion.mapper.SeckillMapper;
@@ -139,6 +142,23 @@ public class SeckillServiceImpl extends ServiceImpl<SeckillMapper, Seckill> impl
 				.count(Wrappers.<SeckillApply>lambdaQuery().eq(SeckillApply::getSeckillId, seckillId));
 		return this.update(
 				Wrappers.<Seckill>lambdaUpdate().set(Seckill::getGoodsNum, count).eq(Seckill::getId, seckillId));
+	}
+
+	/**
+	 * 分页查询秒杀活动
+	 */
+	@Override
+	public IPage<Seckill> pageSeckill(Page pageParam) {
+		return this.page(pageParam, Wrappers.<Seckill>lambdaQuery().orderByDesc(Seckill::getApplyEndTime));
+	}
+
+	/**
+	 * 根据秒杀活动Id获取秒杀活动以及秒杀活动下的商家秒杀请求
+	 * @param seckillId 秒杀活动id
+	 */
+	@Override
+	public SeckillDTO getSeckillAndApplyById(Long seckillId) {
+		return this.baseMapper.getSeckillAndApplyById(seckillId);
 	}
 
 	/**

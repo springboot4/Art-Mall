@@ -1,6 +1,9 @@
 package com.fxz.mall.promotion.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.fxz.mall.promotion.dto.SeckillDTO;
 import com.fxz.mall.promotion.entity.Seckill;
 
 /**
@@ -37,5 +40,16 @@ public interface SeckillService extends IService<Seckill> {
 	 * @return true or false
 	 */
 	boolean countSeckillGoodsNum(Long seckillId);
+
+	/**
+	 * 分页查询秒杀活动
+	 */
+	IPage<Seckill> pageSeckill(Page pageParam);
+
+	/**
+	 * 根据秒杀活动Id获取秒杀活动以及秒杀活动下的商家秒杀请求
+	 * @param seckillId 秒杀活动id
+	 */
+	SeckillDTO getSeckillAndApplyById(Long seckillId);
 
 }

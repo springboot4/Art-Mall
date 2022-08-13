@@ -151,6 +151,7 @@ public class SeckillApplyServiceImpl extends ServiceImpl<SeckillApplyMapper, Sec
 			applyVo.setSeckillId(seckillId);
 			applyVo.setOriginalPrice(skuInfoDTO.getPrice());
 			applyVo.setSalesNum(0);
+			applyVo.setGoodsName(skuInfoDTO.getSkuName());
 			applyVo.setPromotionApplyStatus(PromotionsApplyStatusEnum.PASS.getValue());
 			applyList.add(applyVo);
 

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fxz.mall.promotion.mapper.SeckillApplyMapper">
+
+    <select id="getSeckillApplyBySeckillId" resultType="com.fxz.mall.promotion.entity.SeckillApply">
+        SELECT
+            a.id,
+            a.goods_name,
+            a.original_price,
+            a.price,
+            a.promotion_apply_status,
+            a.quantity,
+            a.sales_num,
+            a.seckill_id,
+            a.sku_id,
+            a.time_line
+        FROM
+            seckill_apply a
+        WHERE
+            a.seckill_id = #{seckillId}
+            AND a.delete_flag = 0
+    </select>
+
+</mapper>
