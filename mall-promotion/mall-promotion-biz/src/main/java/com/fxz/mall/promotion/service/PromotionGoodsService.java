@@ -23,4 +23,9 @@ public interface PromotionGoodsService extends IService<PromotionGoods> {
 	Integer findInnerOverlapPromotionGoods(String type, Long skuId, LocalDateTime startTime, LocalDateTime endTime,
 			Long promotionId);
 
+	/**
+	 * 删除数据库中过期促销商品信息
+	 */
+	void cleanInvalidPromotion();
+
 }

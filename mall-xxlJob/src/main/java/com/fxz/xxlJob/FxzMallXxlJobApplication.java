@@ -16,10 +16,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFxzCloudResourceServer
 @EnableFeignClients(basePackages = { "com.fxz" })
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
-public class XxlJobApplication {
+public class FxzMallXxlJobApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(XxlJobApplication.class, args);
+		SpringApplication.run(FxzMallXxlJobApplication.class, args);
 	}
 
 }

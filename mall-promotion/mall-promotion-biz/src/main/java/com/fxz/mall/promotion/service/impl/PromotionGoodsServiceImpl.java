@@ -1,5 +1,6 @@
 package com.fxz.mall.promotion.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fxz.mall.promotion.entity.PromotionGoods;
 import com.fxz.mall.promotion.mapper.PromotionGoodsMapper;
@@ -33,6 +34,14 @@ public class PromotionGoodsServiceImpl extends ServiceImpl<PromotionGoodsMapper,
 	public Integer findInnerOverlapPromotionGoods(String type, Long skuId, LocalDateTime startTime,
 			LocalDateTime endTime, Long promotionId) {
 		return this.baseMapper.findInnerOverlapPromotionGoods(type, skuId, startTime, endTime, promotionId);
+	}
+
+	/**
+	 * 删除数据库中过期促销商品信息
+	 */
+	@Override
+	public void cleanInvalidPromotion() {
+		this.remove(Wrappers.<PromotionGoods>lambdaQuery().lt(PromotionGoods::getEndTime, LocalDateTime.now()));
 	}
 
 }

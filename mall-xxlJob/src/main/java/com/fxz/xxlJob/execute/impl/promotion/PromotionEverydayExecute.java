@@ -7,6 +7,7 @@ import com.fxz.mall.promotion.entity.Seckill;
 import com.fxz.mall.promotion.entity.SeckillSetting;
 import com.fxz.mall.promotion.entity.Setting;
 import com.fxz.mall.promotion.enums.SettingEnum;
+import com.fxz.mall.promotion.feign.RemotePromotionGoodsService;
 import com.fxz.mall.promotion.feign.RemoteSeckillService;
 import com.fxz.mall.promotion.feign.RemoteSettingService;
 import com.fxz.xxlJob.execute.EveryDayExecute;
@@ -38,11 +39,16 @@ public class PromotionEverydayExecute implements EveryDayExecute {
 
 	private final RemoteSettingService remoteSettingService;
 
+	private final RemotePromotionGoodsService remotePromotionGoodsService;
+
 	Logger logger = LoggerFactory.getLogger(PromotionEverydayExecute.class);
 
 	@Override
 	public void execute() {
-		logger.info("更新促销商品信息");
+		logger.info("定时任务更新促销商品信息");
+
+		// 删除过期促销商品信息
+		remotePromotionGoodsService.cleanInvalidPromotion(SecurityConstants.FROM_IN);
 
 		// 新增秒杀商品活动
 		this.saveSeckill();
@@ -52,13 +58,11 @@ public class PromotionEverydayExecute implements EveryDayExecute {
 	 * 默认创建7天的秒杀活动
 	 */
 	private void saveSeckill() {
-		logger.info("获取秒杀规则");
 		// 获取秒杀规则
 		Setting setting = remoteSettingService.findSetting(SettingEnum.SECKILL_SETTING).getData();
 		if (Objects.isNull(setting)) {
 			throw new FxzException("秒杀活动设置为空");
 		}
-		logger.info("秒杀规则:{}", setting);
 
 		// 构建七天的秒杀活动信息
 		ArrayList<Seckill> seckills = new ArrayList<>();
@@ -68,7 +72,6 @@ public class PromotionEverydayExecute implements EveryDayExecute {
 			seckills.add(seckill);
 		}
 
-		logger.info("保存秒杀活动:{}", seckills);
 		// 调用远程接口保存秒杀活动
 		remoteSeckillService.saveSeckill(seckills, SecurityConstants.FROM_IN);
 	}
