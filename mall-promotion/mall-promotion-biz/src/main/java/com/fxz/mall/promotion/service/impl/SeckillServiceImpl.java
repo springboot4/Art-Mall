@@ -24,7 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -60,37 +62,39 @@ public class SeckillServiceImpl extends ServiceImpl<SeckillMapper, Seckill> impl
 		Setting setting = settingService.findSetting(SettingEnum.SECKILL_SETTING);
 		SeckillSetting seckillSetting = JacksonUtil.parseObject(setting.getSettingValue(), SeckillSetting.class);
 
+		ArrayList<Seckill> seckills = new ArrayList<>();
 		// 保存秒杀活动
 		for (int i = 0; i <= PRE_CREATION; i++) {
 			Seckill seckill = new Seckill(i, seckillSetting.getHours(), seckillSetting.getSeckillRule());
-			this.saveSeckill(seckill);
+			// 检验生成的秒杀活动时间是否合法
+			this.checkPromotionTime(seckill.getStartTime(), seckill.getEndTime());
+			// 删除掉所有的促销商品
+			promotionGoodsService.remove(Wrappers.emptyWrapper());
+			seckills.add(seckill);
 		}
+		// 保存秒杀活动
+		this.saveBatch(seckills);
 	}
 
 	/**
 	 * 保存秒杀活动
 	 */
+	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public boolean saveSeckill(Seckill seckill) {
-		// 检查秒杀活动时间是否合法
-		LocalDateTime startTime = seckill.getStartTime();
-		LocalDateTime endTime = seckill.getEndTime();
-		LocalDateTime now = LocalDateTime.now();
-		if (now.isAfter(startTime)) {
-			throw new FxzException("活动起始时间不能小于当前时间");
-		}
-		if (now.isAfter(endTime)) {
-			throw new FxzException("活动结束时间不能小于当前时间");
-		}
-		if (startTime.isAfter(endTime)) {
-			throw new FxzException("活动起始时间必须大于结束时间");
-		}
-
-		// 删除秒杀促销商品
-		promotionGoodsService.remove(Wrappers.emptyWrapper());
+	public boolean saveSeckill(List<Seckill> seckills) {
+		log.info("保存秒杀活动:{}", seckills);
+		seckills.forEach(seckill -> {
+			// 检查秒杀活动时间是否合法
+			this.checkPromotionTime(seckill.getStartTime(), seckill.getEndTime());
+			// 如果当天存在秒杀活动，不保存
+			LocalDateTime dateTime = LocalDateTime.of(seckill.getStartTime().toLocalDate(), LocalTime.of(0, 0, 0));
+			if (this.count(Wrappers.<Seckill>lambdaQuery().ge(Seckill::getStartTime, dateTime)) > 0) {
+				throw new FxzException(String.format("当前时间点存在秒杀活动 %s,保存秒杀活动失败！", seckill.getStartTime()));
+			}
+		});
 
 		// 保存秒杀活动
-		return this.save(seckill);
+		return this.saveBatch(seckills);
 	}
 
 	/**
@@ -101,15 +105,15 @@ public class SeckillServiceImpl extends ServiceImpl<SeckillMapper, Seckill> impl
 	@Override
 	public boolean updateSeckill(Seckill seckill) {
 		// 秒杀活动重复校验
-		checkStatus(seckill);
+		this.checkStatus(seckill);
 		// 活动时间合法性校验
-		checkPromotionTime(seckill.getStartTime(), seckill.getEndTime());
+		this.checkPromotionTime(seckill.getStartTime(), seckill.getEndTime());
 		// 更新秒杀活动信息
-		updateById(seckill);
+		this.updateById(seckill);
 		// 更新活动相关下关联的信息
 		seckillApplyService.updateSeckillApplyTime(seckill);
 		// 更新秒杀活动的商品数量
-		return countSeckillGoodsNum(seckill.getId());
+		return this.countSeckillGoodsNum(seckill.getId());
 	}
 
 	/**

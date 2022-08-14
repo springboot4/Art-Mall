@@ -1,8 +1,6 @@
 package com.fxz.mall.promotion.entity;
 
 import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.date.DateTime;
-import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
@@ -16,7 +14,6 @@ import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 
 /**
  * @author fxz
@@ -84,15 +81,16 @@ public class Seckill extends BaseEntity {
 	 * @param seckillRule 规则
 	 */
 	public Seckill(int day, String hours, String seckillRule) {
-		// 一天的开始时间
-		DateTime dateTime = DateUtil.beginOfDay(DateUtil.offsetDay(new Date(), day));
+		// 获取当前时间
 		LocalDateTime now = LocalDateTime.now();
+		// 获取day天后的时间
 		LocalDateTime localDateTime = now.plusDays(day);
+
 		// 报名截至时间
 		this.applyEndTime = LocalDateTime.of(localDateTime.toLocalDate(), LocalTime.MIN);
 		// 开启几点场
 		this.hours = hours;
-		// 规则
+		// 秒杀规则
 		this.seckillRule = seckillRule;
 		// 参与商品数量
 		this.goodsNum = 0;

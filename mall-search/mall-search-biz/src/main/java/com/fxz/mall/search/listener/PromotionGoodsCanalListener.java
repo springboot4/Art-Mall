@@ -17,6 +17,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -91,43 +92,7 @@ public class PromotionGoodsCanalListener extends BaseCanalBinlogEventProcessor<E
 
 		// 删除了促销活动商品信息
 		if (Objects.equals(1, afterData.getDeleteFlag())) {
-			// 活动id
-			Long promotionId = afterData.getPromotionId();
-			// spuId
-			Long goodsId = afterData.getGoodsId();
-			// skuId
-			Long skuId = afterData.getSkuId();
-
-			// 查询出当前索引的信息
-			EsGoodsDto esGoodsDto = elasticsearchClient
-					.get(g -> g.index("product").id(goodsId.toString()), EsGoodsDto.class).source();
-			if (Objects.isNull(esGoodsDto)) {
-				return;
-			}
-
-			// 获取es中当前索引中sku的信息
-			List<SkuDto> skuList = esGoodsDto.getSkuList();
-			// 获取到要更新的sku的信息
-			Optional<SkuDto> optional = skuList.stream().filter(sku -> sku.getId().equals(skuId)).findFirst();
-
-			if (optional.isPresent()) {
-				// 要更新的sku中促销活动的信息
-				Map<String, EsPromotionGoods> promotionMapJson = JacksonUtil.parseObject(
-						optional.get().getPromotionMapJson(), new TypeReference<Map<String, EsPromotionGoods>>() {
-						});
-				if (promotionMapJson == null || promotionMapJson.size() == 0
-						|| promotionMapJson.get(PromotionTypeEnum.SECKILL.getValue()) == null) {
-					return;
-				}
-
-				promotionMapJson.remove(PromotionTypeEnum.SECKILL.getValue());
-				optional.get().setPromotionMapJson(JacksonUtil.toJsonString(promotionMapJson));
-				EsGoodsDto dto = new EsGoodsDto();
-				dto.setId(goodsId);
-				dto.setSkuList(skuList);
-				elasticsearchClient.update(u -> u.index("product").id(dto.getId().toString()).doc(dto),
-						EsGoodsDto.class);
-			}
+			removeEsPromtion(afterData);
 		}
 	}
 
@@ -138,6 +103,48 @@ public class PromotionGoodsCanalListener extends BaseCanalBinlogEventProcessor<E
 	@Override
 	protected void processDeleteInternal(CanalBinLogResult<EsPromotionGoods> result) {
 		log.info("删除促销商品信息:{}", result);
+
+		EsPromotionGoods afterData = result.getAfterData();
+		removeEsPromtion(afterData);
+	}
+
+	private void removeEsPromtion(EsPromotionGoods afterData) throws IOException {
+		// 活动id
+		Long promotionId = afterData.getPromotionId();
+		// spuId
+		Long goodsId = afterData.getGoodsId();
+		// skuId
+		Long skuId = afterData.getSkuId();
+
+		// 查询出当前索引的信息
+		EsGoodsDto esGoodsDto = elasticsearchClient
+				.get(g -> g.index("product").id(goodsId.toString()), EsGoodsDto.class).source();
+		if (Objects.isNull(esGoodsDto)) {
+			return;
+		}
+
+		// 获取es中当前索引中sku的信息
+		List<SkuDto> skuList = esGoodsDto.getSkuList();
+		// 获取到要更新的sku的信息
+		Optional<SkuDto> optional = skuList.stream().filter(sku -> sku.getId().equals(skuId)).findFirst();
+
+		if (optional.isPresent()) {
+			// 要更新的sku中促销活动的信息
+			Map<String, EsPromotionGoods> promotionMapJson = JacksonUtil.parseObject(
+					optional.get().getPromotionMapJson(), new TypeReference<Map<String, EsPromotionGoods>>() {
+					});
+			if (promotionMapJson == null || promotionMapJson.size() == 0
+					|| promotionMapJson.get(PromotionTypeEnum.SECKILL.getValue()) == null) {
+				return;
+			}
+
+			promotionMapJson.remove(PromotionTypeEnum.SECKILL.getValue());
+			optional.get().setPromotionMapJson(JacksonUtil.toJsonString(promotionMapJson));
+			EsGoodsDto dto = new EsGoodsDto();
+			dto.setId(goodsId);
+			dto.setSkuList(skuList);
+			elasticsearchClient.update(u -> u.index("product").id(dto.getId().toString()).doc(dto), EsGoodsDto.class);
+		}
 	}
 
 	@Override

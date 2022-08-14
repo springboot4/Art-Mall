@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
+ * 促销活动设置枚举
+ *
  * @author Fxz
  * @version 1.0
  * @date 2022/8/9 16:07

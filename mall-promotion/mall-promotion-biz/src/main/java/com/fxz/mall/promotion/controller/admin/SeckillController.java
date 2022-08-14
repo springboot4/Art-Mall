@@ -3,12 +3,15 @@ package com.fxz.mall.promotion.controller.admin;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fxz.common.mp.result.PageResult;
 import com.fxz.common.mp.result.Result;
+import com.fxz.common.security.annotation.Ojbk;
 import com.fxz.mall.promotion.dto.SeckillDTO;
 import com.fxz.mall.promotion.entity.Seckill;
 import com.fxz.mall.promotion.service.SeckillService;
 import com.fxz.mall.promotion.vo.SeckillVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author fxz
@@ -27,6 +30,16 @@ public class SeckillController {
 	@GetMapping("/init")
 	public void initSeckill() {
 		seckillService.initSeckill();
+	}
+
+	/**
+	 * 保存秒杀活动
+	 * @param seckills 秒杀活动集合
+	 */
+	@Ojbk(inner = true)
+	@PostMapping("/save")
+	public Result<Seckill> saveSeckill(@RequestBody List<Seckill> seckills) {
+		return Result.judge(seckillService.saveSeckill(seckills));
 	}
 
 	/**

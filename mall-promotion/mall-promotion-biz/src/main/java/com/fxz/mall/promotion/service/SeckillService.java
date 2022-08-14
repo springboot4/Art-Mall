@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.fxz.mall.promotion.dto.SeckillDTO;
 import com.fxz.mall.promotion.entity.Seckill;
 
+import java.util.List;
+
 /**
  * @author fxz
  * @date 2022-08-09
@@ -20,7 +22,7 @@ public interface SeckillService extends IService<Seckill> {
 	/**
 	 * 保存秒杀活动
 	 */
-	boolean saveSeckill(Seckill seckill);
+	boolean saveSeckill(List<Seckill> seckills);
 
 	/**
 	 * 更新秒杀活动
