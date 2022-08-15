@@ -88,7 +88,8 @@ public class SeckillServiceImpl extends ServiceImpl<SeckillMapper, Seckill> impl
 			this.checkPromotionTime(seckill.getStartTime(), seckill.getEndTime());
 			// 如果当天存在秒杀活动，不保存
 			LocalDateTime dateTime = LocalDateTime.of(seckill.getStartTime().toLocalDate(), LocalTime.of(0, 0, 0));
-			if (this.count(Wrappers.<Seckill>lambdaQuery().ge(Seckill::getStartTime, dateTime)) > 0) {
+			if (Objects.nonNull(
+					this.getOne(Wrappers.<Seckill>lambdaQuery().ge(Seckill::getStartTime, dateTime).last("limit 1")))) {
 				throw new FxzException(String.format("当前时间点存在秒杀活动 %s,保存秒杀活动失败！", seckill.getStartTime()));
 			}
 		});
@@ -204,9 +205,10 @@ public class SeckillServiceImpl extends ServiceImpl<SeckillMapper, Seckill> impl
 			seckillVO.setEndTime(LocalDateTime.of(seckillVO.getStartTime().toLocalDate(), LocalTime.of(23, 59, 59)));
 
 			// 判断当前时间段内是否有了秒杀活动
-			long count = this.count(Wrappers.<Seckill>lambdaQuery().ne(Seckill::getId, seckillVO.getId())
-					.ge(Seckill::getStartTime, seckillVO.getStartTime()).le(Seckill::getEndTime, seckill.getEndTime()));
-			if (count > 0) {
+			Seckill obj = this.getOne(Wrappers.<Seckill>lambdaQuery().ne(Seckill::getId, seckillVO.getId())
+					.ge(Seckill::getStartTime, seckillVO.getStartTime()).le(Seckill::getEndTime, seckill.getEndTime())
+					.last("limit 1"));
+			if (Objects.nonNull(obj)) {
 				throw new FxzException("当前时间段内存在秒杀活动");
 			}
 		}

@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
  * @version 1.0
  * @date 2022/8/14 16:02
  */
-@FeignClient(contextId = "remotePromotionGoodsService", value = "fxz-mall-promotion")
+@FeignClient(contextId = "remotePromotionGoodsService", value = "fxz-mall-promotion",
+		fallbackFactory = RemotePromotionGoodsServiceFallbackFactory.class, decode404 = true)
 public interface RemotePromotionGoodsService {
 
 	/**
