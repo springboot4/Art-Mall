@@ -3,6 +3,7 @@ package com.fxz.mall.search.dto;
 import com.fxz.mall.product.dto.AttributeValueDto;
 import com.fxz.mall.product.dto.SkuDto;
 import lombok.Data;
+import lombok.experimental.FieldNameConstants;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
  * @date 2022/5/29 12:26
  */
 @Data
+@FieldNameConstants
 public class EsGoodsDto {
 
 	private Long id;

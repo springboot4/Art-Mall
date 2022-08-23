@@ -49,11 +49,12 @@ public class GoodsService {
 	public EsPage<GoodsVo> pageGoods(Long current, Long pageSize, String name, Long categoryId) {
 		BoolQuery boolQuery = BoolQuery.of(b -> {
 			if (Objects.nonNull(name)) {
-				Query byName = MatchQuery.of(m -> m.field("name").query(name))._toQuery();
+				Query byName = MatchQuery.of(m -> m.field(EsGoodsDto.Fields.name).query(name))._toQuery();
 				b.should(byName);
 			}
 			if (Objects.nonNull(categoryId)) {
-				Query byCategoryId = MatchQuery.of(m -> m.field("categoryId").query(categoryId))._toQuery();
+				Query byCategoryId = MatchQuery.of(m -> m.field(EsGoodsDto.Fields.categoryId).query(categoryId))
+						._toQuery();
 				b.must(byCategoryId);
 			}
 			return b;
@@ -131,13 +132,14 @@ public class GoodsService {
 		GoodsDetailVO result = new GoodsDetailVO();
 
 		SearchResponse<EsGoodsDto> search = elasticsearchClient.search(
-				s -> s.index("product").query(q -> q.match(m -> m.field("id").query(spuId))).size(1), EsGoodsDto.class);
+				s -> s.index("product").query(q -> q.match(m -> m.field(EsGoodsDto.Fields.id).query(spuId))).size(1),
+				EsGoodsDto.class);
 
 		if (CollectionUtil.isNotEmpty(search.hits().hits())) {
 			EsGoodsDto source = search.hits().hits().get(0).source();
 
 			GoodsDetailVO.GoodsInfo goodsInfo = new GoodsDetailVO.GoodsInfo();
-			BeanUtil.copyProperties(source, goodsInfo, "album");
+			BeanUtil.copyProperties(source, goodsInfo);
 			List<String> album = new ArrayList<>();
 			if (StrUtil.isNotBlank(source.getPicUrl())) {
 				album.add(source.getPicUrl());
