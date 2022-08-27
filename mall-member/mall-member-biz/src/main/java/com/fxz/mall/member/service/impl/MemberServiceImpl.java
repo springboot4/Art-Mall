@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fxz.common.core.constant.FxzConstant;
-import com.fxz.mall.member.dto.MemberDto;
+import com.fxz.mall.member.dto.MemberDTO;
 import com.fxz.mall.member.entity.Member;
 import com.fxz.mall.member.mapper.MemberMapper;
 import com.fxz.mall.member.service.MemberService;
@@ -43,9 +43,9 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 	 * 修改
 	 */
 	@Override
-	public Boolean updateMember(MemberDto memberDto) {
+	public Boolean updateMember(MemberDTO memberDTO) {
 		Member member = new Member();
-		BeanUtils.copyProperties(memberDto, member);
+		BeanUtils.copyProperties(memberDTO, member);
 		memberMapper.updateById(member);
 		return Boolean.TRUE;
 	}

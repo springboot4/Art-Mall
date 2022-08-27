@@ -33,11 +33,11 @@ public class SeckillApplyController {
 	/**
 	 * 添加秒杀活动申请
 	 * @param seckillId 秒杀活动id
-	 * @param applyVos 商家秒杀请求视图对象
+	 * @param applyVOs 商家秒杀请求视图对象
 	 */
 	@PostMapping(path = "/{seckillId}")
-	public Result<Void> addSeckillApply(@PathVariable Long seckillId, @RequestBody List<SeckillApplyVO> applyVos) {
-		seckillApplyService.addSeckillApply(seckillId, applyVos);
+	public Result<Void> addSeckillApply(@PathVariable Long seckillId, @RequestBody List<SeckillApplyVO> applyVOs) {
+		seckillApplyService.addSeckillApply(seckillId, applyVOs);
 		return Result.success();
 	}
 

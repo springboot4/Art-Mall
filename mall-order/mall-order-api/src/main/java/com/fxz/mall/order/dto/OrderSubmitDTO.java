@@ -1,6 +1,6 @@
 package com.fxz.mall.order.dto;
 
-import com.fxz.mall.member.dto.AddressDto;
+import com.fxz.mall.member.dto.AddressDTO;
 import lombok.Data;
 
 import javax.validation.constraints.Size;
@@ -12,7 +12,7 @@ import java.util.List;
  * @date 2022/5/15 09:18
  */
 @Data
-public class OrderSubmitDto {
+public class OrderSubmitDTO {
 
 	/**
 	 * 提交订单确认页面签发的令牌
@@ -32,7 +32,7 @@ public class OrderSubmitDto {
 	/**
 	 * 订单的商品明细
 	 */
-	private List<OrderItemDto> orderItems;
+	private List<OrderItemDTO> orderItems;
 
 	/**
 	 * 订单备注
@@ -48,7 +48,7 @@ public class OrderSubmitDto {
 	/**
 	 * 收获地址
 	 */
-	private AddressDto deliveryAddress;
+	private AddressDTO deliveryAddress;
 
 	/**
 	 * 订单来源

@@ -5,6 +5,7 @@ import com.fxz.common.mp.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import lombok.experimental.FieldNameConstants;
 
 /**
  * 商品分类表
@@ -13,6 +14,7 @@ import lombok.experimental.Accessors;
  * @date 2022-05-04
  */
 @Data
+@FieldNameConstants
 @TableName("category")
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)

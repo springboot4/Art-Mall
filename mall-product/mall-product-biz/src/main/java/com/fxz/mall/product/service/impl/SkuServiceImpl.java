@@ -13,7 +13,7 @@ import com.fxz.common.core.exception.FxzException;
 import com.fxz.mall.product.constant.ProductConstant;
 import com.fxz.mall.product.dto.CheckPriceDTO;
 import com.fxz.mall.product.dto.LockStockDTO;
-import com.fxz.mall.product.dto.SkuDto;
+import com.fxz.mall.product.dto.SkuDTO;
 import com.fxz.mall.product.dto.SkuInfoDTO;
 import com.fxz.mall.product.entity.Sku;
 import com.fxz.mall.product.mapper.SkuMapper;
@@ -53,9 +53,9 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
 	 * 添加
 	 */
 	@Override
-	public Boolean addSku(SkuDto skuDto) {
+	public Boolean addSku(SkuDTO skuDTO) {
 		Sku sku = new Sku();
-		BeanUtils.copyProperties(skuDto, sku);
+		BeanUtils.copyProperties(skuDTO, sku);
 		skuMapper.insert(sku);
 		return Boolean.TRUE;
 	}
@@ -64,9 +64,9 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
 	 * 修改
 	 */
 	@Override
-	public Boolean updateSku(SkuDto skuDto) {
+	public Boolean updateSku(SkuDTO skuDTO) {
 		Sku sku = new Sku();
-		BeanUtils.copyProperties(skuDto, sku);
+		BeanUtils.copyProperties(skuDTO, sku);
 		skuMapper.updateById(sku);
 		return Boolean.TRUE;
 	}
@@ -114,7 +114,7 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
 
 	/**
 	 * 商品验价
-	 * @param checkPriceDTO 校验价格dto
+	 * @param checkPriceDTO 校验价格DTO
 	 * @return 价格是否相同
 	 */
 	@Override

@@ -1,7 +1,7 @@
 package com.fxz.mall.order.vo;
 
-import com.fxz.mall.order.dto.OrderItemDto;
-import com.fxz.mall.member.dto.AddressDto;
+import com.fxz.mall.member.dto.AddressDTO;
+import com.fxz.mall.order.dto.OrderItemDTO;
 import lombok.Data;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  * @date 2022/5/14 17:50
  */
 @Data
-public class OrderConfirmVo {
+public class OrderConfirmVO {
 
 	/**
 	 * 订单token
@@ -24,12 +24,12 @@ public class OrderConfirmVo {
 	/**
 	 * 订单明细
 	 */
-	private List<OrderItemDto> orderItems;
+	private List<OrderItemDTO> orderItems;
 
 	/**
 	 * 用户地址
 	 */
-	private List<AddressDto> addresses;
+	private List<AddressDTO> addresses;
 
 	/**
 	 * 订单来源

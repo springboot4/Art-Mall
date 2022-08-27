@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fxz.common.mp.result.PageResult;
 import com.fxz.common.mp.result.Result;
-import com.fxz.mall.product.dto.AttributeDto;
+import com.fxz.mall.product.dto.AttributeDTO;
 import com.fxz.mall.product.entity.Attribute;
 import com.fxz.mall.product.service.impl.AttributeServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +29,8 @@ public class AttributeController {
 	 * 批量添加属性
 	 */
 	@PostMapping(value = "/saveAttributeBatch")
-	public Result<Boolean> saveAttributeBatch(@RequestBody AttributeDto attributeDto) {
-		return Result.judge(attributeService.saveAttributeBatch(attributeDto));
+	public Result<Boolean> saveAttributeBatch(@RequestBody AttributeDTO attributeDTO) {
+		return Result.judge(attributeService.saveAttributeBatch(attributeDTO));
 	}
 
 	/**
@@ -51,16 +51,16 @@ public class AttributeController {
 	 * 添加
 	 */
 	@PostMapping(value = "/add")
-	public Result<Boolean> add(@RequestBody AttributeDto attributeDto) {
-		return Result.judge(attributeService.addAttribute(attributeDto));
+	public Result<Boolean> add(@RequestBody AttributeDTO attributeDTO) {
+		return Result.judge(attributeService.addAttribute(attributeDTO));
 	}
 
 	/**
 	 * 修改
 	 */
 	@PostMapping(value = "/update")
-	public Result<Boolean> update(@RequestBody AttributeDto attributeDto) {
-		return Result.success(attributeService.updateAttribute(attributeDto));
+	public Result<Boolean> update(@RequestBody AttributeDTO attributeDTO) {
+		return Result.success(attributeService.updateAttribute(attributeDTO));
 	}
 
 	/**

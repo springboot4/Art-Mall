@@ -8,7 +8,7 @@ import java.util.List;
  * @author fxz
  */
 @Data
-public class GoodsDto {
+public class GoodsDTO {
 
 	private Long id;
 
@@ -30,8 +30,8 @@ public class GoodsDto {
 
 	private String detail;
 
-	private List<AttributeValueDto> attrList;
+	private List<AttributeValueDTO> attrList;
 
-	private List<SkuDto> skuList;
+	private List<SkuDTO> skuList;
 
 }

@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
-public class OrderDto extends BaseEntity {
+public class OrderDTO extends BaseEntity {
 
 	private static final long serialVersionUID = -1L;
 

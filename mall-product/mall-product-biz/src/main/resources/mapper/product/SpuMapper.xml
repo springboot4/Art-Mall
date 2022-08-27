@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fxz.mall.product.mapper.SpuMapper">
 
-    <resultMap id="BaseResultMap" type="com.fxz.mall.product.vo.GoodsVo">
+    <resultMap id="BaseResultMap" type="com.fxz.mall.product.vo.GoodsVO">
         <id property="id" column="id" jdbcType="BIGINT"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="categoryId" column="category_id" jdbcType="BIGINT"/>

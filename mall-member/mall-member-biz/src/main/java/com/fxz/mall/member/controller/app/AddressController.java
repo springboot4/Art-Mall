@@ -3,7 +3,7 @@ package com.fxz.mall.member.controller.app;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fxz.common.mp.result.PageResult;
 import com.fxz.common.mp.result.Result;
-import com.fxz.mall.member.dto.AddressDto;
+import com.fxz.mall.member.dto.AddressDTO;
 import com.fxz.mall.member.entity.Address;
 import com.fxz.mall.member.service.impl.AddressServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -26,16 +26,16 @@ public class AddressController {
 	 * 添加
 	 */
 	@PostMapping(value = "/add")
-	public Result<Boolean> add(@RequestBody AddressDto addressDto) {
-		return Result.success(addressService.addAddress(addressDto));
+	public Result<Boolean> add(@RequestBody AddressDTO addressDTO) {
+		return Result.success(addressService.addAddress(addressDTO));
 	}
 
 	/**
 	 * 修改
 	 */
 	@PostMapping(value = "/update")
-	public Result<Boolean> update(@RequestBody AddressDto addressDto) {
-		return Result.success(addressService.updateAddress(addressDto));
+	public Result<Boolean> update(@RequestBody AddressDTO addressDTO) {
+		return Result.success(addressService.updateAddress(addressDTO));
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class AddressController {
 	 * 获取当前会员全部地址
 	 */
 	@GetMapping(value = "/findAll")
-	public Result<List<AddressDto>> findAll() {
+	public Result<List<AddressDTO>> findAll() {
 		return Result.success(addressService.findAll());
 	}
 

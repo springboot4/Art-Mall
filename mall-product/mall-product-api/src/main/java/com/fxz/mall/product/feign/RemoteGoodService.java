@@ -3,7 +3,7 @@ package com.fxz.mall.product.feign;
 import com.fxz.common.core.constant.SecurityConstants;
 import com.fxz.common.mp.result.Result;
 import com.fxz.mall.product.constant.FxzServerConstant;
-import com.fxz.mall.product.dto.GoodsDto;
+import com.fxz.mall.product.dto.GoodsDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +21,7 @@ public interface RemoteGoodService {
 	 * 根据spuId获取商品详情
 	 */
 	@GetMapping("/goods/{spuId}/detail")
-	Result<GoodsDto> getSpuDetail(@PathVariable("spuId") Long spuId,
+	Result<GoodsDTO> getSpuDetail(@PathVariable("spuId") Long spuId,
 			@RequestHeader(SecurityConstants.FROM) String from);
 
 }

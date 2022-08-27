@@ -3,7 +3,7 @@ package com.fxz.mall.product.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.fxz.mall.product.dto.AttributeDto;
+import com.fxz.mall.product.dto.AttributeDTO;
 import com.fxz.mall.product.entity.Attribute;
 
 import java.util.List;
@@ -19,12 +19,12 @@ public interface AttributeService extends IService<Attribute> {
 	/**
 	 * 添加
 	 */
-	Boolean addAttribute(AttributeDto attributeDto);
+	Boolean addAttribute(AttributeDTO attributeDTO);
 
 	/**
 	 * 修改
 	 */
-	Boolean updateAttribute(AttributeDto attributeDto);
+	Boolean updateAttribute(AttributeDTO attributeDTO);
 
 	/**
 	 * 分页
@@ -49,6 +49,6 @@ public interface AttributeService extends IService<Attribute> {
 	/**
 	 * 批量添加属性
 	 */
-	Boolean saveAttributeBatch(AttributeDto attributeDto);
+	Boolean saveAttributeBatch(AttributeDTO attributeDTO);
 
 }

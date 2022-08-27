@@ -6,28 +6,24 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
- * 商品属性项表
+ * 商品品牌表
  *
  * @author fxz
- * @date 2022-05-06
+ * @date 2022-05-04
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
-public class AttributeValueDto extends BaseEntity {
+public class BrandDTO extends BaseEntity {
+
+	private static final long serialVersionUID = -1L;
 
 	private Long id;
 
-	private Long spuId;
-
-	private Long attributeId;
-
 	private String name;
 
-	private String value;
+	private String logoUrl;
 
-	private Integer type;
-
-	private String picUrl;
+	private Integer sort;
 
 }

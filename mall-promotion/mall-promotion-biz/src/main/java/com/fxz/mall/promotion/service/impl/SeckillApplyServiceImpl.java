@@ -118,10 +118,10 @@ public class SeckillApplyServiceImpl extends ServiceImpl<SeckillApplyMapper, Sec
 	/**
 	 * 添加秒杀活动申请
 	 * @param seckillId 秒杀活动id
-	 * @param applyVos 商家秒杀请求视图对象
+	 * @param applyVOs 商家秒杀请求视图对象
 	 */
 	@Override
-	public void addSeckillApply(Long seckillId, List<SeckillApplyVO> applyVos) {
+	public void addSeckillApply(Long seckillId, List<SeckillApplyVO> applyVOs) {
 		// 获取当前秒杀活动
 		Seckill seckill = seckillService.getById(seckillId);
 		if (Objects.isNull(seckill)) {
@@ -129,40 +129,40 @@ public class SeckillApplyServiceImpl extends ServiceImpl<SeckillApplyMapper, Sec
 		}
 
 		// 活动请求是否为空
-		if (CollectionUtils.isEmpty(applyVos)) {
+		if (CollectionUtils.isEmpty(applyVOs)) {
 			return;
 		}
 
 		// 合法性检查（检查促销价格是否大于原价、检查当前时间是否在秒杀活动时间内、检查一个商品是否参与了此秒杀的多个时间段）
-		checkSeckillApplyList(seckill.getHours(), applyVos);
+		checkSeckillApplyList(seckill.getHours(), applyVOs);
 
 		List<SeckillApply> applyList = new ArrayList<>();
-		List<PromotionGoods> promotionGoodsList = applyVos.stream().map(applyVo -> {
+		List<PromotionGoods> promotionGoodsList = applyVOs.stream().map(applyVO -> {
 			// 获取sku信息
-			SkuInfoDTO skuInfoDTO = remoteSkuService.getSkuInfo(applyVo.getSkuId()).getData();
+			SkuInfoDTO skuInfoDTO = remoteSkuService.getSkuInfo(applyVO.getSkuId()).getData();
 			if (Objects.isNull(skuInfoDTO)) {
 				return null;
 			}
 
 			// 检测是否可以发布促销商品
-			checkSeckillGoodsSku(seckill, applyVo, skuInfoDTO);
+			checkSeckillGoodsSku(seckill, applyVO, skuInfoDTO);
 
 			// 为秒杀请求设置默认值
-			applyVo.setSeckillId(seckillId);
-			applyVo.setOriginalPrice(skuInfoDTO.getPrice());
-			applyVo.setSalesNum(0);
-			applyVo.setGoodsName(skuInfoDTO.getSkuName());
-			applyVo.setPromotionApplyStatus(PromotionsApplyStatusEnum.PASS.getValue());
-			applyList.add(applyVo);
+			applyVO.setSeckillId(seckillId);
+			applyVO.setOriginalPrice(skuInfoDTO.getPrice());
+			applyVO.setSalesNum(0);
+			applyVO.setGoodsName(skuInfoDTO.getSkuName());
+			applyVO.setPromotionApplyStatus(PromotionsApplyStatusEnum.PASS.getValue());
+			applyList.add(applyVO);
 
 			// 构建促销商品（根据秒杀活动、添加秒杀商品请求、商品sku信息）
-			return createSeckillGoods(skuInfoDTO, applyVo, seckill);
+			return createSeckillGoods(skuInfoDTO, applyVO, seckill);
 		}).collect(Collectors.toList());
 
 		log.info("集合：{}", promotionGoodsList);
 		// 为了保证一个sku只能参加此秒杀的的一个时间段，删掉当前sku在此秒杀下的请求
 		this.remove(Wrappers.<SeckillApply>lambdaQuery().eq(SeckillApply::getSeckillId, seckillId).in(
-				SeckillApply::getSkuId, applyVos.stream().map(SeckillApply::getSkuId).collect(Collectors.toList())));
+				SeckillApply::getSkuId, applyVOs.stream().map(SeckillApply::getSkuId).collect(Collectors.toList())));
 
 		// 保存秒杀活动请求的信息
 		this.saveBatch(applyList);
@@ -255,18 +255,18 @@ public class SeckillApplyServiceImpl extends ServiceImpl<SeckillApplyMapper, Sec
 	/**
 	 * 检测是否可以发布促销商品
 	 * @param seckill 秒杀活动信息
-	 * @param applyVo 秒杀请求
+	 * @param applyVO 秒杀请求
 	 * @param skuInfoDTO sku信息
 	 */
-	private void checkSeckillGoodsSku(Seckill seckill, SeckillApplyVO applyVo, SkuInfoDTO skuInfoDTO) {
+	private void checkSeckillGoodsSku(Seckill seckill, SeckillApplyVO applyVO, SkuInfoDTO skuInfoDTO) {
 		// 检查库存属否充足
-		if (skuInfoDTO.getStockNum() < applyVo.getQuantity()) {
+		if (skuInfoDTO.getStockNum() < applyVO.getQuantity()) {
 			throw new FxzException(skuInfoDTO.getSkuName() + "库存不足");
 		}
 
 		// 秒杀商品开始时间
 		LocalDateTime startTime = LocalDateTime.of(seckill.getStartTime().toLocalDate(),
-				LocalTime.of(applyVo.getTimeLine(), 0));
+				LocalTime.of(applyVO.getTimeLine(), 0));
 
 		// 查询是否在同一时间段参与了秒杀活动活动
 		if (promotionGoodsService.findInnerOverlapPromotionGoods(PromotionTypeEnum.SECKILL.name(),
@@ -278,18 +278,18 @@ public class SeckillApplyServiceImpl extends ServiceImpl<SeckillApplyMapper, Sec
 	/**
 	 * 合法性检查（检查促销价格是否大于原价、检查当前时间是否在秒杀活动时间内、检查一个商品是否参与了此秒杀的多个时间段）
 	 * @param hours 秒杀活动开启的时间段
-	 * @param applyVos 秒杀请求
+	 * @param applyVOs 秒杀请求
 	 */
-	private void checkSeckillApplyList(String hours, List<SeckillApplyVO> applyVos) {
+	private void checkSeckillApplyList(String hours, List<SeckillApplyVO> applyVOs) {
 		List<Long> exist = new ArrayList<>();
-		for (SeckillApplyVO applyVo : applyVos) {
+		for (SeckillApplyVO applyVO : applyVOs) {
 			// 检查促销价格是否大于原价
-			if (applyVo.getPrice() > applyVo.getOriginalPrice()) {
+			if (applyVO.getPrice() > applyVO.getOriginalPrice()) {
 				throw new FxzException("活动价格不能大于原始价格");
 			}
 
 			// 检查当前时间是否在秒杀活动时间内
-			Integer timeLine = applyVo.getTimeLine();
+			Integer timeLine = applyVO.getTimeLine();
 			String[] split = hours.split(StringPool.COMMA);
 			boolean match = Arrays.stream(split).anyMatch(time -> time.equals(timeLine.toString()));
 			if (!match) {
@@ -297,11 +297,11 @@ public class SeckillApplyServiceImpl extends ServiceImpl<SeckillApplyMapper, Sec
 			}
 
 			// 检查一个商品是否参与了此秒杀的多个时间段
-			if (exist.contains(applyVo.getSkuId())) {
+			if (exist.contains(applyVO.getSkuId())) {
 				throw new FxzException("当前商品重复参加秒杀活动");
 			}
 			else {
-				exist.add(applyVo.getSkuId());
+				exist.add(applyVO.getSkuId());
 			}
 		}
 	}

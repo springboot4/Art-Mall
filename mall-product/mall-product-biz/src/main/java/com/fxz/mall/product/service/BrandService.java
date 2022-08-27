@@ -3,7 +3,7 @@ package com.fxz.mall.product.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.fxz.mall.product.dto.BrandDto;
+import com.fxz.mall.product.dto.BrandDTO;
 import com.fxz.mall.product.entity.Brand;
 
 import java.util.List;
@@ -19,12 +19,12 @@ public interface BrandService extends IService<Brand> {
 	/**
 	 * 添加
 	 */
-	Boolean addBrand(BrandDto brandDto);
+	Boolean addBrand(BrandDTO brandDTO);
 
 	/**
 	 * 修改
 	 */
-	Boolean updateBrand(BrandDto brandDto);
+	Boolean updateBrand(BrandDTO brandDTO);
 
 	/**
 	 * 分页

@@ -7,13 +7,13 @@ import com.fxz.common.canal.model.CanalBinLogResult;
 import com.fxz.common.canal.support.processor.BaseCanalBinlogEventProcessor;
 import com.fxz.common.canal.support.processor.ExceptionHandler;
 import com.fxz.common.core.constant.SecurityConstants;
-import com.fxz.mall.product.dto.GoodsDto;
+import com.fxz.mall.product.dto.GoodsDTO;
 import com.fxz.mall.product.entity.Brand;
 import com.fxz.mall.product.entity.Category;
 import com.fxz.mall.product.feign.RemoteBrandService;
 import com.fxz.mall.product.feign.RemoteCategoryService;
 import com.fxz.mall.product.feign.RemoteGoodService;
-import com.fxz.mall.search.dto.EsGoodsDto;
+import com.fxz.mall.search.dto.EsGoodsDTO;
 import com.fxz.mall.search.entity.EsSpu;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -51,9 +51,9 @@ public class SpuCanalListener extends BaseCanalBinlogEventProcessor<EsSpu> {
 		// spuId
 		Long spuId = result.getPrimaryKey();
 
-		EsGoodsDto esGoodsDto = loadEsGoodsDto(spuId);
+		EsGoodsDTO esGoodsDTO = loadEsGoodsDTO(spuId);
 
-		elasticsearchClient.create(c -> c.index("product").id(spuId.toString()).document(esGoodsDto));
+		elasticsearchClient.create(c -> c.index("product").id(spuId.toString()).document(esGoodsDTO));
 	}
 
 	/**
@@ -67,9 +67,9 @@ public class SpuCanalListener extends BaseCanalBinlogEventProcessor<EsSpu> {
 		// spuId
 		Long spuId = result.getPrimaryKey();
 
-		EsGoodsDto esGoodsDto = loadEsGoodsDto(spuId);
+		EsGoodsDTO esGoodsDTO = loadEsGoodsDTO(spuId);
 
-		elasticsearchClient.update(u -> u.index("product").id(spuId.toString()).doc(esGoodsDto), EsGoodsDto.class);
+		elasticsearchClient.update(u -> u.index("product").id(spuId.toString()).doc(esGoodsDTO), EsGoodsDTO.class);
 	}
 
 	/**
@@ -96,27 +96,27 @@ public class SpuCanalListener extends BaseCanalBinlogEventProcessor<EsSpu> {
 	/**
 	 * 根据spuId组装商品信息
 	 */
-	private EsGoodsDto loadEsGoodsDto(Long spuId) {
-		EsGoodsDto esGoodsDto = new EsGoodsDto();
+	private EsGoodsDTO loadEsGoodsDTO(Long spuId) {
+		EsGoodsDTO esGoodsDTO = new EsGoodsDTO();
 
 		// 商品信息
-		GoodsDto goodsDto = remoteGoodService.getSpuDetail(spuId, SecurityConstants.FROM_IN).getData();
-		BeanUtil.copyProperties(goodsDto, esGoodsDto);
-		log.info("商品信息:{}", goodsDto);
+		GoodsDTO goodsDTO = remoteGoodService.getSpuDetail(spuId, SecurityConstants.FROM_IN).getData();
+		BeanUtil.copyProperties(goodsDTO, esGoodsDTO);
+		log.info("商品信息:{}", goodsDTO);
 
 		// 分类信息
-		if (Objects.nonNull(goodsDto.getCategoryId())) {
-			Category category = remoteCategoryService.findById(goodsDto.getCategoryId(), SecurityConstants.FROM_IN)
+		if (Objects.nonNull(goodsDTO.getCategoryId())) {
+			Category category = remoteCategoryService.findById(goodsDTO.getCategoryId(), SecurityConstants.FROM_IN)
 					.getData();
-			esGoodsDto.setCategoryName(category.getName());
+			esGoodsDTO.setCategoryName(category.getName());
 		}
 
 		// 品牌信息
-		if (Objects.nonNull(goodsDto.getBrandId())) {
-			Brand brand = remoteBrandService.findById(goodsDto.getBrandId(), SecurityConstants.FROM_IN).getData();
-			esGoodsDto.setBrandName(brand.getName());
+		if (Objects.nonNull(goodsDTO.getBrandId())) {
+			Brand brand = remoteBrandService.findById(goodsDTO.getBrandId(), SecurityConstants.FROM_IN).getData();
+			esGoodsDTO.setBrandName(brand.getName());
 		}
-		return esGoodsDto;
+		return esGoodsDTO;
 	}
 
 }

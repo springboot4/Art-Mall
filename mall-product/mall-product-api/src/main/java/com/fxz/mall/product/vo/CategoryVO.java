@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Data
 @Accessors(chain = true)
-public class CategoryVo implements Serializable {
+public class CategoryVO implements Serializable {
 
 	private static final long serialVersionUID = -1L;
 
@@ -52,6 +52,6 @@ public class CategoryVo implements Serializable {
 	/**
 	 * 子节点
 	 */
-	private List<CategoryVo> children = new ArrayList<>();
+	private List<CategoryVO> children = new ArrayList<>();
 
 }

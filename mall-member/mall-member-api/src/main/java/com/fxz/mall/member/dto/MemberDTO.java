@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
-public class MemberDto extends BaseEntity {
+public class MemberDTO extends BaseEntity {
 
 	private static final long serialVersionUID = -1L;
 

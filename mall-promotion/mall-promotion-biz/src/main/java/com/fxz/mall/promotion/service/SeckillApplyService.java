@@ -29,9 +29,9 @@ public interface SeckillApplyService extends IService<SeckillApply> {
 	/**
 	 * 添加秒杀活动申请
 	 * @param seckillId 秒杀活动id
-	 * @param applyVos 商家秒杀请求视图对象
+	 * @param applyVOs 商家秒杀请求视图对象
 	 */
-	void addSeckillApply(Long seckillId, List<SeckillApplyVO> applyVos);
+	void addSeckillApply(Long seckillId, List<SeckillApplyVO> applyVOs);
 
 	/**
 	 * 获取当天秒杀活动信息(时刻及对应时刻下的商品)

@@ -1,36 +1,33 @@
 package com.fxz.mall.product.dto;
 
 import com.fxz.common.mp.base.BaseEntity;
-import com.fxz.mall.product.entity.Attribute;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.NotEmpty;
-import java.util.List;
-
 /**
- * 商品属性表
+ * 商品属性项表
  *
  * @author fxz
- * @date 2022-05-05
+ * @date 2022-05-06
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
-public class AttributeDto extends BaseEntity {
-
-	private static final long serialVersionUID = -1L;
+public class AttributeValueDTO extends BaseEntity {
 
 	private Long id;
 
-	private Long categoryId;
+	private Long spuId;
+
+	private Long attributeId;
 
 	private String name;
 
+	private String value;
+
 	private Integer type;
 
-	@NotEmpty
-	private List<Attribute> attributes;
+	private String picUrl;
 
 }

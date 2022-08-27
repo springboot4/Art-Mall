@@ -3,13 +3,13 @@ package com.fxz.mall.order.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.fxz.mall.order.dto.OrderSubmitDto;
+import com.fxz.mall.order.dto.OrderSubmitDTO;
 import com.fxz.mall.order.entity.Order;
 import com.fxz.mall.order.enums.PayTypeEnum;
 import com.fxz.mall.order.query.OrderPageQuery;
-import com.fxz.mall.order.vo.OrderConfirmVo;
+import com.fxz.mall.order.vo.OrderConfirmVO;
 import com.fxz.mall.order.vo.OrderPageVO;
-import com.fxz.mall.order.vo.OrderSubmitVo;
+import com.fxz.mall.order.vo.OrderSubmitVO;
 
 /**
  * 订单详情表
@@ -26,12 +26,12 @@ public interface OrderService extends IService<Order> {
 	 * @param skuId 直接购买必填，购物车结算不填
 	 * @return OrderConfirmVO
 	 */
-	OrderConfirmVo confirm(Long skuId);
+	OrderConfirmVO confirm(Long skuId);
 
 	/**
 	 * 订单提交
 	 */
-	OrderSubmitVo submit(OrderSubmitDto orderSubmitDto);
+	OrderSubmitVO submit(OrderSubmitDTO orderSubmitDTO);
 
 	/**
 	 * 订单支付

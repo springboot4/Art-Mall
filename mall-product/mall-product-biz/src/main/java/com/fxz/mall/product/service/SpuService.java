@@ -3,12 +3,12 @@ package com.fxz.mall.product.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.fxz.mall.product.dto.GoodsDto;
+import com.fxz.mall.product.dto.GoodsDTO;
 import com.fxz.mall.product.entity.Spu;
 import com.fxz.mall.product.query.SpuPageQuery;
 import com.fxz.mall.product.vo.GoodsDetailVO;
 import com.fxz.mall.product.vo.GoodsPageVO;
-import com.fxz.mall.product.vo.GoodsVo;
+import com.fxz.mall.product.vo.GoodsVO;
 
 /**
  * 商品表
@@ -20,15 +20,15 @@ public interface SpuService extends IService<Spu> {
 
 	/**
 	 * 保存商品
-	 * @param goodsDto 商品信息
+	 * @param goodsDTO 商品信息
 	 * @return 是否保存成功
 	 */
-	Boolean addGoods(GoodsDto goodsDto);
+	Boolean addGoods(GoodsDTO goodsDTO);
 
 	/**
 	 * 分页查询商品信息
 	 */
-	IPage<GoodsVo> listGoods(Page objectPage, String name, Long categoryId);
+	IPage<GoodsVO> listGoods(Page objectPage, String name, Long categoryId);
 
 	/**
 	 * 删除商品信息
@@ -48,6 +48,6 @@ public interface SpuService extends IService<Spu> {
 	/**
 	 * 根据spuId获取商品详情
 	 */
-	GoodsDto getSpuDetail(Long spuId);
+	GoodsDTO getSpuDetail(Long spuId);
 
 }

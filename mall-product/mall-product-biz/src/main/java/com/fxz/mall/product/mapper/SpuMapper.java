@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fxz.mall.product.entity.Spu;
 import com.fxz.mall.product.query.SpuPageQuery;
 import com.fxz.mall.product.vo.GoodsPageVO;
-import com.fxz.mall.product.vo.GoodsVo;
+import com.fxz.mall.product.vo.GoodsVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -23,7 +23,7 @@ public interface SpuMapper extends BaseMapper<Spu> {
 	/**
 	 * 分页查询商品信息
 	 */
-	List<GoodsVo> listGoods(Page page, @Param("name") String name, @Param("categoryId") Long categoryId);
+	List<GoodsVO> listGoods(Page page, @Param("name") String name, @Param("categoryId") Long categoryId);
 
 	List<GoodsPageVO> listAppSpuPage(Page<GoodsPageVO> page, @Param("queryParams") SpuPageQuery queryParams);
 

@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class GoodsVo extends Spu {
+public class GoodsVO extends Spu {
 
 	/**
 	 * 商品分类名称

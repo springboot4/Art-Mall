@@ -14,10 +14,13 @@ import com.fxz.common.core.exception.FxzException;
 import com.fxz.common.mp.result.Result;
 import com.fxz.common.redis.util.BusinessNoGenerator;
 import com.fxz.common.security.util.SecurityUtil;
+import com.fxz.mall.member.dto.AddressDTO;
+import com.fxz.mall.member.feign.RemoteAddressService;
+import com.fxz.mall.member.feign.RemoteMemberService;
 import com.fxz.mall.order.constant.OrderConstants;
 import com.fxz.mall.order.dto.CartItemDTO;
-import com.fxz.mall.order.dto.OrderItemDto;
-import com.fxz.mall.order.dto.OrderSubmitDto;
+import com.fxz.mall.order.dto.OrderItemDTO;
+import com.fxz.mall.order.dto.OrderSubmitDTO;
 import com.fxz.mall.order.entity.Order;
 import com.fxz.mall.order.entity.OrderItem;
 import com.fxz.mall.order.enums.OrderStatusEnum;
@@ -26,16 +29,13 @@ import com.fxz.mall.order.enums.PayTypeEnum;
 import com.fxz.mall.order.mapper.OrderMapper;
 import com.fxz.mall.order.query.OrderPageQuery;
 import com.fxz.mall.order.service.OrderService;
-import com.fxz.mall.order.vo.OrderConfirmVo;
+import com.fxz.mall.order.vo.OrderConfirmVO;
 import com.fxz.mall.order.vo.OrderPageVO;
-import com.fxz.mall.order.vo.OrderSubmitVo;
+import com.fxz.mall.order.vo.OrderSubmitVO;
 import com.fxz.mall.product.dto.CheckPriceDTO;
 import com.fxz.mall.product.dto.LockStockDTO;
 import com.fxz.mall.product.dto.SkuInfoDTO;
 import com.fxz.mall.product.feign.RemoteSkuService;
-import com.fxz.mall.member.dto.AddressDto;
-import com.fxz.mall.member.feign.RemoteAddressService;
-import com.fxz.mall.member.feign.RemoteMemberService;
 import io.seata.spring.annotation.GlobalTransactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -96,8 +96,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 	 * @return OrderConfirmVO
 	 */
 	@Override
-	public OrderConfirmVo confirm(Long skuId) {
-		OrderConfirmVo orderConfirmVO = new OrderConfirmVo();
+	public OrderConfirmVO confirm(Long skuId) {
+		OrderConfirmVO orderConfirmVO = new OrderConfirmVO();
 		Long memberId = SecurityUtil.getUser().getUserId();
 
 		if (skuId == null) {
@@ -111,13 +111,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
 		// 获取订单的商品明细信息
 		CompletableFuture<Void> orderItemsCompletableFuture = CompletableFuture.runAsync(() -> {
-			List<OrderItemDto> orderItems = this.getOrderItems(skuId, memberId);
+			List<OrderItemDTO> orderItems = this.getOrderItems(skuId, memberId);
 			orderConfirmVO.setOrderItems(orderItems);
 		}, threadPoolExecutor);
 
 		// 获取会员收获地址
 		CompletableFuture<Void> addressesCompletableFuture = CompletableFuture.runAsync(() -> {
-			List<AddressDto> addresses = remoteAddressService.findAll().getData();
+			List<AddressDTO> addresses = remoteAddressService.findAll().getData();
 			orderConfirmVO.setAddresses(addresses);
 		}, threadPoolExecutor);
 
@@ -141,15 +141,15 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 	@SneakyThrows
 	@GlobalTransactional(rollbackFor = Exception.class)
 	@Override
-	public OrderSubmitVo submit(OrderSubmitDto orderSubmitDto) {
-		log.info("订单提交数据:{}", JSONUtil.toJsonStr(orderSubmitDto));
+	public OrderSubmitVO submit(OrderSubmitDTO orderSubmitDTO) {
+		log.info("订单提交数据:{}", JSONUtil.toJsonStr(orderSubmitDTO));
 
 		// 订单基础信息校验
-		List<OrderItemDto> orderItems = orderSubmitDto.getOrderItems();
+		List<OrderItemDTO> orderItems = orderSubmitDTO.getOrderItems();
 		Assert.isTrue(CollectionUtil.isNotEmpty(orderItems), "订单没有商品");
 
 		// 利用lua脚本进行订单重复提交校验
-		String orderToken = orderSubmitDto.getOrderToken();
+		String orderToken = orderSubmitDTO.getOrderToken();
 		DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>(OrderConstants.RELEASE_LOCK_LUA_SCRIPT,
 				Long.class);
 		Long execute = (Long) this.redisTemplate.execute(redisScript,
@@ -159,7 +159,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 		Order order;
 		try {
 			// 订单验价,校验下单时的价格和当前价格是否一样
-			Long orderTotalAmount = orderSubmitDto.getTotalAmount();
+			Long orderTotalAmount = orderSubmitDTO.getTotalAmount();
 			boolean checkResult = this.checkOrderPrice(orderTotalAmount, orderItems);
 			Assert.isTrue(checkResult, "当前页面已过期，请重新刷新页面再提交");
 
@@ -169,9 +169,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 			// 创建订单
 			order = new Order().setOrderSn(orderToken).setStatus(OrderStatusEnum.PENDING_PAYMENT.getValue())
 					.setSourceType(OrderTypeEnum.APP.getValue()).setMemberId(SecurityUtil.getUser().getUserId())
-					.setRemark(orderSubmitDto.getRemark()).setPayAmount(orderSubmitDto.getPayAmount())
-					.setSourceType(orderSubmitDto.getSourceType())
-					.setTotalQuantity(orderItems.stream().map(OrderItemDto::getCount).reduce(0, Integer::sum))
+					.setRemark(orderSubmitDTO.getRemark()).setPayAmount(orderSubmitDTO.getPayAmount())
+					.setSourceType(orderSubmitDTO.getSourceType())
+					.setTotalQuantity(orderItems.stream().map(OrderItemDTO::getCount).reduce(0, Integer::sum))
 					.setTotalAmount(
 							orderItems.stream().map(item -> item.getPrice() * item.getCount()).reduce(0L, Long::sum));
 
@@ -201,7 +201,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 		}
 
 		// 成功响应返回值构建
-		OrderSubmitVo submitVO = new OrderSubmitVo();
+		OrderSubmitVO submitVO = new OrderSubmitVO();
 		submitVO.setOrderId(order.getId());
 		submitVO.setOrderSn(order.getOrderSn());
 
@@ -360,7 +360,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 	 * @param orderToken
 	 * @param orderItems
 	 */
-	private void lockStock(String orderToken, List<OrderItemDto> orderItems) {
+	private void lockStock(String orderToken, List<OrderItemDTO> orderItems) {
 		LockStockDTO lockStockDTO = new LockStockDTO();
 
 		lockStockDTO.setOrderToken(orderToken);
@@ -379,7 +379,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 	 * @param orderItems 订单商品明细
 	 * @return true：订单总价和商品总价一致；false：订单总价和商品总价不一致。
 	 */
-	private boolean checkOrderPrice(Long orderTotalAmount, List<OrderItemDto> orderItems) {
+	private boolean checkOrderPrice(Long orderTotalAmount, List<OrderItemDTO> orderItems) {
 		CheckPriceDTO checkPriceDTO = new CheckPriceDTO();
 
 		List<CheckPriceDTO.CheckSku> checkSkus = orderItems.stream().map(orderFormItem -> {
@@ -407,14 +407,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 	 * @param skuId 直接购买必有值，购物车结算必没值
 	 * @return 商品项
 	 */
-	private List<OrderItemDto> getOrderItems(Long skuId, Long memberId) {
-		List<OrderItemDto> orderItems = new ArrayList<>();
+	private List<OrderItemDTO> getOrderItems(Long skuId, Long memberId) {
+		List<OrderItemDTO> orderItems = new ArrayList<>();
 
 		// 直接购买
 		if (skuId != null) {
 			SkuInfoDTO skuInfoDTO = remoteSkuService.getSkuInfo(skuId).getData();
 
-			OrderItemDto orderItemDTO = new OrderItemDto();
+			OrderItemDTO orderItemDTO = new OrderItemDTO();
 			BeanUtil.copyProperties(skuInfoDTO, orderItemDTO);
 
 			// 直接购买商品的数量为1
@@ -424,7 +424,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 		else {
 			List<CartItemDTO> cartItems = cartService.listCartItemByMemberId(memberId);
 			orderItems = cartItems.stream().filter(CartItemDTO::getChecked).map(cartItem -> {
-				OrderItemDto orderItemDTO = new OrderItemDto();
+				OrderItemDTO orderItemDTO = new OrderItemDTO();
 				BeanUtil.copyProperties(cartItem, orderItemDTO);
 				return orderItemDTO;
 			}).collect(Collectors.toList());

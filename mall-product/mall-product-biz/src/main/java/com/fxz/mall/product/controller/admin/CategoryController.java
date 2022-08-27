@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fxz.common.mp.result.PageResult;
 import com.fxz.common.mp.result.Result;
 import com.fxz.common.security.annotation.Ojbk;
-import com.fxz.mall.product.dto.CategoryDto;
+import com.fxz.mall.product.dto.CategoryDTO;
 import com.fxz.mall.product.entity.Category;
 import com.fxz.mall.product.service.impl.CategoryServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -39,16 +39,16 @@ public class CategoryController {
 	 * 添加
 	 */
 	@PostMapping(value = "/add")
-	public Result<Boolean> add(@RequestBody CategoryDto categoryDto) {
-		return Result.success(categoryService.addCategory(categoryDto));
+	public Result<Boolean> add(@RequestBody CategoryDTO categoryDTO) {
+		return Result.success(categoryService.addCategory(categoryDTO));
 	}
 
 	/**
 	 * 修改
 	 */
 	@PostMapping(value = "/update")
-	public Result<Boolean> update(@RequestBody CategoryDto categoryDto) {
-		return Result.success(categoryService.updateCategory(categoryDto));
+	public Result<Boolean> update(@RequestBody CategoryDTO categoryDTO) {
+		return Result.success(categoryService.updateCategory(categoryDTO));
 	}
 
 	/**

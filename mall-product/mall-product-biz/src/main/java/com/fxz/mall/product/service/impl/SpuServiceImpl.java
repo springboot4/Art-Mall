@@ -11,9 +11,9 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.fxz.mall.product.dto.AttributeValueDto;
-import com.fxz.mall.product.dto.GoodsDto;
-import com.fxz.mall.product.dto.SkuDto;
+import com.fxz.mall.product.dto.AttributeValueDTO;
+import com.fxz.mall.product.dto.GoodsDTO;
+import com.fxz.mall.product.dto.SkuDTO;
 import com.fxz.mall.product.entity.Sku;
 import com.fxz.mall.product.entity.SkuAttributeValue;
 import com.fxz.mall.product.entity.Spu;
@@ -24,7 +24,7 @@ import com.fxz.mall.product.query.SpuPageQuery;
 import com.fxz.mall.product.service.SpuService;
 import com.fxz.mall.product.vo.GoodsDetailVO;
 import com.fxz.mall.product.vo.GoodsPageVO;
-import com.fxz.mall.product.vo.GoodsVo;
+import com.fxz.mall.product.vo.GoodsVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -56,21 +56,21 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
 
 	/**
 	 * 保存商品
-	 * @param goodsDto 商品信息
+	 * @param goodsDTO 商品信息
 	 * @return 是否保存成功
 	 */
 	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public Boolean addGoods(GoodsDto goodsDto) {
+	public Boolean addGoods(GoodsDTO goodsDTO) {
 		// 保存spu信息
-		Long goodsId = this.saveSpu(goodsDto);
+		Long goodsId = this.saveSpu(goodsDTO);
 
 		// 属性保存
-		List<AttributeValueDto> attrValList = goodsDto.getAttrList();
+		List<AttributeValueDTO> attrValList = goodsDTO.getAttrList();
 		this.saveAttribute(goodsId, attrValList);
 
 		// sku保存
-		List<SkuDto> skuList = goodsDto.getSkuList();
+		List<SkuDTO> skuList = goodsDTO.getSkuList();
 
 		return this.saveSku(goodsId, skuList);
 	}
@@ -79,9 +79,9 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
 	 * 分页查询商品信息
 	 */
 	@Override
-	public IPage<GoodsVo> listGoods(Page page, String name, Long categoryId) {
-		List<GoodsVo> goodsVos = spuMapper.listGoods(page, name, categoryId);
-		return page.setRecords(goodsVos);
+	public IPage<GoodsVO> listGoods(Page page, String name, Long categoryId) {
+		List<GoodsVO> goodsVOs = spuMapper.listGoods(page, name, categoryId);
+		return page.setRecords(goodsVOs);
 	}
 
 	/**
@@ -216,45 +216,45 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
 	 * 根据spuId获取商品详情
 	 */
 	@Override
-	public GoodsDto getSpuDetail(Long spuId) {
-		GoodsDto goodsDto = new GoodsDto();
+	public GoodsDTO getSpuDetail(Long spuId) {
+		GoodsDTO goodsDTO = new GoodsDTO();
 
 		Spu spu = spuMapper.selectById(spuId);
-		BeanUtil.copyProperties(spu, goodsDto);
+		BeanUtil.copyProperties(spu, goodsDTO);
 		String[] strings = JSONUtil.parseArray(spu.getAlbum()).toArray(new String[0]);
-		goodsDto.setSubPicUrls(strings);
+		goodsDTO.setSubPicUrls(strings);
 
-		List<AttributeValueDto> spuAttributeValue = spuAttributeValueService
+		List<AttributeValueDTO> spuAttributeValue = spuAttributeValueService
 				.list(Wrappers.<SpuAttributeValue>lambdaQuery().eq(SpuAttributeValue::getSpuId, spuId)).stream()
 				.map(item -> {
-					AttributeValueDto attributeValueDto = new AttributeValueDto();
-					BeanUtil.copyProperties(item, attributeValueDto);
-					return attributeValueDto;
+					AttributeValueDTO attributeValueDTO = new AttributeValueDTO();
+					BeanUtil.copyProperties(item, attributeValueDTO);
+					return attributeValueDTO;
 				}).collect(Collectors.toList());
-		goodsDto.setAttrList(spuAttributeValue);
+		goodsDTO.setAttrList(spuAttributeValue);
 
-		List<SkuDto> skuDtoList = skuService.list(Wrappers.<Sku>lambdaQuery().eq(Sku::getSpuId, spuId)).stream()
+		List<SkuDTO> skuDTOList = skuService.list(Wrappers.<Sku>lambdaQuery().eq(Sku::getSpuId, spuId)).stream()
 				.map(item -> {
-					SkuDto skuDto = new SkuDto();
-					BeanUtil.copyProperties(item, skuDto);
-					return skuDto;
+					SkuDTO skuDTO = new SkuDTO();
+					BeanUtil.copyProperties(item, skuDTO);
+					return skuDTO;
 				}).collect(Collectors.toList());
-		if (CollectionUtil.isNotEmpty(skuDtoList)) {
-			skuDtoList.forEach(skuDto -> {
-				Long skuId = skuDto.getId();
-				List<AttributeValueDto> skuAttributeValue = skuAttributeValueService
+		if (CollectionUtil.isNotEmpty(skuDTOList)) {
+			skuDTOList.forEach(skuDTO -> {
+				Long skuId = skuDTO.getId();
+				List<AttributeValueDTO> skuAttributeValue = skuAttributeValueService
 						.list(Wrappers.<SkuAttributeValue>lambdaQuery().eq(SkuAttributeValue::getSkuId, skuId)).stream()
 						.map(item -> {
-							AttributeValueDto attributeValueDto = new AttributeValueDto();
-							BeanUtil.copyProperties(item, attributeValueDto);
-							return attributeValueDto;
+							AttributeValueDTO attributeValueDTO = new AttributeValueDTO();
+							BeanUtil.copyProperties(item, attributeValueDTO);
+							return attributeValueDTO;
 						}).collect(Collectors.toList());
-				skuDto.setSpecValList(skuAttributeValue);
+				skuDTO.setSpecValList(skuAttributeValue);
 			});
 		}
-		goodsDto.setSkuList(skuDtoList);
+		goodsDTO.setSkuList(skuDTOList);
 
-		return goodsDto;
+		return goodsDTO;
 	}
 
 	/**
@@ -263,18 +263,18 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
 	 * @param skuList sku列表
 	 * @return 是否保存成功
 	 */
-	private Boolean saveSku(Long goodsId, List<SkuDto> skuList) {
+	private Boolean saveSku(Long goodsId, List<SkuDTO> skuList) {
 		// 新增/修改SKU
-		skuList.forEach(skuDto -> {
+		skuList.forEach(skuDTO -> {
 			Sku sku = new Sku();
-			BeanUtils.copyProperties(skuDto, sku);
+			BeanUtils.copyProperties(skuDTO, sku);
 			sku.setSpuId(goodsId);
 
 			// 保存sku信息
 			skuService.save(sku);
 
 			// 保存sku属性
-			List<AttributeValueDto> specValList = skuDto.getSpecValList();
+			List<AttributeValueDTO> specValList = skuDTO.getSpecValList();
 			if (CollectionUtils.isNotEmpty(specValList)) {
 				List<SkuAttributeValue> skuAttributeValues = specValList.stream().map(item -> {
 					SkuAttributeValue skuAttributeValue = new SkuAttributeValue();
@@ -296,7 +296,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
 	 * @param goodsId spuId
 	 * @param attrValList 属性列表
 	 */
-	private void saveAttribute(Long goodsId, List<AttributeValueDto> attrValList) {
+	private void saveAttribute(Long goodsId, List<AttributeValueDTO> attrValList) {
 		if (CollectionUtils.isNotEmpty(attrValList)) {
 			List<SpuAttributeValue> spuAttributeValueList = attrValList.stream().map(item -> {
 				SpuAttributeValue spuAttributeValue = new SpuAttributeValue();
@@ -313,14 +313,14 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
 
 	/**
 	 * 保存sku
-	 * @param goodsDto 商品信息
+	 * @param goodsDTO 商品信息
 	 * @return spuId
 	 */
-	private Long saveSpu(GoodsDto goodsDto) {
+	private Long saveSpu(GoodsDTO goodsDTO) {
 		Spu spu = new Spu();
-		BeanUtil.copyProperties(goodsDto, spu);
+		BeanUtil.copyProperties(goodsDTO, spu);
 		// 商品图册
-		spu.setAlbum(JSONUtil.toJsonStr(goodsDto.getSubPicUrls()));
+		spu.setAlbum(JSONUtil.toJsonStr(goodsDTO.getSubPicUrls()));
 		boolean result = this.saveOrUpdate(spu);
 		return result ? spu.getId() : 0;
 	}

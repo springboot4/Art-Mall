@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.fxz.mall.product.dto.AttributeDto;
+import com.fxz.mall.product.dto.AttributeDTO;
 import com.fxz.mall.product.entity.Attribute;
 import com.fxz.mall.product.mapper.AttributeMapper;
 import com.fxz.mall.product.service.AttributeService;
@@ -36,9 +36,9 @@ public class AttributeServiceImpl extends ServiceImpl<AttributeMapper, Attribute
 	 * 添加
 	 */
 	@Override
-	public Boolean addAttribute(AttributeDto attributeDto) {
+	public Boolean addAttribute(AttributeDTO attributeDTO) {
 		Attribute attribute = new Attribute();
-		BeanUtils.copyProperties(attributeDto, attribute);
+		BeanUtils.copyProperties(attributeDTO, attribute);
 		attributeMapper.insert(attribute);
 		return Boolean.TRUE;
 	}
@@ -47,9 +47,9 @@ public class AttributeServiceImpl extends ServiceImpl<AttributeMapper, Attribute
 	 * 修改
 	 */
 	@Override
-	public Boolean updateAttribute(AttributeDto attributeDto) {
+	public Boolean updateAttribute(AttributeDTO attributeDTO) {
 		Attribute attribute = new Attribute();
-		BeanUtils.copyProperties(attributeDto, attribute);
+		BeanUtils.copyProperties(attributeDTO, attribute);
 		attributeMapper.updateById(attribute);
 		return Boolean.TRUE;
 	}
@@ -91,14 +91,14 @@ public class AttributeServiceImpl extends ServiceImpl<AttributeMapper, Attribute
 	 * 批量添加属性
 	 */
 	@Override
-	public Boolean saveAttributeBatch(AttributeDto attributeDto) {
+	public Boolean saveAttributeBatch(AttributeDTO attributeDTO) {
 		// 此次保存属性所属的分类
-		Long categoryId = attributeDto.getCategoryId();
+		Long categoryId = attributeDTO.getCategoryId();
 		// 此次保存属性所属的类型
-		Integer type = attributeDto.getType();
+		Integer type = attributeDTO.getType();
 
 		// 过滤出此次保存存在id的属性
-		List<Long> formIds = attributeDto.getAttributes().stream().map(Attribute::getId).filter(Objects::nonNull)
+		List<Long> formIds = attributeDTO.getAttributes().stream().map(Attribute::getId).filter(Objects::nonNull)
 				.collect(Collectors.toList());
 
 		// 数据库中此分类下此类型的所有属性
@@ -117,7 +117,7 @@ public class AttributeServiceImpl extends ServiceImpl<AttributeMapper, Attribute
 		}
 
 		// 新增/修改表单提交的属性
-		List<Attribute> formAttributes = attributeDto.getAttributes();
+		List<Attribute> formAttributes = attributeDTO.getAttributes();
 		List<Attribute> attributeList = new ArrayList<>();
 		formAttributes.forEach(item -> attributeList.add(
 				new Attribute().setId(item.getId()).setCategoryId(categoryId).setType(type).setName(item.getName())));

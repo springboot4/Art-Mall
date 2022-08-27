@@ -2,7 +2,7 @@ package com.fxz.mall.member.feign;
 
 import com.fxz.common.core.constant.FxzServerConstant;
 import com.fxz.common.mp.result.Result;
-import com.fxz.mall.member.dto.AddressDto;
+import com.fxz.mall.member.dto.AddressDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -20,6 +20,6 @@ public interface RemoteAddressService {
 	 * 获取当前会员全部地址
 	 */
 	@GetMapping(value = "/app/address/findAll")
-	Result<List<AddressDto>> findAll();
+	Result<List<AddressDTO>> findAll();
 
 }

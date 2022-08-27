@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fxz.common.mp.result.PageResult;
 import com.fxz.common.mp.result.Result;
 import com.fxz.common.security.annotation.Ojbk;
-import com.fxz.mall.product.dto.GoodsDto;
+import com.fxz.mall.product.dto.GoodsDTO;
 import com.fxz.mall.product.service.impl.SpuServiceImpl;
-import com.fxz.mall.product.vo.GoodsVo;
+import com.fxz.mall.product.vo.GoodsVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,19 +25,19 @@ public class GoodsController {
 
 	/**
 	 * 保存商品
-	 * @param goodsDto 商品信息
+	 * @param goodsDTO 商品信息
 	 * @return 是否保存成功
 	 */
 	@PostMapping("/add")
-	public Result<Boolean> addGoods(@RequestBody GoodsDto goodsDto) {
-		return Result.judge(spuService.addGoods(goodsDto));
+	public Result<Boolean> addGoods(@RequestBody GoodsDTO goodsDTO) {
+		return Result.judge(spuService.addGoods(goodsDTO));
 	}
 
 	/**
 	 * pc端分页
 	 */
 	@GetMapping("/page")
-	public Result<PageResult<GoodsVo>> page(Long current, Long pageSize, Long categoryId, String name) {
+	public Result<PageResult<GoodsVO>> page(Long current, Long pageSize, Long categoryId, String name) {
 		return Result.success(PageResult.success(spuService.listGoods(new Page(current, pageSize), name, categoryId)));
 	}
 
@@ -54,7 +54,7 @@ public class GoodsController {
 	 */
 	@Ojbk(inner = true)
 	@GetMapping("/{spuId}/detail")
-	public Result<GoodsDto> getSpuDetail(@PathVariable("spuId") Long spuId) {
+	public Result<GoodsDTO> getSpuDetail(@PathVariable("spuId") Long spuId) {
 		return Result.success(spuService.getSpuDetail(spuId));
 	}
 

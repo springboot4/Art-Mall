@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
-public class OrderItemDto extends BaseEntity {
+public class OrderItemDTO extends BaseEntity {
 
 	private static final long serialVersionUID = -1L;
 

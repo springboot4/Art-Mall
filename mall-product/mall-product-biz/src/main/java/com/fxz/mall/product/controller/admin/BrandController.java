@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fxz.common.mp.result.PageResult;
 import com.fxz.common.mp.result.Result;
 import com.fxz.common.security.annotation.Ojbk;
-import com.fxz.mall.product.dto.BrandDto;
+import com.fxz.mall.product.dto.BrandDTO;
 import com.fxz.mall.product.entity.Brand;
 import com.fxz.mall.product.service.impl.BrandServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -31,16 +31,16 @@ public class BrandController {
 	 * 添加
 	 */
 	@PostMapping(value = "/add")
-	public Result<Boolean> add(@RequestBody BrandDto brandDto) {
-		return Result.success(brandService.addBrand(brandDto));
+	public Result<Boolean> add(@RequestBody BrandDTO brandDTO) {
+		return Result.success(brandService.addBrand(brandDTO));
 	}
 
 	/**
 	 * 修改
 	 */
 	@PostMapping(value = "/update")
-	public Result<Boolean> update(@RequestBody BrandDto brandDto) {
-		return Result.success(brandService.updateBrand(brandDto));
+	public Result<Boolean> update(@RequestBody BrandDTO brandDTO) {
+		return Result.success(brandService.updateBrand(brandDTO));
 	}
 
 	/**

@@ -1,15 +1,13 @@
 package com.fxz.mall.product.controller.app;
 
 import cn.hutool.core.lang.tree.Tree;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.fxz.common.mp.result.PageResult;
 import com.fxz.common.mp.result.Result;
 import com.fxz.common.security.annotation.Ojbk;
-import com.fxz.mall.product.dto.CategoryDto;
-import com.fxz.mall.product.entity.Category;
 import com.fxz.mall.product.service.impl.CategoryServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 

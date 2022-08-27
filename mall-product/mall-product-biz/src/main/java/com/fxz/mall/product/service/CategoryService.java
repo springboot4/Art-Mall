@@ -4,9 +4,8 @@ import cn.hutool.core.lang.tree.Tree;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.fxz.mall.product.dto.CategoryDto;
+import com.fxz.mall.product.dto.CategoryDTO;
 import com.fxz.mall.product.entity.Category;
-import com.fxz.mall.product.vo.CategoryVo;
 
 import java.util.List;
 
@@ -21,12 +20,12 @@ public interface CategoryService extends IService<Category> {
 	/**
 	 * 添加
 	 */
-	Boolean addCategory(CategoryDto categoryDto);
+	Boolean addCategory(CategoryDTO categoryDTO);
 
 	/**
 	 * 修改
 	 */
-	Boolean updateCategory(CategoryDto categoryDto);
+	Boolean updateCategory(CategoryDTO categoryDTO);
 
 	/**
 	 * 分页

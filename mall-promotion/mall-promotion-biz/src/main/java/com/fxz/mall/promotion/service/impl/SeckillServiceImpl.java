@@ -66,8 +66,6 @@ public class SeckillServiceImpl extends ServiceImpl<SeckillMapper, Seckill> impl
 		// 保存秒杀活动
 		for (int i = 0; i <= PRE_CREATION; i++) {
 			Seckill seckill = new Seckill(i, seckillSetting.getHours(), seckillSetting.getSeckillRule());
-			// 检验生成的秒杀活动时间是否合法
-			this.checkPromotionTime(seckill.getStartTime(), seckill.getEndTime());
 			// 删除掉所有的促销商品
 			promotionGoodsService.remove(Wrappers.emptyWrapper());
 			seckills.add(seckill);

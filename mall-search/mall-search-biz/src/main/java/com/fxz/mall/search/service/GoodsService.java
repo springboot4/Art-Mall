@@ -13,15 +13,15 @@ import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fxz.common.jackson.util.JacksonUtil;
-import com.fxz.mall.product.dto.AttributeValueDto;
-import com.fxz.mall.product.dto.SkuDto;
+import com.fxz.mall.product.dto.AttributeValueDTO;
+import com.fxz.mall.product.dto.SkuDTO;
 import com.fxz.mall.product.entity.Sku;
 import com.fxz.mall.product.query.SpuPageQuery;
 import com.fxz.mall.product.vo.GoodsDetailVO;
 import com.fxz.mall.product.vo.GoodsPageVO;
-import com.fxz.mall.product.vo.GoodsVo;
+import com.fxz.mall.product.vo.GoodsVO;
 import com.fxz.mall.promotion.enums.PromotionTypeEnum;
-import com.fxz.mall.search.dto.EsGoodsDto;
+import com.fxz.mall.search.dto.EsGoodsDTO;
 import com.fxz.mall.search.entity.EsPage;
 import com.fxz.mall.search.entity.EsPromotionGoods;
 import lombok.RequiredArgsConstructor;
@@ -46,40 +46,40 @@ public class GoodsService {
 	 * pc端es分页查询商品信息
 	 */
 	@SneakyThrows
-	public EsPage<GoodsVo> pageGoods(Long current, Long pageSize, String name, Long categoryId) {
+	public EsPage<GoodsVO> pageGoods(Long current, Long pageSize, String name, Long categoryId) {
 		BoolQuery boolQuery = BoolQuery.of(b -> {
 			if (Objects.nonNull(name)) {
-				Query byName = MatchQuery.of(m -> m.field(EsGoodsDto.Fields.name).query(name))._toQuery();
+				Query byName = MatchQuery.of(m -> m.field(EsGoodsDTO.Fields.name).query(name))._toQuery();
 				b.should(byName);
 			}
 			if (Objects.nonNull(categoryId)) {
-				Query byCategoryId = MatchQuery.of(m -> m.field(EsGoodsDto.Fields.categoryId).query(categoryId))
+				Query byCategoryId = MatchQuery.of(m -> m.field(EsGoodsDTO.Fields.categoryId).query(categoryId))
 						._toQuery();
 				b.must(byCategoryId);
 			}
 			return b;
 		});
 
-		SearchResponse<EsGoodsDto> product = elasticsearchClient.search(s -> s.index("product")
+		SearchResponse<EsGoodsDTO> product = elasticsearchClient.search(s -> s.index("product")
 				.from(current.intValue() - 1).size(pageSize.intValue()).query(q -> q.bool(boolQuery)),
-				EsGoodsDto.class);
+				EsGoodsDTO.class);
 
-		List<GoodsVo> goodsVos = product.hits().hits().stream().map(h -> {
-			EsGoodsDto source = h.source();
-			GoodsVo goodsVo = new GoodsVo();
+		List<GoodsVO> goodsVOs = product.hits().hits().stream().map(h -> {
+			EsGoodsDTO source = h.source();
+			GoodsVO goodsVO = new GoodsVO();
 
-			BeanUtil.copyProperties(source, goodsVo);
-			goodsVo.setAlbum(JSONUtil.toJsonStr(source.getSubPicUrls()));
-			goodsVo.setStatus(1);
+			BeanUtil.copyProperties(source, goodsVO);
+			goodsVO.setAlbum(JSONUtil.toJsonStr(source.getSubPicUrls()));
+			goodsVO.setStatus(1);
 
-			return goodsVo;
+			return goodsVO;
 		}).collect(Collectors.toList());
 
-		EsPage<GoodsVo> esPage = new EsPage<>();
+		EsPage<GoodsVO> esPage = new EsPage<>();
 		esPage.setCurrent(current);
 		esPage.setSize(pageSize);
 		esPage.setTotal(product.hits().total() != null ? product.hits().total().value() : 0L);
-		esPage.setRecords(goodsVos);
+		esPage.setRecords(goodsVOs);
 
 		return esPage;
 	}
@@ -105,10 +105,10 @@ public class GoodsService {
 			return s;
 		});
 
-		SearchResponse<EsGoodsDto> product = elasticsearchClient.search(searchRequest, EsGoodsDto.class);
+		SearchResponse<EsGoodsDTO> product = elasticsearchClient.search(searchRequest, EsGoodsDTO.class);
 
 		List<GoodsPageVO> goodsPage = product.hits().hits().stream().map(h -> {
-			EsGoodsDto source = h.source();
+			EsGoodsDTO source = h.source();
 			GoodsPageVO goodsPageVO = new GoodsPageVO();
 
 			BeanUtil.copyProperties(source, goodsPageVO);
@@ -131,12 +131,12 @@ public class GoodsService {
 	public GoodsDetailVO getAppSpuDetail(Long spuId) {
 		GoodsDetailVO result = new GoodsDetailVO();
 
-		SearchResponse<EsGoodsDto> search = elasticsearchClient.search(
-				s -> s.index("product").query(q -> q.match(m -> m.field(EsGoodsDto.Fields.id).query(spuId))).size(1),
-				EsGoodsDto.class);
+		SearchResponse<EsGoodsDTO> search = elasticsearchClient.search(
+				s -> s.index("product").query(q -> q.match(m -> m.field(EsGoodsDTO.Fields.id).query(spuId))).size(1),
+				EsGoodsDTO.class);
 
 		if (CollectionUtil.isNotEmpty(search.hits().hits())) {
-			EsGoodsDto source = search.hits().hits().get(0).source();
+			EsGoodsDTO source = search.hits().hits().get(0).source();
 
 			GoodsDetailVO.GoodsInfo goodsInfo = new GoodsDetailVO.GoodsInfo();
 			BeanUtil.copyProperties(source, goodsInfo);
@@ -150,7 +150,7 @@ public class GoodsService {
 			goodsInfo.setAlbum(album);
 			result.setGoodsInfo(goodsInfo);
 
-			List<AttributeValueDto> attrList = source.getAttrList();
+			List<AttributeValueDTO> attrList = source.getAttrList();
 			List<GoodsDetailVO.Attribute> attributes = attrList.stream().map(attr -> {
 				GoodsDetailVO.Attribute attribute = new GoodsDetailVO.Attribute();
 				BeanUtil.copyProperties(attr, attribute);
@@ -158,16 +158,16 @@ public class GoodsService {
 			}).collect(Collectors.toList());
 			result.setAttributeList(attributes);
 
-			List<SkuDto> skuList = source.getSkuList();
-			Set<AttributeValueDto> specSet = new HashSet<>();
+			List<SkuDTO> skuList = source.getSkuList();
+			Set<AttributeValueDTO> specSet = new HashSet<>();
 			skuList.forEach(item -> specSet.addAll(item.getSpecValList()));
 			List<GoodsDetailVO.Specification> specList = new ArrayList<>();
 			// 规格Map [key:"颜色",value:[{id:1,value:"黑"},{id:2,value:"白"}]]
-			Map<String, List<AttributeValueDto>> specValueMap = specSet.stream()
-					.collect(Collectors.groupingBy(AttributeValueDto::getName));
-			for (Map.Entry<String, List<AttributeValueDto>> entry : specValueMap.entrySet()) {
+			Map<String, List<AttributeValueDTO>> specValueMap = specSet.stream()
+					.collect(Collectors.groupingBy(AttributeValueDTO::getName));
+			for (Map.Entry<String, List<AttributeValueDTO>> entry : specValueMap.entrySet()) {
 				String specName = entry.getKey();
-				List<AttributeValueDto> specValueSourceList = entry.getValue();
+				List<AttributeValueDTO> specValueSourceList = entry.getValue();
 
 				// 规格映射处理
 				GoodsDetailVO.Specification spec = new GoodsDetailVO.Specification();
@@ -205,7 +205,7 @@ public class GoodsService {
 					s.setPrice(sku.getPrice());
 				}
 
-				List<AttributeValueDto> specValList = sku.getSpecValList();
+				List<AttributeValueDTO> specValList = sku.getSpecValList();
 				String specIds = specValList.stream().map(item -> String.valueOf(item.getId()))
 						.collect(Collectors.joining("_"));
 				s.setSpecIds(specIds);

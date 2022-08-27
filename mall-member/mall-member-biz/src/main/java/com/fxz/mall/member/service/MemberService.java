@@ -3,7 +3,7 @@ package com.fxz.mall.member.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.fxz.mall.member.dto.MemberDto;
+import com.fxz.mall.member.dto.MemberDTO;
 import com.fxz.mall.member.entity.Member;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public interface MemberService extends IService<Member> {
 	/**
 	 * 修改
 	 */
-	Boolean updateMember(MemberDto memberDto);
+	Boolean updateMember(MemberDTO memberDTO);
 
 	/**
 	 * 分页

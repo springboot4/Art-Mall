@@ -58,7 +58,7 @@ public class SkuController {
 
 	/**
 	 * 商品验价
-	 * @param checkPriceDTO 校验价格dto
+	 * @param checkPriceDTO 校验价格DTO
 	 * @return 价格是否相同
 	 */
 	@PostMapping("/price/check")

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.fxz.mall.product.dto.BrandDto;
+import com.fxz.mall.product.dto.BrandDTO;
 import com.fxz.mall.product.entity.Brand;
 import com.fxz.mall.product.mapper.BrandMapper;
 import com.fxz.mall.product.service.BrandService;
@@ -33,9 +33,9 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
 	 * 添加
 	 */
 	@Override
-	public Boolean addBrand(BrandDto brandDto) {
+	public Boolean addBrand(BrandDTO brandDTO) {
 		Brand brand = new Brand();
-		BeanUtils.copyProperties(brandDto, brand);
+		BeanUtils.copyProperties(brandDTO, brand);
 		brandMapper.insert(brand);
 		return Boolean.TRUE;
 	}
@@ -44,9 +44,9 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
 	 * 修改
 	 */
 	@Override
-	public Boolean updateBrand(BrandDto brandDto) {
+	public Boolean updateBrand(BrandDTO brandDTO) {
 		Brand brand = new Brand();
-		BeanUtils.copyProperties(brandDto, brand);
+		BeanUtils.copyProperties(brandDTO, brand);
 		brandMapper.updateById(brand);
 		return Boolean.TRUE;
 	}

@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
-public class AddressDto extends BaseEntity {
+public class AddressDTO extends BaseEntity {
 
 	private static final long serialVersionUID = -1L;
 

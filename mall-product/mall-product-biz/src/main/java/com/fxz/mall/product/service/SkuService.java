@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fxz.mall.product.dto.CheckPriceDTO;
 import com.fxz.mall.product.dto.LockStockDTO;
-import com.fxz.mall.product.dto.SkuDto;
+import com.fxz.mall.product.dto.SkuDTO;
 import com.fxz.mall.product.dto.SkuInfoDTO;
 import com.fxz.mall.product.entity.Sku;
 
@@ -22,12 +22,12 @@ public interface SkuService extends IService<Sku> {
 	/**
 	 * 添加
 	 */
-	Boolean addSku(SkuDto skuDto);
+	Boolean addSku(SkuDTO skuDTO);
 
 	/**
 	 * 修改
 	 */
-	Boolean updateSku(SkuDto skuDto);
+	Boolean updateSku(SkuDTO skuDTO);
 
 	/**
 	 * 分页
@@ -56,7 +56,7 @@ public interface SkuService extends IService<Sku> {
 
 	/**
 	 * 商品验价
-	 * @param checkPriceDTO 校验价格dto
+	 * @param checkPriceDTO 校验价格DTO
 	 * @return 价格是否相同
 	 */
 	Boolean checkPrice(CheckPriceDTO checkPriceDTO);

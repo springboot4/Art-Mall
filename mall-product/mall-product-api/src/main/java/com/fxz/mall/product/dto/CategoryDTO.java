@@ -5,39 +5,31 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.util.List;
-
 /**
- * 商品库存表
+ * 商品分类表
  *
  * @author fxz
- * @date 2022-05-06
+ * @date 2022-05-04
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
-public class SkuDto extends BaseEntity {
+public class CategoryDTO extends BaseEntity {
 
 	private static final long serialVersionUID = -1L;
 
 	private Long id;
 
-	private String skuSn;
-
-	private Long spuId;
-
 	private String name;
 
-	private Long price;
+	private Long parentId;
 
-	private Integer stockNum;
+	private Integer level;
 
-	private Integer lockedStockNum;
+	private String iconUrl;
 
-	private String picUrl;
+	private Integer sort;
 
-	private List<AttributeValueDto> specValList;
-
-	private String promotionMapJson;
+	private Integer visible;
 
 }

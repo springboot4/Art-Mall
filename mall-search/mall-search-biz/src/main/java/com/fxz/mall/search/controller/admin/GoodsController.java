@@ -1,7 +1,7 @@
 package com.fxz.mall.search.controller.admin;
 
 import com.fxz.common.mp.result.Result;
-import com.fxz.mall.product.vo.GoodsVo;
+import com.fxz.mall.product.vo.GoodsVO;
 import com.fxz.mall.search.entity.EsPage;
 import com.fxz.mall.search.service.GoodsService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class GoodsController {
 	 * pc端es分页查询商品信息
 	 */
 	@GetMapping("/page")
-	public Result<EsPage<GoodsVo>> page(Long current, Long pageSize, Long categoryId, String name) {
+	public Result<EsPage<GoodsVO>> page(Long current, Long pageSize, Long categoryId, String name) {
 		return Result.success(goodsService.pageGoods(current, pageSize, name, categoryId));
 	}
 

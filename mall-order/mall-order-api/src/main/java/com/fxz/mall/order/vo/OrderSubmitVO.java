@@ -8,7 +8,7 @@ import lombok.Data;
  * @date 2022/5/15 09:19
  */
 @Data
-public class OrderSubmitVo {
+public class OrderSubmitVO {
 
 	/**
 	 * 订单ID

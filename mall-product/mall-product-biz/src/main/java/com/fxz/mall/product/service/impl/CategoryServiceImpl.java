@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fxz.common.core.serializer.ImgUrlSerialize;
-import com.fxz.mall.product.dto.CategoryDto;
+import com.fxz.mall.product.dto.CategoryDTO;
 import com.fxz.mall.product.entity.Category;
 import com.fxz.mall.product.mapper.CategoryMapper;
 import com.fxz.mall.product.service.CategoryService;
@@ -46,9 +46,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
 	 * 添加
 	 */
 	@Override
-	public Boolean addCategory(CategoryDto categoryDto) {
+	public Boolean addCategory(CategoryDTO categoryDTO) {
 		Category category = new Category();
-		BeanUtils.copyProperties(categoryDto, category);
+		BeanUtils.copyProperties(categoryDTO, category);
 		categoryMapper.insert(category);
 		return Boolean.TRUE;
 	}
@@ -57,9 +57,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
 	 * 修改
 	 */
 	@Override
-	public Boolean updateCategory(CategoryDto categoryDto) {
+	public Boolean updateCategory(CategoryDTO categoryDTO) {
 		Category category = new Category();
-		BeanUtils.copyProperties(categoryDto, category);
+		BeanUtils.copyProperties(categoryDTO, category);
 		categoryMapper.updateById(category);
 		return Boolean.TRUE;
 	}
@@ -124,9 +124,10 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
 
 			// 扩展属性
 			Map<String, Object> extra = new HashMap<>();
-			extra.put("iconUrl", imgUrlSerialize.buildString(category.getIconUrl()));
-			extra.put("visible", category.getVisible());
-			extra.put("level", category.getLevel());
+			extra.put(Category.Fields.iconUrl, imgUrlSerialize.buildString(category.getIconUrl()));
+			extra.put(Category.Fields.visible, category.getVisible());
+			extra.put(Category.Fields.level, category.getLevel());
+
 			Map<String, String> map = Maps.newHashMap();
 			map.put("title", "custom");
 			extra.put("scopedSlots", map);

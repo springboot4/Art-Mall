@@ -1,7 +1,7 @@
 package com.fxz.mall.search.dto;
 
-import com.fxz.mall.product.dto.AttributeValueDto;
-import com.fxz.mall.product.dto.SkuDto;
+import com.fxz.mall.product.dto.AttributeValueDTO;
+import com.fxz.mall.product.dto.SkuDTO;
 import lombok.Data;
 import lombok.experimental.FieldNameConstants;
 
@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Data
 @FieldNameConstants
-public class EsGoodsDto {
+public class EsGoodsDTO {
 
 	private Long id;
 
@@ -40,8 +40,8 @@ public class EsGoodsDto {
 
 	private String detail;
 
-	private List<AttributeValueDto> attrList;
+	private List<AttributeValueDTO> attrList;
 
-	private List<SkuDto> skuList;
+	private List<SkuDTO> skuList;
 
 }

@@ -4,13 +4,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fxz.common.core.enums.IBaseEnum;
 import com.fxz.common.mp.result.PageResult;
 import com.fxz.common.mp.result.Result;
-import com.fxz.mall.order.dto.OrderSubmitDto;
+import com.fxz.mall.order.dto.OrderSubmitDTO;
 import com.fxz.mall.order.enums.PayTypeEnum;
 import com.fxz.mall.order.query.OrderPageQuery;
 import com.fxz.mall.order.service.impl.OrderServiceImpl;
-import com.fxz.mall.order.vo.OrderConfirmVo;
+import com.fxz.mall.order.vo.OrderConfirmVO;
 import com.fxz.mall.order.vo.OrderPageVO;
-import com.fxz.mall.order.vo.OrderSubmitVo;
+import com.fxz.mall.order.vo.OrderSubmitVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +34,7 @@ public class OrderController {
 	 * @return OrderConfirmVO
 	 */
 	@PostMapping("/confirm")
-	public Result<OrderConfirmVo> confirm(@RequestParam(required = false) Long skuId) {
+	public Result<OrderConfirmVO> confirm(@RequestParam(required = false) Long skuId) {
 		return Result.success(orderService.confirm(skuId));
 	}
 
@@ -42,8 +42,8 @@ public class OrderController {
 	 * 订单提交
 	 */
 	@PostMapping("/submit")
-	public Result<OrderSubmitVo> submit(@RequestBody OrderSubmitDto orderSubmitDto) {
-		return Result.success(orderService.submit(orderSubmitDto));
+	public Result<OrderSubmitVO> submit(@RequestBody OrderSubmitDTO orderSubmitDTO) {
+		return Result.success(orderService.submit(orderSubmitDTO));
 	}
 
 	/**

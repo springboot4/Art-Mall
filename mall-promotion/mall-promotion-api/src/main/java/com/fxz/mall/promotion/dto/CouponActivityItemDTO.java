@@ -1,4 +1,4 @@
-package com.fxz.mall.product.dto;
+package com.fxz.mall.promotion.dto;
 
 import com.fxz.common.mp.base.BaseEntity;
 import lombok.Data;
@@ -6,30 +6,26 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
- * 商品分类表
+ * 优惠券活动项
  *
  * @author fxz
- * @date 2022-05-04
+ * @date 2022-08-27
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
-public class CategoryDto extends BaseEntity {
+public class CouponActivityItemDTO extends BaseEntity {
 
 	private static final long serialVersionUID = -1L;
 
 	private Long id;
 
-	private String name;
+	private Long activityId;
 
-	private Long parentId;
+	private Long couponId;
 
-	private Integer level;
+	private Integer num;
 
-	private String iconUrl;
-
-	private Integer sort;
-
-	private Integer visible;
+	private Integer deleteFlag;
 
 }
