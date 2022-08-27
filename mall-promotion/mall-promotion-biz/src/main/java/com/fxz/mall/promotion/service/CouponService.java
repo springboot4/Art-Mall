@@ -1,12 +1,10 @@
 package com.fxz.mall.promotion.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.fxz.mall.promotion.dto.CouponDTO;
 import com.fxz.mall.promotion.entity.Coupon;
+import com.fxz.mall.promotion.vo.CouponVO;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 /**
  * 优惠券
@@ -17,33 +15,33 @@ import java.util.List;
 public interface CouponService extends IService<Coupon> {
 
 	/**
-	 * 添加
+	 * 新增优惠券
 	 */
-	Boolean addCoupon(CouponDTO CouponDTO);
+	Boolean addCoupon(CouponVO couponVO);
 
 	/**
-	 * 修改
+	 * 检验优惠券促销时间合法性
 	 */
-	Boolean updateCoupon(CouponDTO CouponDTO);
+	void checkPromotionsTime(LocalDateTime startTime, LocalDateTime endTime);
 
 	/**
-	 * 分页
+	 * 检验优惠券基础信息合法性
 	 */
-	IPage<Coupon> pageCoupon(Page<Coupon> pageParam, Coupon coupon);
+	void checkCouponInfo(Coupon coupon);
 
 	/**
-	 * 获取单条
+	 * 检验优惠券促销范围合法性
 	 */
-	Coupon findById(Long id);
+	void checkCouponScope(CouponVO coupon);
 
 	/**
-	 * 获取全部
+	 * 检验指定商品信息
 	 */
-	List<Coupon> findAll();
+	void checkCouponPortionGoods(CouponVO coupon);
 
 	/**
-	 * 删除
+	 * 更新促销商品信息
 	 */
-	Boolean deleteCoupon(Long id);
+	void updatePromotionsGoods(CouponVO couponVO);
 
 }

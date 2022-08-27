@@ -5,24 +5,24 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 促销活动类型枚举
+ * 优惠券减免类型枚举
  *
  * @author Fxz
  * @version 1.0
- * @date 2022/8/9 22:52
+ * @date 2022/8/27 12:55
  */
 @AllArgsConstructor
-public enum PromotionTypeEnum implements IBaseEnum<String> {
+public enum CouponTypeEnum implements IBaseEnum<String> {
 
 	/**
-	 * 秒杀
+	 * 优惠券减免类型为:折扣
 	 */
-	SECKILL("seckill", "秒杀"),
+	DISCOUNT("discount", "折扣"),
 
 	/**
-	 * 优惠券
+	 * 优惠券减免类型为:减免现金
 	 */
-	COUPON("coupon", "优惠券");
+	CASH("cash", "减免现金");
 
 	@Getter
 	private final String value;

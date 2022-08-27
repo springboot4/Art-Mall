@@ -1,5 +1,8 @@
 package com.fxz.mall.promotion.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fxz.common.mp.base.BaseEntity;
 import lombok.Data;
@@ -25,6 +28,7 @@ public class CouponActivity extends BaseEntity {
 	/**
 	 * id主键
 	 */
+	@TableId(type = IdType.ASSIGN_ID)
 	private Long id;
 
 	/**
@@ -53,23 +57,28 @@ public class CouponActivity extends BaseEntity {
 	private String scopeType;
 
 	/**
-	 * 活动范围
-	 */
-	private String activityScope;
-
-	/**
-	 * 活动范围详情
-	 */
-	private String activityScopeInfo;
-
-	/**
 	 * 优惠券活动类型
+	 *
+	 * @see com.fxz.mall.promotion.enums.CouponActivityTypeEnum
 	 */
 	private String couponActivityType;
 
 	/**
+	 * 活动范围详情,只有精准发券使用
+	 */
+	private String activityScopeInfo;
+
+	/**
+	 * 优惠券发放范围（新人注册赠券不用选择此发放范围）
+	 *
+	 * @see com.fxz.mall.promotion.enums.CouponActivitySendTypeEnum
+	 */
+	private String activityScope;
+
+	/**
 	 * 删除标志
 	 */
+	@TableLogic
 	private Integer deleteFlag;
 
 }

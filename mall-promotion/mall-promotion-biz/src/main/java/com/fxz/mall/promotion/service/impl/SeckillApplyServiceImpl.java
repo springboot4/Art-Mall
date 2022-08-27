@@ -14,6 +14,7 @@ import com.fxz.mall.promotion.entity.Seckill;
 import com.fxz.mall.promotion.entity.SeckillApply;
 import com.fxz.mall.promotion.enums.PromotionTypeEnum;
 import com.fxz.mall.promotion.enums.PromotionsApplyStatusEnum;
+import com.fxz.mall.promotion.enums.PromotionsScopeTypeEnum;
 import com.fxz.mall.promotion.mapper.SeckillApplyMapper;
 import com.fxz.mall.promotion.service.PromotionGoodsService;
 import com.fxz.mall.promotion.service.SeckillApplyService;
@@ -269,7 +270,7 @@ public class SeckillApplyServiceImpl extends ServiceImpl<SeckillApplyMapper, Sec
 				LocalTime.of(applyVO.getTimeLine(), 0));
 
 		// 查询是否在同一时间段参与了秒杀活动活动
-		if (promotionGoodsService.findInnerOverlapPromotionGoods(PromotionTypeEnum.SECKILL.name(),
+		if (promotionGoodsService.findInnerOverlapPromotionGoods(PromotionTypeEnum.SECKILL.getValue(),
 				skuInfoDTO.getSkuId(), startTime, seckill.getEndTime(), seckill.getId()) > 0) {
 			throw new FxzException("商品[" + skuInfoDTO.getSkuName() + "]已经在重叠的时间段参加了秒杀活动，不能参加秒杀活动活动");
 		}
@@ -316,7 +317,7 @@ public class SeckillApplyServiceImpl extends ServiceImpl<SeckillApplyMapper, Sec
 	private PromotionGoods createSeckillGoods(SkuInfoDTO skuInfo, SeckillApply applie, Seckill seckill) {
 		// 促销商品默认信息
 		PromotionGoods promotionGoods = new PromotionGoods(skuInfo);
-		promotionGoods.setPromotionId(seckill.getId());
+		promotionGoods.setPromotionId(applie.getId());
 		promotionGoods.setLimitNum(applie.getQuantity());
 		promotionGoods.setNum(0);
 		promotionGoods.setTitle(seckill.getPromotionName());
@@ -326,6 +327,7 @@ public class SeckillApplyServiceImpl extends ServiceImpl<SeckillApplyMapper, Sec
 		promotionGoods.setTitle(seckill.getPromotionName());
 		promotionGoods.setStartTime(seckill.getStartTime().withHour(applie.getTimeLine()));
 		promotionGoods.setEndTime(seckill.getEndTime());
+		promotionGoods.setScopeType(PromotionsScopeTypeEnum.PORTION_GOODS.getValue());
 		return promotionGoods;
 	}
 

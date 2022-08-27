@@ -39,6 +39,9 @@ public class SkuDTO extends BaseEntity {
 
 	private List<AttributeValueDTO> specValList;
 
+	/**
+	 * 商品促销活动json
+	 */
 	private String promotionMapJson;
 
 }

@@ -5,24 +5,24 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 促销活动类型枚举
+ * 优惠券使用时间类型
  *
  * @author Fxz
  * @version 1.0
- * @date 2022/8/9 22:52
+ * @date 2022/8/27 13:09
  */
 @AllArgsConstructor
-public enum PromotionTypeEnum implements IBaseEnum<String> {
+public enum CouponRangeDayEnum implements IBaseEnum<String> {
 
 	/**
-	 * 秒杀
+	 * 固定时间
 	 */
-	SECKILL("seckill", "秒杀"),
+	FIXEDTIME("fixedtime", "固定时间"),
 
 	/**
-	 * 优惠券
+	 * 动态时间
 	 */
-	COUPON("coupon", "优惠券");
+	DYNAMICTIME("dynamictime", "动态时间");
 
 	@Getter
 	private final String value;

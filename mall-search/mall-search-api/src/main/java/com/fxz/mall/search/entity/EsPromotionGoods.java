@@ -1,10 +1,9 @@
 package com.fxz.mall.search.entity;
 
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.fxz.common.canal.annotation.CanalModel;
 import com.fxz.common.canal.common.FieldNamingPolicy;
-import com.fxz.common.core.serializer.ImgUrl;
 import com.fxz.common.mp.base.BaseEntity;
+import com.fxz.mall.promotion.enums.PromotionsScopeTypeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -103,6 +102,18 @@ public class EsPromotionGoods extends BaseEntity {
 	 * 分类路径
 	 */
 	private String categoryPath;
+
+	/**
+	 * 关联范围类型
+	 *
+	 * @see PromotionsScopeTypeEnum
+	 */
+	private String scopeType = PromotionsScopeTypeEnum.PORTION_GOODS.getValue();
+
+	/**
+	 * 范围关联的id
+	 */
+	private String scopeId;
 
 	/**
 	 * 删除标志

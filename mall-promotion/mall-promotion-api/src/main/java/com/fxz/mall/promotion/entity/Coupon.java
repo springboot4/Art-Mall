@@ -1,12 +1,14 @@
 package com.fxz.mall.promotion.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fxz.common.mp.base.BaseEntity;
+import com.fxz.mall.promotion.enums.CouponRangeDayEnum;
+import com.fxz.mall.promotion.enums.PromotionsStatusEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-
-import java.time.LocalDateTime;
 
 /**
  * 优惠券
@@ -18,29 +20,20 @@ import java.time.LocalDateTime;
 @TableName("coupon")
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class Coupon extends BaseEntity {
+public class Coupon extends BasePromotions {
 
 	private static final long serialVersionUID = -1L;
 
 	/**
 	 * ID
 	 */
+	@TableId(type = IdType.ASSIGN_ID)
 	private Long id;
 
 	/**
-	 * 活动名称
+	 * 活动描述
 	 */
-	private String promotionName;
-
-	/**
-	 * 活动开始时间
-	 */
-	private LocalDateTime startTime;
-
-	/**
-	 * 活动结束时间
-	 */
-	private LocalDateTime endTime;
+	private String description;
 
 	/**
 	 * 优惠券名称
@@ -48,7 +41,26 @@ public class Coupon extends BaseEntity {
 	private String couponName;
 
 	/**
-	 * 优惠券类型
+	 * 优惠券减免类型
+	 *
+	 * @see com.fxz.mall.promotion.enums.CouponTypeEnum
+	 */
+	private String couponType;
+
+	/**
+	 * 优惠券减免类型为:折扣时不为null
+	 */
+	private Double couponDiscount;
+
+	/**
+	 * 优惠券减免类型为:减免现金时不为null
+	 */
+	private Double price;
+
+	/**
+	 * 优惠券的获取方式
+	 *
+	 * @see com.fxz.mall.promotion.enums.CouponGetEnum
 	 */
 	private String getType;
 
@@ -58,57 +70,29 @@ public class Coupon extends BaseEntity {
 	private Double consumeThreshold;
 
 	/**
-	 * 折扣
-	 */
-	private Double couponDiscount;
-
-	/**
-	 * 领取限制
+	 * 每个用户领取限制数量
 	 */
 	private Integer couponLimitNum;
 
 	/**
-	 * 活动类型
-	 */
-	private String couponType;
-
-	/**
-	 * 活动描述
-	 */
-	private String description;
-
-	/**
-	 * 面额
-	 */
-	private Double price;
-
-	/**
-	 * 发行数量
+	 * 优惠券发行数量
 	 */
 	private Integer publishNum;
 
 	/**
-	 * 已被领取的数量
+	 * 优惠券已被领取的数量
 	 */
 	private Integer receivedNum;
 
 	/**
-	 * 范围关联的ID
-	 */
-	private String scopeId;
-
-	/**
-	 * 关联范围类型
-	 */
-	private String scopeType;
-
-	/**
-	 * 已被使用的数量
+	 * 优惠券已被使用的数量
 	 */
 	private Integer usedNum;
 
 	/**
-	 * 时间范围类型(固定时间、动态时间)
+	 * 优惠券使用时间类型(固定时间、动态时间)
+	 *
+	 * @see com.fxz.mall.promotion.enums.CouponRangeDayEnum
 	 */
 	private String rangeDayType;
 
@@ -120,6 +104,19 @@ public class Coupon extends BaseEntity {
 	/**
 	 * 删除标志
 	 */
+	@TableLogic
 	private Integer deleteFlag;
+
+	@Override
+	public String getPromotionStatus() {
+		// 如果是优惠券动态时间类型并且优惠券有效期没有过，那么说明这是用户新注册是获得的券，尚未使用
+		boolean register = this.rangeDayType != null && this.rangeDayType.equals(CouponRangeDayEnum.DYNAMICTIME.getValue())
+				&& (this.effectiveDays != null && this.effectiveDays > 0 && this.effectiveDays <= 365);
+		if (register) {
+			return PromotionsStatusEnum.START.getValue();
+		}
+
+		return super.getPromotionStatus();
+	}
 
 }

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fxz.common.mp.base.BaseEntity;
 import com.fxz.mall.product.dto.SkuInfoDTO;
+import com.fxz.mall.promotion.enums.PromotionsScopeTypeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -106,10 +107,22 @@ public class PromotionGoods extends BaseEntity {
 	private String categoryPath;
 
 	/**
+	 * 关联范围类型
+	 *
+	 * @see PromotionsScopeTypeEnum
+	 */
+	private String scopeType = PromotionsScopeTypeEnum.PORTION_GOODS.getValue();
+
+	/**
+	 * 范围关联的id
+	 */
+	private String scopeId;
+
+	/**
 	 * 删除标志
 	 */
 	@TableLogic
-	private Boolean deleteFlag;
+	private Integer deleteFlag;
 
 	public PromotionGoods(SkuInfoDTO skuInfoDTO) {
 		this.goodsName = skuInfoDTO.getSpuName();

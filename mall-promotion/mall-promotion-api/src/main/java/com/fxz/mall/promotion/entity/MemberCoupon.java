@@ -1,5 +1,8 @@
 package com.fxz.mall.promotion.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fxz.common.mp.base.BaseEntity;
 import lombok.Data;
@@ -25,6 +28,7 @@ public class MemberCoupon extends BaseEntity {
 	/**
 	 * ID
 	 */
+	@TableId(type = IdType.ASSIGN_ID)
 	private Long id;
 
 	/**
@@ -100,6 +104,7 @@ public class MemberCoupon extends BaseEntity {
 	/**
 	 * 删除标志
 	 */
+	@TableLogic
 	private Integer deleteFlag;
 
 }

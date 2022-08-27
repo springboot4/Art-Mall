@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fxz.common.mp.base.BaseEntity;
 import com.fxz.mall.promotion.VO.SeckillVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,7 +22,7 @@ import java.time.LocalTime;
 @TableName("seckill")
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class Seckill extends BaseEntity {
+public class Seckill extends BasePromotions {
 
 	private static final long serialVersionUID = -1L;
 
@@ -32,21 +31,6 @@ public class Seckill extends BaseEntity {
 	 */
 	@TableId(type = IdType.ASSIGN_ID)
 	private Long id;
-
-	/**
-	 * 活动结束时间
-	 */
-	private LocalDateTime endTime;
-
-	/**
-	 * 活动名称
-	 */
-	private String promotionName;
-
-	/**
-	 * 活动开始时间
-	 */
-	private LocalDateTime startTime;
 
 	/**
 	 * 报名截至时间
@@ -72,7 +56,7 @@ public class Seckill extends BaseEntity {
 	 * 删除标志
 	 */
 	@TableLogic
-	private Boolean deleteFlag;
+	private Integer deleteFlag;
 
 	/**
 	 * 默认创建day天后的秒杀活动
@@ -95,11 +79,11 @@ public class Seckill extends BaseEntity {
 		// 参与商品数量
 		this.goodsNum = 0;
 		// 活动开始时间
-		this.startTime = LocalDateTime.of(localDateTime.toLocalDate(), LocalTime.of(0, 0, 0));
+		this.setStartTime(LocalDateTime.of(localDateTime.toLocalDate(), LocalTime.of(0, 0, 0)));
 		// 活动结束时间
-		this.endTime = LocalDateTime.of(localDateTime.toLocalDate(), LocalTime.of(23, 59, 59));
+		this.setEndTime(LocalDateTime.of(localDateTime.toLocalDate(), LocalTime.of(23, 59, 59)));
 		// 活动名称
-		this.promotionName = localDateTime.format(DatePattern.NORM_DATE_FORMATTER) + " 秒杀活动";
+		this.setPromotionName(localDateTime.format(DatePattern.NORM_DATE_FORMATTER) + " 秒杀活动");
 	}
 
 	public Seckill(SeckillVO seckillVO) {
