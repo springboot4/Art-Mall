@@ -122,7 +122,7 @@ public class MemberCoupon extends BaseEntity {
 		setGetType(coupon.getGetType());
 
 		setStartTime(Objects.isNull(coupon.getStartTime()) ? LocalDateTime.now() : coupon.getStartTime());
-		if (coupon.getRangeDayType().equals(CouponRangeDayEnum.FIXEDTIME.name())) {
+		if (coupon.getRangeDayType().equals(CouponRangeDayEnum.FIXEDTIME.getValue())) {
 			setEndTime(coupon.getEndTime());
 		}
 		else {
