@@ -1,6 +1,8 @@
 package com.fxz.mall.member.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -15,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author fxz
@@ -130,6 +133,17 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 	@Override
 	public Member loadUserByUserId(Long id) {
 		return this.getOne(Wrappers.<Member>lambdaQuery().eq(Member::getId, id));
+	}
+
+	/**
+	 * 根据会员id获取会员指定列信息
+	 * @param columns 列信息
+	 * @param ids 会员id集合
+	 */
+	@Override
+	public List<Map<String, Object>> listMemberMap(String columns, List<Long> ids) {
+		return this.listMaps(
+				new QueryWrapper<Member>().select(columns).in(CollectionUtils.isNotEmpty(ids), Member.Fields.id, ids));
 	}
 
 }

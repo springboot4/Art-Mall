@@ -1,14 +1,11 @@
 package com.fxz.mall.promotion.entity;
 
 import com.fxz.common.mp.base.BaseEntity;
-import com.fxz.mall.promotion.enums.CouponRangeDayEnum;
-import com.fxz.mall.promotion.enums.PromotionsScopeTypeEnum;
 import com.fxz.mall.promotion.enums.PromotionsStatusEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * 促销活动顶级父类

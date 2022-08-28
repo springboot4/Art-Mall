@@ -7,6 +7,7 @@ import com.fxz.mall.member.dto.MemberDTO;
 import com.fxz.mall.member.entity.Member;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author fxz
@@ -76,5 +77,12 @@ public interface MemberService extends IService<Member> {
 	 * @return 会员信息
 	 */
 	Member loadUserByUserId(Long id);
+
+	/**
+	 * 根据会员id获取会员指定列信息
+	 * @param columns 列信息
+	 * @param ids 会员id集合
+	 */
+	List<Map<String, Object>> listMemberMap(String columns, List<Long> ids);
 
 }

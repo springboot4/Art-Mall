@@ -7,6 +7,9 @@ import com.fxz.mall.member.entity.Member;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Fxz
  * @version 1.0
@@ -59,5 +62,14 @@ public interface RemoteMemberService {
 	 */
 	@PostMapping("/member/add")
 	Result<Boolean> addMember(@RequestBody Member member, @RequestHeader(SecurityConstants.FROM) String form);
+
+	/**
+	 * 根据会员id获取会员指定列信息
+	 * @param columns 列信息
+	 * @param ids 会员id集合
+	 */
+	@GetMapping("/member/listMemberMap")
+	Result<List<Map<String, Object>>> listMemberMap(@RequestParam("columns") String columns,
+			@RequestParam("ids") List<Long> ids);
 
 }

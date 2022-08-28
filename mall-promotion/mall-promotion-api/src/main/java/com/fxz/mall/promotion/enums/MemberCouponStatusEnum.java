@@ -5,24 +5,34 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 优惠券的获取方式枚举
+ * 会员优惠券的状态
  *
  * @author Fxz
  * @version 1.0
- * @date 2022/8/27 13:04
+ * @date 2022/8/28 20:18
  */
 @AllArgsConstructor
-public enum CouponGetEnum implements IBaseEnum<String> {
+public enum MemberCouponStatusEnum implements IBaseEnum<String> {
 
 	/**
-	 * 优惠券的获取方式:直接领取
+	 * 领取
 	 */
-	FREE("free", "直接领取"),
+	RECEIVE("receive", "领取"),
 
 	/**
-	 * 优惠券的获取方式:活动获取(我们创建券活动发放)
+	 * 已使用
 	 */
-	ACTIVITY("activity", "活动获取");
+	USED("used", "已使用"),
+
+	/**
+	 * 过期
+	 */
+	EXPIRE("expire", "过期"),
+
+	/**
+	 * 作废
+	 */
+	CLOSED("closed", "作废");
 
 	@Getter
 	private final String value;

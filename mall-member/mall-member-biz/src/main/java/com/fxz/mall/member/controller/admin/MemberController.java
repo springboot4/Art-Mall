@@ -12,6 +12,9 @@ import com.fxz.mall.member.service.impl.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Fxz
  * @version 1.0
@@ -101,6 +104,18 @@ public class MemberController {
 	@PostMapping("/add")
 	public Result<Boolean> addMember(@RequestBody Member member) {
 		return Result.success(memberService.addMember(member));
+	}
+
+	/**
+	 * 根据会员id获取会员指定列信息
+	 * @param columns 列信息
+	 * @param ids 会员id集合
+	 */
+	@Ojbk
+	@GetMapping("/listMemberMap")
+	public Result<List<Map<String, Object>>> listMemberMap(@RequestParam(value = "columns") String columns,
+			@RequestParam(value = "ids", required = false) List<Long> ids) {
+		return Result.success(memberService.listMemberMap(columns, ids));
 	}
 
 }

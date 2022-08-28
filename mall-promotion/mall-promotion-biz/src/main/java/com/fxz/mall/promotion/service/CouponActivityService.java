@@ -1,12 +1,13 @@
 package com.fxz.mall.promotion.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fxz.mall.promotion.dto.CouponActivityDTO;
 import com.fxz.mall.promotion.entity.CouponActivity;
+import com.fxz.mall.promotion.entity.CouponActivityItem;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 优惠券活动
@@ -17,33 +18,53 @@ import java.util.List;
 public interface CouponActivityService extends IService<CouponActivity> {
 
 	/**
-	 * 添加
+	 * 添加优惠券活动
+	 * @param couponActivity 优惠券活动
 	 */
-	Boolean addActivity(CouponActivityDTO CouponActivityDTO);
+	void saveCouponActivity(CouponActivityDTO couponActivity);
 
 	/**
-	 * 修改
+	 * 初始化优惠券活动
+	 * @param couponActivity 优惠券活动
 	 */
-	Boolean updateActivity(CouponActivityDTO CouponActivityDTO);
+	void initCouponActivity(CouponActivityDTO couponActivity);
 
 	/**
-	 * 分页
+	 * 检验优惠券活动的合法性
+	 * @param couponActivity 优惠券活动
 	 */
-	IPage<CouponActivity> pageActivity(Page<CouponActivity> pageParam, CouponActivity couponActivity);
+	void checkCouponActivity(CouponActivityDTO couponActivity);
 
 	/**
-	 * 获取单条
+	 * 检验优惠券活动时间的合法性
+	 * @param startTime 活动开始时间
+	 * @param endTime 活动结束时间
 	 */
-	CouponActivity findById(Long id);
+	void checkPromotionsTime(LocalDateTime startTime, LocalDateTime endTime);
 
 	/**
-	 * 获取全部
+	 * 检验优惠券项
+	 * @param couponActivityItems 优惠券项
 	 */
-	List<CouponActivity> findAll();
+	void checkCouponActivityItem(List<CouponActivityItem> couponActivityItems);
 
 	/**
-	 * 删除
+	 * 保存优惠券活动项
+	 * @param couponActivity 优惠券活动
 	 */
-	Boolean deleteActivity(Long id);
+	void updatePromotionsGoods(CouponActivityDTO couponActivity);
+
+	/**
+	 * 根据活动id发放优惠券
+	 * @param id 优惠券活动
+	 */
+	void activitySend(Long id);
+
+	/**
+	 * 根据优惠券活动信息获取会员信息
+	 * @param activity 优惠券活动信息
+	 * @return 会员信息
+	 */
+	List<Map<String, Object>> getMemberList(CouponActivity activity);
 
 }

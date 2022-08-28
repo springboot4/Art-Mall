@@ -257,6 +257,22 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
 	}
 
 	/**
+	 * 领取优惠券
+	 * @param couponId 优惠券id
+	 * @param receiveNum 领取数量
+	 */
+	@Override
+	public void receiveCoupon(Long couponId, Integer receiveNum) {
+		Coupon coupon = this.getById(couponId);
+		if (Objects.isNull(coupon)) {
+			throw new FxzException("优惠券不存在！");
+		}
+
+		this.update(Wrappers.<Coupon>lambdaUpdate().set(Coupon::getReceivedNum, coupon.getReceivedNum() + receiveNum)
+				.eq(Coupon::getId, couponId));
+	}
+
+	/**
 	 * 构建促销商品
 	 */
 	private List<PromotionGoods> createPromotionGoods(CouponVO couponVO) {

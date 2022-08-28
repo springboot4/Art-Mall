@@ -73,4 +73,11 @@ public interface CouponService extends IService<Coupon> {
 
 	void checkStatus(CouponVO couponVO);
 
+	/**
+	 * 领取优惠券
+	 * @param couponId 优惠券id
+	 * @param receiveNum 领取数量
+	 */
+	void receiveCoupon(Long couponId, Integer receiveNum);
+
 }
