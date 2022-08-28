@@ -67,4 +67,10 @@ public interface CouponActivityService extends IService<CouponActivity> {
 	 */
 	List<Map<String, Object>> getMemberList(CouponActivity activity);
 
+	/**
+	 * 关闭券活动
+	 * @param id 券活动id
+	 */
+	void closeCouponActivity(Long id);
+
 }

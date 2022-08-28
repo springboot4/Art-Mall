@@ -4,6 +4,7 @@ import cn.hutool.core.text.StrPool;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fxz.common.core.exception.FxzException;
 import com.fxz.common.jackson.util.JacksonUtil;
@@ -258,6 +259,21 @@ public class CouponActivityServiceImpl extends ServiceImpl<CouponActivityMapper,
 
 		return remoteMemberService.listMemberMap(
 				Member.Fields.id + StrPool.COMMA + StringUtils.camelToUnderline(Member.Fields.nickName), ids).getData();
+	}
+
+	/**
+	 * 关闭券活动
+	 * @param id 券活动id
+	 */
+	@Override
+	public void closeCouponActivity(Long id) {
+		CouponActivity activity = this.getById(id);
+		if (Objects.isNull(activity)) {
+			throw new FxzException("当前活动不存在!");
+		}
+
+		this.update(Wrappers.<CouponActivity>lambdaUpdate().eq(CouponActivity::getId, id)
+				.set(CouponActivity::getStartTime, null).set(CouponActivity::getEndTime, null));
 	}
 
 }
