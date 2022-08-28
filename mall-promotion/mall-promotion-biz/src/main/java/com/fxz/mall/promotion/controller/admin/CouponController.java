@@ -30,6 +30,16 @@ public class CouponController {
 	}
 
 	/**
+	 * 更新优惠券
+	 * @param couponVO 优惠券信息
+	 */
+	@Ojbk
+	@PutMapping(value = "/update")
+	public Result<Boolean> updateCoupon(@RequestBody CouponVO couponVO) {
+		return Result.judge(couponService.updateCoupon(couponVO));
+	}
+
+	/**
 	 * 关闭优惠券
 	 * @param id 优惠券id
 	 */
@@ -37,6 +47,16 @@ public class CouponController {
 	@PutMapping(value = "/close/{id}")
 	public Result<Boolean> closeCoupon(@PathVariable("id") Long id) {
 		return Result.judge(couponService.closeCoupon(id));
+	}
+
+	/**
+	 * 查看优惠券信息
+	 * @param id 优惠券id
+	 */
+	@Ojbk
+	@GetMapping(value = "/{id}/info")
+	public Result<CouponVO> couponInfo(@PathVariable("id") Long id) {
+		return Result.success(couponService.couponInfo(id));
 	}
 
 }

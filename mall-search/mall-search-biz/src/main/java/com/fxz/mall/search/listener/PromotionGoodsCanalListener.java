@@ -40,26 +40,7 @@ public class PromotionGoodsCanalListener extends BaseCanalBinlogEventProcessor<E
 	@Override
 	protected void processInsertInternal(CanalBinLogResult<EsPromotionGoods> result) {
 		log.info("新增促销商品信息:{}", result.getAfterData());
-		// 促销商品信息
-		EsPromotionGoods afterData = result.getAfterData();
-		// es促销活动key为促销类型:促销活动id
-		String esPromotionKey = afterData.getPromotionType() + StrPool.DASHED + afterData.getPromotionId();
-
-		if (PromotionsScopeTypeEnum.ALL.getValue().equals(afterData.getScopeType())) {
-			log.info("促销商品活动类型为全品类");
-			// 如果促销活动是全品类，那么我们更新所有sku
-			goodsService.updateEsGoodsIndexAll(afterData, esPromotionKey);
-		}
-		else if (PromotionsScopeTypeEnum.PORTION_GOODS_CATEGORY.getValue().equals(afterData.getScopeType())) {
-			log.info("促销商品活动类型为部分商品分类");
-			// todo 如果促销活动是部分商品分类，那么促销商品信息里面肯定有分类id 我们更新分类下的每个sku
-		}
-		else if (PromotionsScopeTypeEnum.PORTION_GOODS.getValue().equals(afterData.getScopeType())) {
-			log.info("促销商品活动类型为指定商品");
-			// 如果促销活动是指定商品类型,那么促销商品信息里面肯定有skuId 我们更新每个sku
-			goodsService.updateEsGoodsIndexPromotions(afterData, esPromotionKey, afterData.getGoodsId(),
-					Collections.singletonList(afterData.getSkuId()));
-		}
+		this.saveEsPromotionGoods(result.getAfterData());
 	}
 
 	/**
@@ -69,10 +50,8 @@ public class PromotionGoodsCanalListener extends BaseCanalBinlogEventProcessor<E
 	@Override
 	protected void processUpdateInternal(CanalBinLogResult<EsPromotionGoods> result) {
 		log.info("更新促销商品信息:{}", result.getAfterData());
-		EsPromotionGoods afterData = result.getAfterData();
-
 		// 删除了促销活动商品信息
-		if (Objects.equals(1, afterData.getDeleteFlag())) {
+		if (Objects.equals(1, result.getAfterData().getDeleteFlag())) {
 			this.removeEsPromotionGoods(result.getAfterData());
 		}
 	}
@@ -84,15 +63,44 @@ public class PromotionGoodsCanalListener extends BaseCanalBinlogEventProcessor<E
 	@Override
 	protected void processDeleteInternal(CanalBinLogResult<EsPromotionGoods> result) {
 		log.info("删除促销商品信息:{}", result.getBeforeData());
-		this.removeEsPromotionGoods(result.getAfterData());
+		this.removeEsPromotionGoods(result.getBeforeData());
 	}
 
-	protected void removeEsPromotionGoods(EsPromotionGoods esPromotionGoods) {
-		log.info("开始删除促销商品");
-
+	/**
+	 * 保存促销商品信息到es
+	 * @param esPromotionGoods 促销商品信息
+	 */
+	protected void saveEsPromotionGoods(EsPromotionGoods esPromotionGoods) {
 		// es促销活动key为促销类型:促销活动id
 		String esPromotionKey = esPromotionGoods.getPromotionType() + StrPool.DASHED
 				+ esPromotionGoods.getPromotionId();
+
+		if (PromotionsScopeTypeEnum.ALL.getValue().equals(esPromotionGoods.getScopeType())) {
+			log.info("促销商品活动类型为全品类");
+			// 如果促销活动是全品类，那么我们更新所有sku
+			goodsService.updateEsGoodsIndexAll(esPromotionGoods, esPromotionKey);
+		}
+		else if (PromotionsScopeTypeEnum.PORTION_GOODS_CATEGORY.getValue().equals(esPromotionGoods.getScopeType())) {
+			log.info("促销商品活动类型为部分商品分类");
+			// todo 如果促销活动是部分商品分类，那么促销商品信息里面肯定有分类id 我们更新分类下的每个sku
+		}
+		else if (PromotionsScopeTypeEnum.PORTION_GOODS.getValue().equals(esPromotionGoods.getScopeType())) {
+			log.info("促销商品活动类型为指定商品");
+			// 如果促销活动是指定商品类型,那么促销商品信息里面肯定有skuId 我们更新每个sku
+			goodsService.updateEsGoodsIndexPromotions(esPromotionGoods, esPromotionKey, esPromotionGoods.getGoodsId(),
+					Collections.singletonList(esPromotionGoods.getSkuId()));
+		}
+	}
+
+	/**
+	 * 删除es中的促销商品信息
+	 * @param esPromotionGoods 促销商品信息
+	 */
+	protected void removeEsPromotionGoods(EsPromotionGoods esPromotionGoods) {
+		// es促销活动key为促销类型:促销活动id
+		String esPromotionKey = esPromotionGoods.getPromotionType() + StrPool.DASHED
+				+ esPromotionGoods.getPromotionId();
+
 		if (PromotionsScopeTypeEnum.ALL.getValue().equals(esPromotionGoods.getScopeType())) {
 			log.info("促销商品活动类型为全品类");
 			// 如果促销活动是全品类，那么我们更新所有sku

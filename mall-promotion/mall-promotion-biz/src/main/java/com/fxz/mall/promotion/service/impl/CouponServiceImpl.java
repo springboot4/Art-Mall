@@ -16,6 +16,7 @@ import com.fxz.mall.promotion.service.PromotionGoodsService;
 import com.fxz.mall.promotion.vo.CouponVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -64,12 +65,101 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
 	}
 
 	/**
+	 * 更新优惠券
+	 * @param couponVO 优惠券信息
+	 */
+	@Override
+	public Boolean updateCoupon(CouponVO couponVO) {
+		// 检验优惠券是否存在
+		this.checkStatus(couponVO);
+
+		// 检验优惠券基础信息合法性
+		this.checkCouponInfo(couponVO);
+
+		// 检验优惠券促销适用范围
+		this.checkCouponScope(couponVO);
+
+		// 更新优惠券信息
+		this.saveOrUpdate(couponVO);
+
+		// 更新促销商品信息
+		this.updatePromotionsGoods(couponVO);
+
+		return Boolean.TRUE;
+	}
+
+	/**
 	 * 关闭优惠券
 	 * @param id 优惠券id
 	 */
 	@Override
 	public Boolean closeCoupon(Long id) {
 		return this.updateStatus(id, null, null);
+	}
+
+	/**
+	 * 更新优惠券的状态
+	 * @param id 优惠券id
+	 * @param startTime 活动开始时间
+	 * @param endTime 活动结束时间
+	 */
+	@Override
+	public Boolean updateStatus(Long id, LocalDateTime startTime, LocalDateTime endTime) {
+		// 查询数据库中优惠券信息
+		Coupon coupon = this.getById(id);
+		if (Objects.isNull(coupon)) {
+			return Boolean.FALSE;
+		}
+
+		// 根据优惠券id更新促销商品信息
+		CouponVO couponVO = new CouponVO();
+		couponVO.setId(id);
+		couponVO.setStartTime(startTime);
+		couponVO.setEndTime(endTime);
+		this.updatePromotionsGoods(couponVO);
+
+		// 更新优惠券信息
+		return this.update(Wrappers.<Coupon>lambdaUpdate().eq(Coupon::getId, couponVO.getId())
+				.set(Coupon::getStartTime, startTime).set(Coupon::getEndTime, endTime));
+	}
+
+	/**
+	 * 更新促销商品信息
+	 */
+	@Override
+	public void updatePromotionsGoods(CouponVO couponVO) {
+		// 删除促销商品信息
+		promotionGoodsService
+				.remove(Wrappers.<PromotionGoods>lambdaQuery().eq(PromotionGoods::getPromotionId, couponVO.getId()));
+
+		// 如果优惠券的开始和结束时间都是null，我们认为此优惠券过期，删除掉优惠券下所有的促销商品信息
+		if (Objects.isNull(couponVO.getStartTime()) && Objects.isNull(couponVO.getEndTime())) {
+			return;
+		}
+
+		// 如果是全品类或者部分品类 保存品类id
+		if (CharSequenceUtil.equalsAny(couponVO.getScopeType(), PromotionsScopeTypeEnum.ALL.getValue(),
+				PromotionsScopeTypeEnum.PORTION_GOODS_CATEGORY.getValue())) {
+			// 构建促销商品信息
+			PromotionGoods promotionGoods = new PromotionGoods();
+			promotionGoods.setScopeId(couponVO.getScopeId());
+			promotionGoods.setScopeType(couponVO.getScopeType());
+			promotionGoods.setPromotionId(couponVO.getId());
+			promotionGoods.setStartTime(couponVO.getStartTime());
+			promotionGoods.setEndTime(couponVO.getEndTime());
+			promotionGoods.setPromotionType(PromotionTypeEnum.COUPON.getValue());
+			promotionGoods.setTitle(couponVO.getPromotionName());
+
+			// 保存促销商品信息
+			promotionGoodsService.save(promotionGoods);
+		}
+
+		// 如果是指定商品
+		if (!PromotionsStatusEnum.CLOSE.getValue().equals(couponVO.getPromotionStatus())
+				&& PromotionsScopeTypeEnum.PORTION_GOODS.getValue().equals(couponVO.getScopeType())) {
+			// 保存促销商品信息
+			promotionGoodsService.saveBatch(createPromotionGoods(couponVO));
+		}
 	}
 
 	/**
@@ -143,69 +233,27 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
 	}
 
 	/**
-	 * 更新促销商品信息
+	 * 查看优惠券信息
+	 * @param id 优惠券id
+	 * @return 优惠券视图对象
 	 */
 	@Override
-	public void updatePromotionsGoods(CouponVO couponVO) {
-		// 删除促销商品信息
-		promotionGoodsService
-				.remove(Wrappers.<PromotionGoods>lambdaQuery().eq(PromotionGoods::getPromotionId, couponVO.getId()));
-
-		// 如果优惠券的开始和结束时间都是null，我们认为此优惠券过期，删除掉优惠券下所有的促销商品信息
-		if (Objects.isNull(couponVO.getStartTime()) && Objects.isNull(couponVO.getEndTime())) {
-			return;
-		}
-
-		// 如果是全品类或者部分品类 保存品类id
-		if (CharSequenceUtil.equalsAny(couponVO.getScopeType(), PromotionsScopeTypeEnum.ALL.getValue(),
-				PromotionsScopeTypeEnum.PORTION_GOODS_CATEGORY.getValue())) {
-			// 构建促销商品信息
-			PromotionGoods promotionGoods = new PromotionGoods();
-			promotionGoods.setScopeId(couponVO.getScopeId());
-			promotionGoods.setScopeType(couponVO.getScopeType());
-			promotionGoods.setPromotionId(couponVO.getId());
-			promotionGoods.setStartTime(couponVO.getStartTime());
-			promotionGoods.setEndTime(couponVO.getEndTime());
-			promotionGoods.setPromotionType(PromotionTypeEnum.COUPON.getValue());
-			promotionGoods.setTitle(couponVO.getPromotionName());
-
-			// 保存促销商品信息
-			promotionGoodsService.save(promotionGoods);
-		}
-
-		// 如果是指定商品
-		if (!PromotionsStatusEnum.CLOSE.getValue().equals(couponVO.getPromotionStatus())
-				&& PromotionsScopeTypeEnum.PORTION_GOODS.getValue().equals(couponVO.getScopeType())) {
-			// 保存促销商品信息
-			promotionGoodsService.saveBatch(createPromotionGoods(couponVO));
-		}
-
+	public CouponVO couponInfo(Long id) {
+		Coupon coupon = this.getById(id);
+		CouponVO couponVO = new CouponVO();
+		BeanUtils.copyProperties(coupon, couponVO);
+		couponVO.setPromotionGoodsList(this.promotionGoodsService
+				.list(Wrappers.<PromotionGoods>lambdaQuery().eq(PromotionGoods::getPromotionId, id)));
+		return couponVO;
 	}
 
-	/**
-	 * 更新优惠券的状态
-	 * @param id 优惠券id
-	 * @param startTime 活动开始时间
-	 * @param endTime 活动结束时间
-	 */
 	@Override
-	public Boolean updateStatus(Long id, LocalDateTime startTime, LocalDateTime endTime) {
-		// 查询数据库中优惠券信息
-		Coupon coupon = this.getById(id);
+	public void checkStatus(CouponVO couponVO) {
+		// 检验优惠券是否存在
+		Coupon coupon = this.getById(couponVO.getId());
 		if (Objects.isNull(coupon)) {
-			return Boolean.FALSE;
+			throw new FxzException("优惠券信息信息不存在!");
 		}
-
-		// 根据优惠券id更新促销商品信息
-		CouponVO couponVO = new CouponVO();
-		couponVO.setId(id);
-		couponVO.setStartTime(startTime);
-		couponVO.setEndTime(endTime);
-		this.updatePromotionsGoods(couponVO);
-
-		// 更新优惠券信息
-		return this.update(Wrappers.<Coupon>lambdaUpdate().eq(Coupon::getId, couponVO.getId())
-				.set(Coupon::getStartTime, startTime).set(Coupon::getEndTime, endTime));
 	}
 
 	/**

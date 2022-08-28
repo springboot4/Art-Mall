@@ -58,4 +58,19 @@ public interface CouponService extends IService<Coupon> {
 	 */
 	Boolean updateStatus(Long id, LocalDateTime startTime, LocalDateTime endTime);
 
+	/**
+	 * 查看优惠券信息
+	 * @param id 优惠券id
+	 * @return 优惠券视图对象
+	 */
+	CouponVO couponInfo(Long id);
+
+	/**
+	 * 更新优惠券
+	 * @param couponVO 优惠券信息
+	 */
+	Boolean updateCoupon(CouponVO couponVO);
+
+	void checkStatus(CouponVO couponVO);
+
 }

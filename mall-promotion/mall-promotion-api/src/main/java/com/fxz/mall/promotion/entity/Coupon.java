@@ -110,7 +110,8 @@ public class Coupon extends BasePromotions {
 	@Override
 	public String getPromotionStatus() {
 		// 如果是优惠券动态时间类型并且优惠券有效期没有过，那么说明这是用户新注册是获得的券，尚未使用
-		boolean register = this.rangeDayType != null && this.rangeDayType.equals(CouponRangeDayEnum.DYNAMICTIME.getValue())
+		boolean register = this.rangeDayType != null
+				&& this.rangeDayType.equals(CouponRangeDayEnum.DYNAMICTIME.getValue())
 				&& (this.effectiveDays != null && this.effectiveDays > 0 && this.effectiveDays <= 365);
 		if (register) {
 			return PromotionsStatusEnum.START.getValue();
