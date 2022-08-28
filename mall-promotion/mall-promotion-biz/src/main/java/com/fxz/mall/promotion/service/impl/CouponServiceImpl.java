@@ -42,7 +42,7 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
 	 */
 	@Override
 	public Boolean addCoupon(CouponVO couponVO) {
-		// 初始化优惠券适用数量
+		// 初始化优惠券使用数量
 		couponVO.setUsedNum(0);
 
 		// 初始化优惠券领取数量
@@ -61,6 +61,15 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
 		this.updatePromotionsGoods(couponVO);
 
 		return Boolean.TRUE;
+	}
+
+	/**
+	 * 关闭优惠券
+	 * @param id 优惠券id
+	 */
+	@Override
+	public Boolean closeCoupon(Long id) {
+		return this.updateStatus(id, null, null);
 	}
 
 	/**
@@ -142,6 +151,11 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
 		promotionGoodsService
 				.remove(Wrappers.<PromotionGoods>lambdaQuery().eq(PromotionGoods::getPromotionId, couponVO.getId()));
 
+		// 如果优惠券的开始和结束时间都是null，我们认为此优惠券过期，删除掉优惠券下所有的促销商品信息
+		if (Objects.isNull(couponVO.getStartTime()) && Objects.isNull(couponVO.getEndTime())) {
+			return;
+		}
+
 		// 如果是全品类或者部分品类 保存品类id
 		if (CharSequenceUtil.equalsAny(couponVO.getScopeType(), PromotionsScopeTypeEnum.ALL.getValue(),
 				PromotionsScopeTypeEnum.PORTION_GOODS_CATEGORY.getValue())) {
@@ -162,12 +176,36 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
 		// 如果是指定商品
 		if (!PromotionsStatusEnum.CLOSE.getValue().equals(couponVO.getPromotionStatus())
 				&& PromotionsScopeTypeEnum.PORTION_GOODS.getValue().equals(couponVO.getScopeType())) {
-			List<PromotionGoods> promotionGoodsList = createPromotionGoods(couponVO);
-
 			// 保存促销商品信息
-			promotionGoodsService.saveBatch(promotionGoodsList);
+			promotionGoodsService.saveBatch(createPromotionGoods(couponVO));
 		}
 
+	}
+
+	/**
+	 * 更新优惠券的状态
+	 * @param id 优惠券id
+	 * @param startTime 活动开始时间
+	 * @param endTime 活动结束时间
+	 */
+	@Override
+	public Boolean updateStatus(Long id, LocalDateTime startTime, LocalDateTime endTime) {
+		// 查询数据库中优惠券信息
+		Coupon coupon = this.getById(id);
+		if (Objects.isNull(coupon)) {
+			return Boolean.FALSE;
+		}
+
+		// 根据优惠券id更新促销商品信息
+		CouponVO couponVO = new CouponVO();
+		couponVO.setId(id);
+		couponVO.setStartTime(startTime);
+		couponVO.setEndTime(endTime);
+		this.updatePromotionsGoods(couponVO);
+
+		// 更新优惠券信息
+		return this.update(Wrappers.<Coupon>lambdaUpdate().eq(Coupon::getId, couponVO.getId())
+				.set(Coupon::getStartTime, startTime).set(Coupon::getEndTime, endTime));
 	}
 
 	/**

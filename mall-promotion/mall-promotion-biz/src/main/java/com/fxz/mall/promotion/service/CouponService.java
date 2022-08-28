@@ -20,6 +20,12 @@ public interface CouponService extends IService<Coupon> {
 	Boolean addCoupon(CouponVO couponVO);
 
 	/**
+	 * 关闭优惠券
+	 * @param id 优惠券id
+	 */
+	Boolean closeCoupon(Long id);
+
+	/**
 	 * 检验优惠券促销时间合法性
 	 */
 	void checkPromotionsTime(LocalDateTime startTime, LocalDateTime endTime);
@@ -43,5 +49,13 @@ public interface CouponService extends IService<Coupon> {
 	 * 更新促销商品信息
 	 */
 	void updatePromotionsGoods(CouponVO couponVO);
+
+	/**
+	 * 更新优惠券的状态
+	 * @param id 优惠券id
+	 * @param startTime 活动开始时间
+	 * @param endTime 活动结束时间
+	 */
+	Boolean updateStatus(Long id, LocalDateTime startTime, LocalDateTime endTime);
 
 }

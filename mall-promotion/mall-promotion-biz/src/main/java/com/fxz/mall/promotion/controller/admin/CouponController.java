@@ -5,10 +5,7 @@ import com.fxz.common.security.annotation.Ojbk;
 import com.fxz.mall.promotion.service.CouponService;
 import com.fxz.mall.promotion.vo.CouponVO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 优惠券
@@ -27,9 +24,19 @@ public class CouponController {
 	 * 新增优惠券
 	 */
 	@Ojbk
-	@PostMapping(value = "/add")
-	public Result<Boolean> add(@RequestBody CouponVO couponVO) {
-		return Result.success(couponService.addCoupon(couponVO));
+	@PostMapping(value = "/save")
+	public Result<Boolean> saveCoupon(@RequestBody CouponVO couponVO) {
+		return Result.judge(couponService.addCoupon(couponVO));
+	}
+
+	/**
+	 * 关闭优惠券
+	 * @param id 优惠券id
+	 */
+	@Ojbk
+	@PutMapping(value = "/close/{id}")
+	public Result<Boolean> closeCoupon(@PathVariable("id") Long id) {
+		return Result.judge(couponService.closeCoupon(id));
 	}
 
 }

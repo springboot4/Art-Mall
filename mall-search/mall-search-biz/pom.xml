@@ -30,11 +30,6 @@
 
         <dependency>
             <groupId>com.fxz</groupId>
-            <artifactId>fxz-common-es</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fxz</groupId>
             <artifactId>fxz-common-mq-rabbit</artifactId>
         </dependency>
 

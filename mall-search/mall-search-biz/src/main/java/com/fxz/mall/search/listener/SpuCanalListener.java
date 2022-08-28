@@ -15,6 +15,7 @@ import com.fxz.mall.product.feign.RemoteCategoryService;
 import com.fxz.mall.product.feign.RemoteGoodService;
 import com.fxz.mall.search.dto.EsGoodsDTO;
 import com.fxz.mall.search.entity.EsSpu;
+import com.fxz.mall.search.enums.EsIndexEnum;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -53,7 +54,8 @@ public class SpuCanalListener extends BaseCanalBinlogEventProcessor<EsSpu> {
 
 		EsGoodsDTO esGoodsDTO = loadEsGoodsDTO(spuId);
 
-		elasticsearchClient.create(c -> c.index("product").id(spuId.toString()).document(esGoodsDTO));
+		elasticsearchClient
+				.create(c -> c.index(EsIndexEnum.PRODUCT.getValue()).id(spuId.toString()).document(esGoodsDTO));
 	}
 
 	/**
@@ -69,7 +71,8 @@ public class SpuCanalListener extends BaseCanalBinlogEventProcessor<EsSpu> {
 
 		EsGoodsDTO esGoodsDTO = loadEsGoodsDTO(spuId);
 
-		elasticsearchClient.update(u -> u.index("product").id(spuId.toString()).doc(esGoodsDTO), EsGoodsDTO.class);
+		elasticsearchClient.update(u -> u.index(EsIndexEnum.PRODUCT.getValue()).id(spuId.toString()).doc(esGoodsDTO),
+				EsGoodsDTO.class);
 	}
 
 	/**
@@ -83,7 +86,7 @@ public class SpuCanalListener extends BaseCanalBinlogEventProcessor<EsSpu> {
 		// spuId
 		Long spuId = result.getPrimaryKey();
 
-		elasticsearchClient.delete(d -> d.index("product").id(spuId.toString()));
+		elasticsearchClient.delete(d -> d.index(EsIndexEnum.PRODUCT.getValue()).id(spuId.toString()));
 	}
 
 	@Override
