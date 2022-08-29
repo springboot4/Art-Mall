@@ -1,7 +1,12 @@
 package com.fxz.mall.promotion.controller.admin;
 
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fxz.common.mp.result.PageResult;
 import com.fxz.common.mp.result.Result;
 import com.fxz.common.security.annotation.Ojbk;
+import com.fxz.mall.promotion.entity.Coupon;
 import com.fxz.mall.promotion.service.CouponService;
 import com.fxz.mall.promotion.vo.CouponVO;
 import lombok.RequiredArgsConstructor;
@@ -55,8 +60,8 @@ public class CouponController {
 	 * @return {@code Result<Boolean>}
 	 */
 	@Ojbk
-	@DeleteMapping("/remove/{id}")
-	public Result<Boolean> removeCoupon(@PathVariable("id") Long id) {
+	@DeleteMapping("/remove")
+	public Result<Boolean> removeCoupon(@RequestParam Long id) {
 		return Result.judge(couponService.removeCoupon(id));
 	}
 
@@ -77,6 +82,15 @@ public class CouponController {
 	@GetMapping("receiveCoupon/{couponId}")
 	public Result<Boolean> receiveCoupon(@PathVariable("couponId") Long couponId) {
 		return Result.judge(couponService.memberReceiveCoupon(couponId));
+	}
+
+	/**
+	 * 分页查询优惠券信息
+	 */
+	@GetMapping(value = "/page")
+	public Result<PageResult<Coupon>> pageCoupon(Page<Coupon> pageParam, Coupon coupon) {
+		return Result.success(PageResult.success(couponService.page(pageParam, Wrappers.<Coupon>lambdaQuery()
+				.like(StrUtil.isNotBlank(coupon.getCouponName()), Coupon::getCouponName, coupon.getCouponName()))));
 	}
 
 }

@@ -5,10 +5,15 @@ import com.fxz.common.mp.result.PageResult;
 import com.fxz.common.mp.result.Result;
 import com.fxz.common.security.annotation.Ojbk;
 import com.fxz.mall.product.dto.GoodsDTO;
+import com.fxz.mall.product.entity.Sku;
+import com.fxz.mall.product.service.SkuService;
+import com.fxz.mall.product.service.impl.SkuServiceImpl;
 import com.fxz.mall.product.service.impl.SpuServiceImpl;
 import com.fxz.mall.product.vo.GoodsVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 商品管理
@@ -20,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/goods")
 @RequiredArgsConstructor
 public class GoodsController {
+
+	private final SkuService skuService;
 
 	private final SpuServiceImpl spuService;
 
@@ -56,6 +63,14 @@ public class GoodsController {
 	@GetMapping("/{spuId}/detail")
 	public Result<GoodsDTO> getSpuDetail(@PathVariable("spuId") Long spuId) {
 		return Result.success(spuService.getSpuDetail(spuId));
+	}
+
+	/**
+	 * 获取sku列表
+	 */
+	@GetMapping("/listSku")
+	public Result<List<Sku>> listSku() {
+		return Result.success(skuService.list());
 	}
 
 }

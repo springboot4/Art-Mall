@@ -12,7 +12,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  */
 @EnableFxzCloudResourceServer
 @EnableFeignClients(basePackages = { "com.fxz" })
-@MapperScan("com.fxz")
+@MapperScan("com.fxz.mall.product.mapper")
 @EnableDiscoveryClient
 @SpringBootApplication
 public class FxzMallProductApplication {

@@ -211,8 +211,9 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
 		this.updatePromotionsGoods(couponVO);
 
 		// 更新优惠券信息
-		return this.update(Wrappers.<Coupon>lambdaUpdate().eq(Coupon::getId, couponVO.getId())
-				.set(Coupon::getStartTime, startTime).set(Coupon::getEndTime, endTime));
+		return this.update(
+				Wrappers.<Coupon>lambdaUpdate().eq(Coupon::getId, couponVO.getId()).set(Coupon::getStartTime, startTime)
+						.set(Coupon::getEndTime, endTime).set(Coupon::getEffectiveDays, 0));
 	}
 
 	/**
@@ -259,17 +260,20 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
 	 */
 	@Override
 	public void checkCouponInfo(Coupon coupon) {
-		// 优惠券限制领取数量
-		if (coupon.getCouponLimitNum() < 0) {
-			throw new FxzException("优惠券限制领取数量不能小于0!");
+		// 如果获取方式是直接领取 检验优惠券的限领数量和发布数量
+		if (CouponGetEnum.FREE.getValue().equals(coupon.getGetType())) {
+			// 优惠券限制领取数量
+			if (coupon.getCouponLimitNum() < 0) {
+				throw new FxzException("优惠券限制领取数量不能小于0!");
+			}
+
+			// 发行数量小于限制领取的数量
+			if (coupon.getPublishNum() != 0 && coupon.getCouponLimitNum() > coupon.getPublishNum()) {
+				throw new FxzException("发行数量小于限制领取的数量!");
+			}
 		}
 
-		// 发行数量小于限制领取的数量
-		if (coupon.getPublishNum() != 0 && coupon.getCouponLimitNum() > coupon.getPublishNum()) {
-			throw new FxzException("发行数量小于限制领取的数量!");
-		}
-
-		// 优惠券折扣范围不合法
+		// 如果是折扣券 检验折扣数据是否合法
 		boolean discountCoupon = (coupon.getCouponType().equals(CouponTypeEnum.DISCOUNT.getValue())
 				&& (coupon.getCouponDiscount() < 0 || coupon.getCouponDiscount() > 10));
 		if (discountCoupon) {
