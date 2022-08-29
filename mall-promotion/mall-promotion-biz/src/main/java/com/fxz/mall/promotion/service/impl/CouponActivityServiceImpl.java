@@ -68,93 +68,11 @@ public class CouponActivityServiceImpl extends ServiceImpl<CouponActivityMapper,
 		// 更新促销商品信息
 		this.updatePromotionsGoods(couponActivity);
 
-		// 发放优惠券
+		// 如果是精准发券，我们开始为会员发放优惠券
 		if (!PromotionsStatusEnum.CLOSE.getValue().equals(couponActivity.getPromotionStatus())
 				&& couponActivity.getCouponActivityType().equals(CouponActivityTypeEnum.SPECIFY.getValue())) {
 			this.activitySend(couponActivity.getId());
 		}
-	}
-
-	/**
-	 * 初始化优惠券活动
-	 * @param couponActivity 优惠券活动
-	 */
-	@Override
-	public void initCouponActivity(CouponActivityDTO couponActivity) {
-		// 设置优惠券活动的适用范围类型为指定商品类型
-		couponActivity.setScopeType(PromotionsScopeTypeEnum.PORTION_GOODS.getValue());
-
-		if (CollectionUtils.isEmpty(couponActivity.getMembers())) {
-			return;
-		}
-
-		// 如果有会员信息，以json形式存储为活动范围信息
-		couponActivity.setActivityScopeInfo(JacksonUtil.toJsonString(couponActivity.getMembers()));
-	}
-
-	/**
-	 * 检验优惠券活动的合法性
-	 * @param couponActivity 优惠券活动
-	 */
-	@Override
-	public void checkCouponActivity(CouponActivityDTO couponActivity) {
-		// 检验优惠券活动时间的合法性
-		this.checkPromotionsTime(couponActivity.getStartTime(), couponActivity.getEndTime());
-
-		// 会员信息判断
-		if (couponActivity.getActivityScope().equals(CouponActivitySendTypeEnum.DESIGNATED.getValue())
-				&& StrUtil.isBlank(couponActivity.getActivityScopeInfo())) {
-			throw new FxzException("精确发券指定会员模式下会员信息为空！");
-		}
-
-		// 检验优惠券项
-		this.checkCouponActivityItem(couponActivity.getCouponActivityItems());
-	}
-
-	/**
-	 * 检验优惠券活动时间的合法性
-	 * @param startTime 活动开始时间
-	 * @param endTime 活动结束时间
-	 */
-	@Override
-	public void checkPromotionsTime(LocalDateTime startTime, LocalDateTime endTime) {
-		if (startTime == null) {
-			throw new FxzException("活动开始时间为空！");
-		}
-
-		LocalDateTime now = LocalDateTime.now();
-
-		// 活动起始时间小于现在时间
-		if (now.isAfter(startTime)) {
-			throw new FxzException("活动开始时间不能早于当前时间！");
-		}
-
-		// 活动结束时间小于现在时间
-		if (Objects.nonNull(endTime) && now.isAfter(endTime)) {
-			throw new FxzException("活动结束时间不能早于当前时间！");
-		}
-
-		// 开始时间不能大于结束时间
-		if (Objects.nonNull(endTime) && startTime.isAfter(endTime)) {
-			throw new FxzException("活动结束时间不能早于当前时间！");
-		}
-	}
-
-	/**
-	 * 检验优惠券项
-	 * @param couponActivityItems 优惠券项
-	 */
-	@Override
-	public void checkCouponActivityItem(List<CouponActivityItem> couponActivityItems) {
-		if (CollectionUtils.isEmpty(couponActivityItems)) {
-			throw new FxzException("优惠券活动下优惠券信息为空！");
-		}
-
-		couponActivityItems.forEach(item -> {
-			if (Objects.isNull(item.getNum()) || item.getNum() < 0) {
-				throw new FxzException("优惠券限领数量合法！");
-			}
-		});
 	}
 
 	/**
@@ -165,6 +83,21 @@ public class CouponActivityServiceImpl extends ServiceImpl<CouponActivityMapper,
 	public void updatePromotionsGoods(CouponActivityDTO couponActivity) {
 		couponActivity.getCouponActivityItems().forEach(item -> item.setActivityId(couponActivity.getId()));
 		couponActivityItemService.saveBatch(couponActivity.getCouponActivityItems());
+	}
+
+	/**
+	 * 关闭券活动
+	 * @param id 券活动id
+	 */
+	@Override
+	public void closeCouponActivity(Long id) {
+		CouponActivity activity = this.getById(id);
+		if (Objects.isNull(activity)) {
+			throw new FxzException("当前活动不存在!");
+		}
+
+		this.update(Wrappers.<CouponActivity>lambdaUpdate().eq(CouponActivity::getId, id)
+				.set(CouponActivity::getStartTime, null).set(CouponActivity::getEndTime, null));
 	}
 
 	/**
@@ -262,18 +195,85 @@ public class CouponActivityServiceImpl extends ServiceImpl<CouponActivityMapper,
 	}
 
 	/**
-	 * 关闭券活动
-	 * @param id 券活动id
+	 * 初始化优惠券活动
+	 * @param couponActivity 优惠券活动
 	 */
 	@Override
-	public void closeCouponActivity(Long id) {
-		CouponActivity activity = this.getById(id);
-		if (Objects.isNull(activity)) {
-			throw new FxzException("当前活动不存在!");
+	public void initCouponActivity(CouponActivityDTO couponActivity) {
+		// 设置优惠券活动的适用范围类型为指定商品类型
+		couponActivity.setScopeType(PromotionsScopeTypeEnum.PORTION_GOODS.getValue());
+
+		if (CollectionUtils.isEmpty(couponActivity.getMembers())) {
+			return;
 		}
 
-		this.update(Wrappers.<CouponActivity>lambdaUpdate().eq(CouponActivity::getId, id)
-				.set(CouponActivity::getStartTime, null).set(CouponActivity::getEndTime, null));
+		// 如果有会员信息，以json形式存储为活动范围信息
+		couponActivity.setActivityScopeInfo(JacksonUtil.toJsonString(couponActivity.getMembers()));
+	}
+
+	/**
+	 * 检验优惠券活动的合法性
+	 * @param couponActivity 优惠券活动
+	 */
+	@Override
+	public void checkCouponActivity(CouponActivityDTO couponActivity) {
+		// 检验优惠券活动时间的合法性
+		this.checkPromotionsTime(couponActivity.getStartTime(), couponActivity.getEndTime());
+
+		// 会员信息判断
+		if (couponActivity.getActivityScope().equals(CouponActivitySendTypeEnum.DESIGNATED.getValue())
+				&& StrUtil.isBlank(couponActivity.getActivityScopeInfo())) {
+			throw new FxzException("精确发券指定会员模式下会员信息为空！");
+		}
+
+		// 检验优惠券项
+		this.checkCouponActivityItem(couponActivity.getCouponActivityItems());
+	}
+
+	/**
+	 * 检验优惠券活动时间的合法性
+	 * @param startTime 活动开始时间
+	 * @param endTime 活动结束时间
+	 */
+	@Override
+	public void checkPromotionsTime(LocalDateTime startTime, LocalDateTime endTime) {
+		if (startTime == null) {
+			throw new FxzException("活动开始时间为空！");
+		}
+
+		LocalDateTime now = LocalDateTime.now();
+
+		// 活动起始时间小于现在时间
+		if (now.isAfter(startTime)) {
+			throw new FxzException("活动开始时间不能早于当前时间！");
+		}
+
+		// 活动结束时间小于现在时间
+		if (Objects.nonNull(endTime) && now.isAfter(endTime)) {
+			throw new FxzException("活动结束时间不能早于当前时间！");
+		}
+
+		// 开始时间不能大于结束时间
+		if (Objects.nonNull(endTime) && startTime.isAfter(endTime)) {
+			throw new FxzException("活动结束时间不能早于当前时间！");
+		}
+	}
+
+	/**
+	 * 检验优惠券项
+	 * @param couponActivityItems 优惠券项
+	 */
+	@Override
+	public void checkCouponActivityItem(List<CouponActivityItem> couponActivityItems) {
+		if (CollectionUtils.isEmpty(couponActivityItems)) {
+			throw new FxzException("优惠券活动下优惠券信息为空！");
+		}
+
+		couponActivityItems.forEach(item -> {
+			if (Objects.isNull(item.getNum()) || item.getNum() < 0) {
+				throw new FxzException("优惠券限领数量合法！");
+			}
+		});
 	}
 
 }

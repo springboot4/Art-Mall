@@ -126,12 +126,67 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
 	}
 
 	/**
+	 * 删除优惠券
+	 * @param id 优惠券id
+	 * @return {@code Boolean}
+	 */
+	@Override
+	public Boolean removeCoupon(Long id) {
+		// 关闭会员优惠券
+		memberCouponService.closeCoupon(id);
+
+		// 删除优惠券关联活动优惠券
+		couponActivityItemService.removeByCouponId(id);
+
+		// 检查优惠券状态
+		this.checkStatus(id);
+
+		Coupon coupon = this.getById(id);
+		// 删除促销商品
+		this.updatePromotionsGoods((Coupon) coupon.setStartTime(null).setEndTime(null));
+
+		// 删除优惠券
+		return this.removeById(id);
+	}
+
+	/**
+	 * 查看优惠券信息
+	 * @param id 优惠券id
+	 * @return 优惠券视图对象
+	 */
+	@Override
+	public CouponVO couponInfo(Long id) {
+		Coupon coupon = this.getById(id);
+		CouponVO couponVO = new CouponVO();
+		BeanUtils.copyProperties(coupon, couponVO);
+		couponVO.setPromotionGoodsList(this.promotionGoodsService
+				.list(Wrappers.<PromotionGoods>lambdaQuery().eq(PromotionGoods::getPromotionId, id)));
+		return couponVO;
+	}
+
+	/**
 	 * 关闭优惠券
 	 * @param id 优惠券id
 	 */
 	@Override
 	public Boolean closeCoupon(Long id) {
 		return this.updateStatus(id, null, null);
+	}
+
+	/**
+	 * 领取优惠券
+	 * @param couponId 优惠券id
+	 * @param receiveNum 领取数量
+	 */
+	@Override
+	public void receiveCoupon(Long couponId, Integer receiveNum) {
+		Coupon coupon = this.getById(couponId);
+		if (Objects.isNull(coupon)) {
+			throw new FxzException("优惠券不存在！");
+		}
+
+		this.update(Wrappers.<Coupon>lambdaUpdate().set(Coupon::getReceivedNum, coupon.getReceivedNum() + receiveNum)
+				.eq(Coupon::getId, couponId));
 	}
 
 	/**
@@ -269,21 +324,6 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
 		}
 	}
 
-	/**
-	 * 查看优惠券信息
-	 * @param id 优惠券id
-	 * @return 优惠券视图对象
-	 */
-	@Override
-	public CouponVO couponInfo(Long id) {
-		Coupon coupon = this.getById(id);
-		CouponVO couponVO = new CouponVO();
-		BeanUtils.copyProperties(coupon, couponVO);
-		couponVO.setPromotionGoodsList(this.promotionGoodsService
-				.list(Wrappers.<PromotionGoods>lambdaQuery().eq(PromotionGoods::getPromotionId, id)));
-		return couponVO;
-	}
-
 	@Override
 	public void checkStatus(Long id) {
 		// 检验优惠券是否存在
@@ -291,46 +331,6 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
 		if (Objects.isNull(coupon)) {
 			throw new FxzException("优惠券信息信息不存在!");
 		}
-	}
-
-	/**
-	 * 领取优惠券
-	 * @param couponId 优惠券id
-	 * @param receiveNum 领取数量
-	 */
-	@Override
-	public void receiveCoupon(Long couponId, Integer receiveNum) {
-		Coupon coupon = this.getById(couponId);
-		if (Objects.isNull(coupon)) {
-			throw new FxzException("优惠券不存在！");
-		}
-
-		this.update(Wrappers.<Coupon>lambdaUpdate().set(Coupon::getReceivedNum, coupon.getReceivedNum() + receiveNum)
-				.eq(Coupon::getId, couponId));
-	}
-
-	/**
-	 * 删除优惠券
-	 * @param id 优惠券id
-	 * @return {@code Boolean}
-	 */
-	@Override
-	public Boolean removeCoupon(Long id) {
-		// 关闭会员优惠券
-		memberCouponService.closeCoupon(id);
-
-		// 删除优惠券关联活动优惠券
-		couponActivityItemService.removeByCouponId(id);
-
-		// 检查优惠券状态
-		this.checkStatus(id);
-
-		Coupon coupon = this.getById(id);
-		// 删除促销商品
-		this.updatePromotionsGoods((Coupon) coupon.setStartTime(null).setEndTime(null));
-
-		// 删除优惠券
-		return this.removeById(id);
 	}
 
 	/**
