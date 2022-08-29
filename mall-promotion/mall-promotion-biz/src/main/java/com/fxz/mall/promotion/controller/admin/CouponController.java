@@ -7,10 +7,13 @@ import com.fxz.common.mp.result.PageResult;
 import com.fxz.common.mp.result.Result;
 import com.fxz.common.security.annotation.Ojbk;
 import com.fxz.mall.promotion.entity.Coupon;
+import com.fxz.mall.promotion.param.CouponParam;
 import com.fxz.mall.promotion.service.CouponService;
 import com.fxz.mall.promotion.vo.CouponVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 优惠券
@@ -91,6 +94,11 @@ public class CouponController {
 	public Result<PageResult<Coupon>> pageCoupon(Page<Coupon> pageParam, Coupon coupon) {
 		return Result.success(PageResult.success(couponService.page(pageParam, Wrappers.<Coupon>lambdaQuery()
 				.like(StrUtil.isNotBlank(coupon.getCouponName()), Coupon::getCouponName, coupon.getCouponName()))));
+	}
+
+	@GetMapping("/listCoupon")
+	public Result<List<Coupon>> listCoupon(CouponParam couponParam) {
+		return Result.success(couponService.list(couponParam.lambdaQuery()));
 	}
 
 }

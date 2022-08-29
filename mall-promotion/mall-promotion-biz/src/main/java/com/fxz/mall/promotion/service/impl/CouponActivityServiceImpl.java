@@ -220,8 +220,9 @@ public class CouponActivityServiceImpl extends ServiceImpl<CouponActivityMapper,
 		// 检验优惠券活动时间的合法性
 		this.checkPromotionsTime(couponActivity.getStartTime(), couponActivity.getEndTime());
 
-		// 会员信息判断
-		if (couponActivity.getActivityScope().equals(CouponActivitySendTypeEnum.DESIGNATED.getValue())
+		// 精确发券指定会员模式下会员信息判断
+		if (couponActivity.getCouponActivityType().equals(CouponActivityTypeEnum.SPECIFY.getValue())
+				&& couponActivity.getActivityScope().equals(CouponActivitySendTypeEnum.DESIGNATED.getValue())
 				&& StrUtil.isBlank(couponActivity.getActivityScopeInfo())) {
 			throw new FxzException("精确发券指定会员模式下会员信息为空！");
 		}
@@ -271,7 +272,7 @@ public class CouponActivityServiceImpl extends ServiceImpl<CouponActivityMapper,
 
 		couponActivityItems.forEach(item -> {
 			if (Objects.isNull(item.getNum()) || item.getNum() < 0) {
-				throw new FxzException("优惠券限领数量合法！");
+				throw new FxzException("优惠券限领数量不合法！");
 			}
 		});
 	}

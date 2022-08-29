@@ -118,4 +118,12 @@ public class MemberController {
 		return Result.success(memberService.listMemberMap(columns, ids));
 	}
 
+	/**
+	 * 列出所有会员信息
+	 */
+	@GetMapping("/listMembers")
+	public Result<List<Member>> listMembers() {
+		return Result.success(memberService.list());
+	}
+
 }

@@ -36,16 +36,16 @@ public class CouponActivity extends BasePromotions {
 	private String couponActivityType;
 
 	/**
-	 * 活动范围详情,只有精准发券使用
-	 */
-	private String activityScopeInfo;
-
-	/**
-	 * 优惠券发放范围（新人注册赠券不用选择此发放范围）
+	 * 优惠券发放范围（只有精准发券使用,新人注册赠券不用选择此发放范围）
 	 *
 	 * @see com.fxz.mall.promotion.enums.CouponActivitySendTypeEnum
 	 */
 	private String activityScope;
+
+	/**
+	 * 活动范围详情,只有精准发券使用
+	 */
+	private String activityScopeInfo;
 
 	/**
 	 * 删除标志
