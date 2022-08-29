@@ -12,9 +12,9 @@ import com.fxz.mall.promotion.entity.MemberCoupon;
 public interface MemberCouponService extends IService<MemberCoupon> {
 
 	/**
-	 * 会员领取优惠券
-	 * @param couponId 优惠券id
+	 * 关闭会员优惠券
+	 * @param id 优惠券id
 	 */
-	Boolean receiveCoupon(Long couponId);
+	void closeCoupon(Long id);
 
 }

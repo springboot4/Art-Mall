@@ -19,4 +19,10 @@ public interface CouponActivityItemService extends IService<CouponActivityItem> 
 	 */
 	List<CouponActivityItem> getCouponActivityList(Long id);
 
+	/**
+	 * 根据优惠券id删除优惠券活动项
+	 * @param id 优惠券id
+	 */
+	void removeByCouponId(Long id);
+
 }

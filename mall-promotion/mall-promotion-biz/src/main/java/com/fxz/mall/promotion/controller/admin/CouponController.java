@@ -50,6 +50,17 @@ public class CouponController {
 	}
 
 	/**
+	 * 删除优惠券
+	 * @param id 优惠券id
+	 * @return {@code Result<Boolean>}
+	 */
+	@Ojbk
+	@DeleteMapping("/remove/{id}")
+	public Result<Boolean> removeCoupon(@PathVariable("id") Long id) {
+		return Result.judge(couponService.removeCoupon(id));
+	}
+
+	/**
 	 * 查看优惠券信息
 	 * @param id 优惠券id
 	 */
@@ -57,6 +68,15 @@ public class CouponController {
 	@GetMapping(value = "/{id}/info")
 	public Result<CouponVO> couponInfo(@PathVariable("id") Long id) {
 		return Result.success(couponService.couponInfo(id));
+	}
+
+	/**
+	 * 会员领取优惠券
+	 * @param couponId 优惠券id
+	 */
+	@GetMapping("receiveCoupon/{couponId}")
+	public Result<Boolean> receiveCoupon(@PathVariable("couponId") Long couponId) {
+		return Result.judge(couponService.memberReceiveCoupon(couponId));
 	}
 
 }

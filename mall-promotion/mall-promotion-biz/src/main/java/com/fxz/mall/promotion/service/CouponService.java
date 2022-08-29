@@ -48,7 +48,7 @@ public interface CouponService extends IService<Coupon> {
 	/**
 	 * 更新促销商品信息
 	 */
-	void updatePromotionsGoods(CouponVO couponVO);
+	void updatePromotionsGoods(Coupon coupon);
 
 	/**
 	 * 更新优惠券的状态
@@ -71,7 +71,13 @@ public interface CouponService extends IService<Coupon> {
 	 */
 	Boolean updateCoupon(CouponVO couponVO);
 
-	void checkStatus(CouponVO couponVO);
+	void checkStatus(Long id);
+
+	/**
+	 * 会员领取优惠券
+	 * @param couponId 优惠券id
+	 */
+	Boolean memberReceiveCoupon(Long couponId);
 
 	/**
 	 * 领取优惠券
@@ -79,5 +85,19 @@ public interface CouponService extends IService<Coupon> {
 	 * @param receiveNum 领取数量
 	 */
 	void receiveCoupon(Long couponId, Integer receiveNum);
+
+	/**
+	 * 删除优惠券
+	 * @param id 优惠券id
+	 * @return {@code Boolean}
+	 */
+	Boolean removeCoupon(Long id);
+
+	/**
+	 * 检查优惠券领取数量
+	 * @param couponId 优惠券id
+	 * @param memberId 会员id
+	 */
+	void checkCouponLimit(Long couponId, Long memberId);
 
 }
