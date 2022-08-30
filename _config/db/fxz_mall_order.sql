@@ -1,3 +1,5 @@
+
+
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -30,15 +32,15 @@ CREATE TABLE `fxz_order` (
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除【0->正常；1->已删除】',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-  `create_by` varchar(255) DEFAULT NULL,
-  `update_by` varchar(255) DEFAULT NULL,
+  `create_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `update_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `index_order_sn` (`order_sn`) USING BTREE COMMENT '订单号唯一索引',
   UNIQUE KEY `index_otn` (`out_trade_no`) USING BTREE COMMENT '商户订单号唯一索引',
   UNIQUE KEY `index_ti` (`transaction_id`) USING BTREE COMMENT '商户支付单号唯一索引',
   UNIQUE KEY `index_orn` (`out_refund_no`) USING BTREE COMMENT '商户退款单号唯一索引',
   UNIQUE KEY `index_ri` (`refund_id`) USING BTREE COMMENT '退款单号唯一索引'
-) ENGINE=InnoDB AUTO_INCREMENT=1525728047714377730 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='订单详情表';
+) ENGINE=InnoDB AUTO_INCREMENT=1564444729177571331 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='订单详情表';
 
 -- ----------------------------
 -- Records of fxz_order
@@ -58,9 +60,13 @@ INSERT INTO `fxz_order` (`id`, `order_sn`, `total_amount`, `total_quantity`, `so
 INSERT INTO `fxz_order` (`id`, `order_sn`, `total_amount`, `total_quantity`, `source_type`, `status`, `remark`, `member_id`, `coupon_id`, `coupon_amount`, `freight_amount`, `pay_amount`, `pay_time`, `pay_type`, `out_trade_no`, `transaction_id`, `out_refund_no`, `refund_id`, `delivery_time`, `receive_time`, `comment_time`, `deleted`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1351548262424821953, '20220224300000003', 100, 1, 1, 201, '', 39, 0, 0, 0, 100, '2022-02-24 01:16:40', 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2022-02-24 01:16:37', '2022-02-24 01:16:37', NULL, NULL);
 INSERT INTO `fxz_order` (`id`, `order_sn`, `total_amount`, `total_quantity`, `source_type`, `status`, `remark`, `member_id`, `coupon_id`, `coupon_amount`, `freight_amount`, `pay_amount`, `pay_time`, `pay_type`, `out_trade_no`, `transaction_id`, `out_refund_no`, `refund_id`, `delivery_time`, `receive_time`, `comment_time`, `deleted`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1351548262424821954, '20220224300000004', 100, 1, 1, 201, '', 39, 0, 0, 0, 100, '2022-02-24 01:17:21', 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2022-02-24 01:17:20', '2022-02-24 01:17:20', NULL, NULL);
 INSERT INTO `fxz_order` (`id`, `order_sn`, `total_amount`, `total_quantity`, `source_type`, `status`, `remark`, `member_id`, `coupon_id`, `coupon_amount`, `freight_amount`, `pay_amount`, `pay_time`, `pay_type`, `out_trade_no`, `transaction_id`, `out_refund_no`, `refund_id`, `delivery_time`, `receive_time`, `comment_time`, `deleted`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1351548262424821955, '20220224300000005', 100, 1, 1, 201, '', 39, 0, 0, 0, 100, '2022-02-24 09:34:55', 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2022-02-24 09:34:53', '2022-02-24 09:34:53', NULL, NULL);
-INSERT INTO `fxz_order` (`id`, `order_sn`, `total_amount`, `total_quantity`, `source_type`, `status`, `remark`, `member_id`, `coupon_id`, `coupon_amount`, `freight_amount`, `pay_amount`, `pay_time`, `pay_type`, `out_trade_no`, `transaction_id`, `out_refund_no`, `refund_id`, `delivery_time`, `receive_time`, `comment_time`, `deleted`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1351548262424821956, '20220224300000008', 100, 1, 1, 103, '', 39, 0, 0, 0, 100, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2022-02-24 23:23:22', '2022-02-24 23:23:22', NULL, NULL);
-INSERT INTO `fxz_order` (`id`, `order_sn`, `total_amount`, `total_quantity`, `source_type`, `status`, `remark`, `member_id`, `coupon_id`, `coupon_amount`, `freight_amount`, `pay_amount`, `pay_time`, `pay_type`, `out_trade_no`, `transaction_id`, `out_refund_no`, `refund_id`, `delivery_time`, `receive_time`, `comment_time`, `deleted`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1525726360119386113, '20220515300000017', 1199988, 1, 1, 101, 'sasa', 1, 0, 0, 0, 1199988, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2022-05-15 14:34:46', '2022-05-15 14:34:46', 'fxz', 'fxz');
+INSERT INTO `fxz_order` (`id`, `order_sn`, `total_amount`, `total_quantity`, `source_type`, `status`, `remark`, `member_id`, `coupon_id`, `coupon_amount`, `freight_amount`, `pay_amount`, `pay_time`, `pay_type`, `out_trade_no`, `transaction_id`, `out_refund_no`, `refund_id`, `delivery_time`, `receive_time`, `comment_time`, `deleted`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1525726360119386113, '20220515300000017', 1199988, 1, 1, 102, 'sasa', 1, 0, 0, 0, 1199988, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2022-05-15 14:34:46', '2022-08-10 22:49:02', 'fxz', 'fxz');
 INSERT INTO `fxz_order` (`id`, `order_sn`, `total_amount`, `total_quantity`, `source_type`, `status`, `remark`, `member_id`, `coupon_id`, `coupon_amount`, `freight_amount`, `pay_amount`, `pay_time`, `pay_type`, `out_trade_no`, `transaction_id`, `out_refund_no`, `refund_id`, `delivery_time`, `receive_time`, `comment_time`, `deleted`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1525728047714377729, '20220515300000018', 1199988, 1, 1, 201, '', 1, 0, 0, 0, 1199988, '2022-05-15 22:13:29', 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2022-05-15 14:41:28', '2022-05-15 22:13:29', 'fxz', 'fxz');
+INSERT INTO `fxz_order` (`id`, `order_sn`, `total_amount`, `total_quantity`, `source_type`, `status`, `remark`, `member_id`, `coupon_id`, `coupon_amount`, `freight_amount`, `pay_amount`, `pay_time`, `pay_type`, `out_trade_no`, `transaction_id`, `out_refund_no`, `refund_id`, `delivery_time`, `receive_time`, `comment_time`, `deleted`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1557378372455927809, '20220810224639300000001', 1299900, 1, 1, 201, '', 1557373423881924609, 0, 0, 0, 1299900, '2022-08-10 22:48:39', 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2022-08-10 22:48:33', '2022-08-10 22:48:39', 'fxz', 'fxz');
+INSERT INTO `fxz_order` (`id`, `order_sn`, `total_amount`, `total_quantity`, `source_type`, `status`, `remark`, `member_id`, `coupon_id`, `coupon_amount`, `freight_amount`, `pay_amount`, `pay_time`, `pay_type`, `out_trade_no`, `transaction_id`, `out_refund_no`, `refund_id`, `delivery_time`, `receive_time`, `comment_time`, `deleted`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1557585022328598529, '20220811122934300000001', 699900, 1, 2, 201, '', 1557373423881924609, 0, 0, 0, 699900, '2022-08-11 12:29:51', 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2022-08-11 12:29:43', '2022-08-11 12:29:51', 'fxz', 'fxz');
+INSERT INTO `fxz_order` (`id`, `order_sn`, `total_amount`, `total_quantity`, `source_type`, `status`, `remark`, `member_id`, `coupon_id`, `coupon_amount`, `freight_amount`, `pay_amount`, `pay_time`, `pay_type`, `out_trade_no`, `transaction_id`, `out_refund_no`, `refund_id`, `delivery_time`, `receive_time`, `comment_time`, `deleted`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1557604501381017602, '20220811134655300000001', 1499700, 3, 1, 201, '', 1557373423881924609, 0, 0, 0, 1499700, '2022-08-11 13:47:15', 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2022-08-11 13:47:07', '2022-08-11 13:47:15', 'fxz', 'fxz');
+INSERT INTO `fxz_order` (`id`, `order_sn`, `total_amount`, `total_quantity`, `source_type`, `status`, `remark`, `member_id`, `coupon_id`, `coupon_amount`, `freight_amount`, `pay_amount`, `pay_time`, `pay_type`, `out_trade_no`, `transaction_id`, `out_refund_no`, `refund_id`, `delivery_time`, `receive_time`, `comment_time`, `deleted`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1557605227767361537, '20220811134955300000001', 1299900, 1, 1, 201, '', 1557373423881924609, 0, 0, 0, 1299900, '2022-08-11 13:50:03', 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2022-08-11 13:50:00', '2022-08-11 13:50:03', 'fxz', 'fxz');
+INSERT INTO `fxz_order` (`id`, `order_sn`, `total_amount`, `total_quantity`, `source_type`, `status`, `remark`, `member_id`, `coupon_id`, `coupon_amount`, `freight_amount`, `pay_amount`, `pay_time`, `pay_type`, `out_trade_no`, `transaction_id`, `out_refund_no`, `refund_id`, `delivery_time`, `receive_time`, `comment_time`, `deleted`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1564444729177571330, '20220830104737300000001', 899, 1, 1, 201, '', 1557373423881924609, 0, 0, 0, 899, '2022-08-30 10:47:53', 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2022-08-30 10:47:44', '2022-08-30 10:47:53', 'fxz', 'fxz');
 COMMIT;
 
 -- ----------------------------
@@ -87,7 +93,7 @@ CREATE TABLE `order_delivery` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='订单物流记录表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='订单物流记录表';
 
 -- ----------------------------
 -- Records of order_delivery
@@ -113,11 +119,11 @@ CREATE TABLE `order_item` (
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除标识(1:已删除；0:正常)',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-  `create_by` varchar(255) DEFAULT NULL,
-  `update_by` varchar(255) DEFAULT NULL,
+  `create_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `update_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `index_order_id` (`order_id`) USING BTREE COMMENT '订单id索引'
-) ENGINE=InnoDB AUTO_INCREMENT=1525728048117030915 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='订单商品信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=1564444734697275394 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='订单商品信息表';
 
 -- ----------------------------
 -- Records of order_item
@@ -202,6 +208,12 @@ INSERT INTO `order_item` (`id`, `order_id`, `spu_name`, `sku_id`, `sku_sn`, `sku
 INSERT INTO `order_item` (`id`, `order_id`, `spu_name`, `sku_id`, `sku_sn`, `sku_name`, `pic_url`, `price`, `count`, `total_amount`, `deleted`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (210, 1351548262424821956, NULL, 300, '1', 'tid_1_1|tid_2_1|tid_3_', 'http://a.youlai.tech:9000/default/852f076dd41d4e199c969289838149fa.jpg', 100, 1, 100, 0, '2022-02-24 23:23:22', '2022-02-24 23:23:22', NULL, NULL);
 INSERT INTO `order_item` (`id`, `order_id`, `spu_name`, `sku_id`, `sku_sn`, `sku_name`, `pic_url`, `price`, `count`, `total_amount`, `deleted`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1525726361629335553, 1525726360119386113, '华为p50', 1523572235571093506, 'huaweip50-001', '华为p50 华为p50 黑色 8+256', '/system/file/fxzcloud/b367ba62b5b04c31b9530015d733a2b0.jpeg', 1199988, 1, 1199988, 0, '2022-05-15 14:34:46', '2022-05-15 14:34:46', 'fxz', 'fxz');
 INSERT INTO `order_item` (`id`, `order_id`, `spu_name`, `sku_id`, `sku_sn`, `sku_name`, `pic_url`, `price`, `count`, `total_amount`, `deleted`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1525728048117030914, 1525728047714377729, '华为p50', 1523572235571093506, 'huaweip50-001', '华为p50 华为p50 黑色 8+256', '/system/file/fxzcloud/b367ba62b5b04c31b9530015d733a2b0.jpeg', 1199988, 1, 1199988, 0, '2022-05-15 14:41:28', '2022-05-15 14:41:28', 'fxz', 'fxz');
+INSERT INTO `order_item` (`id`, `order_id`, `spu_name`, `sku_id`, `sku_sn`, `sku_name`, `pic_url`, `price`, `count`, `total_amount`, `deleted`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1557378374834098177, 1557378372455927809, '华为-爱国者1', 1556910672730456066, '0001', '华为-爱国者1 黑色华为', '', 1299900, 1, 1299900, 0, '2022-08-10 22:48:34', '2022-08-10 22:48:34', 'fxz', 'fxz');
+INSERT INTO `order_item` (`id`, `order_id`, `spu_name`, `sku_id`, `sku_sn`, `sku_name`, `pic_url`, `price`, `count`, `total_amount`, `deleted`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1557585030650097665, 1557585022328598529, '华为p50', 1557563310547476481, '0002', '华为p50 白色华为p50', '/system/file/fxzcloud/4744eb39a5584765b391a8cad4245e90.png', 699900, 1, 699900, 0, '2022-08-11 12:29:44', '2022-08-11 12:29:44', 'fxz', 'fxz');
+INSERT INTO `order_item` (`id`, `order_id`, `spu_name`, `sku_id`, `sku_sn`, `sku_name`, `pic_url`, `price`, `count`, `total_amount`, `deleted`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1557604515708760066, 1557604501381017602, '华为p50', 1557563308387409921, '0001', '华为p50 黑色华为p50', '/system/file/fxzcloud/e52424958ae94583ad1755c3c024ec5f.png', 699900, 1, 699900, 0, '2022-08-11 13:47:10', '2022-08-11 13:47:10', 'fxz', 'fxz');
+INSERT INTO `order_item` (`id`, `order_id`, `spu_name`, `sku_id`, `sku_sn`, `sku_name`, `pic_url`, `price`, `count`, `total_amount`, `deleted`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1557604516476317698, 1557604501381017602, '小米12', 1557558956230782977, '0001', '小米12 小米12 黑色 8+128g', '/system/file/fxzcloud/ea1e1eeb9ff049e28873afbf764462d2.png', 399900, 2, 799800, 0, '2022-08-11 13:47:10', '2022-08-11 13:47:10', 'fxz', 'fxz');
+INSERT INTO `order_item` (`id`, `order_id`, `spu_name`, `sku_id`, `sku_sn`, `sku_name`, `pic_url`, `price`, `count`, `total_amount`, `deleted`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1557605229868707842, 1557605227767361537, 'mac book', 1557566112665509889, '002', 'mac book mac深空灰', '/system/file/fxzcloud/5a307d181f0a4b23bddfe3f6828d5d74.webp', 1299900, 1, 1299900, 0, '2022-08-11 13:50:00', '2022-08-11 13:50:00', 'fxz', 'fxz');
+INSERT INTO `order_item` (`id`, `order_id`, `spu_name`, `sku_id`, `sku_sn`, `sku_name`, `pic_url`, `price`, `count`, `total_amount`, `deleted`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1564444734697275393, 1564444729177571330, '红富士大苹果', 1564437958274883586, 'hfs0001', '红富士大苹果 红富士', '', 899, 1, 899, 0, '2022-08-30 10:47:45', '2022-08-30 10:47:45', 'fxz', 'fxz');
 COMMIT;
 
 -- ----------------------------
@@ -224,10 +236,31 @@ CREATE TABLE `order_pay` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='支付信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付信息表';
 
 -- ----------------------------
 -- Records of order_pay
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for undo_log
+-- ----------------------------
+DROP TABLE IF EXISTS `undo_log`;
+CREATE TABLE `undo_log` (
+  `branch_id` bigint(20) NOT NULL COMMENT 'branch transaction id',
+  `xid` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'global transaction id',
+  `context` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'undo_log context,such as serialization',
+  `rollback_info` longblob NOT NULL COMMENT 'rollback info',
+  `log_status` int(11) NOT NULL COMMENT '0:normal status,1:defense status',
+  `log_created` datetime(6) NOT NULL COMMENT 'create datetime',
+  `log_modified` datetime(6) NOT NULL COMMENT 'modify datetime',
+  UNIQUE KEY `ux_undo_log` (`xid`,`branch_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='AT transaction mode undo table';
+
+-- ----------------------------
+-- Records of undo_log
 -- ----------------------------
 BEGIN;
 COMMIT;

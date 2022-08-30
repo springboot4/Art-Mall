@@ -1,7 +1,131 @@
-USE fxz_mall_promotion;
+
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for coupon
+-- ----------------------------
+DROP TABLE IF EXISTS `coupon`;
+CREATE TABLE `coupon` (
+  `id` bigint(20) NOT NULL COMMENT 'ID',
+  `promotion_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '活动名称',
+  `start_time` datetime(6) DEFAULT NULL COMMENT '活动开始时间',
+  `end_time` datetime(6) DEFAULT NULL COMMENT '活动结束时间',
+  `coupon_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '优惠券名称',
+  `get_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '优惠券类型',
+  `consume_threshold` double(20,2) DEFAULT NULL COMMENT '消费门槛',
+  `coupon_discount` double(20,2) DEFAULT NULL COMMENT '折扣',
+  `coupon_limit_num` int(11) DEFAULT NULL COMMENT '领取限制',
+  `coupon_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '活动类型',
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '活动描述',
+  `price` double(20,2) DEFAULT NULL COMMENT '面额',
+  `publish_num` int(11) DEFAULT NULL COMMENT '发行数量',
+  `received_num` int(11) DEFAULT NULL COMMENT '已被领取的数量',
+  `scope_id` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '范围关联的ID',
+  `scope_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT 'PORTION_GOODS' COMMENT '关联范围类型',
+  `used_num` int(11) DEFAULT NULL COMMENT '已被使用的数量',
+  `range_day_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '时间范围类型(固定时间、动态时间)',
+  `effective_days` int(11) DEFAULT NULL COMMENT '有效期',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建者',
+  `create_time` datetime(6) DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '更新者',
+  `update_time` datetime(6) DEFAULT NULL COMMENT '更新时间',
+  `delete_flag` tinyint(4) DEFAULT '0' COMMENT '删除标志 ',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='优惠券\n';
+
+-- ----------------------------
+-- Records of coupon
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for coupon_activity
+-- ----------------------------
+DROP TABLE IF EXISTS `coupon_activity`;
+CREATE TABLE `coupon_activity` (
+  `id` bigint(20) NOT NULL COMMENT 'id主键',
+  `promotion_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '活动名称',
+  `start_time` datetime(6) DEFAULT NULL COMMENT '活动开始时间',
+  `end_time` datetime(6) DEFAULT NULL COMMENT '活动结束时间',
+  `scope_id` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '范围关联的ID',
+  `scope_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT 'PORTION_GOODS' COMMENT '关联范围类型',
+  `activity_scope` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '活动范围',
+  `activity_scope_info` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '活动范围详情',
+  `coupon_activity_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '优惠券活动类型',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
+  `create_time` datetime(6) DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '更新人',
+  `update_time` datetime(6) DEFAULT NULL COMMENT '更新时间',
+  `delete_flag` tinyint(4) DEFAULT '0' COMMENT '删除标志',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='优惠券活动';
+
+-- ----------------------------
+-- Records of coupon_activity
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for coupon_activity_item
+-- ----------------------------
+DROP TABLE IF EXISTS `coupon_activity_item`;
+CREATE TABLE `coupon_activity_item` (
+  `id` bigint(20) NOT NULL COMMENT 'id主键',
+  `activity_id` bigint(20) DEFAULT NULL COMMENT '优惠券活动id',
+  `coupon_id` bigint(20) DEFAULT NULL COMMENT '优惠券id',
+  `num` int(11) DEFAULT NULL COMMENT '优惠券数量',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
+  `create_time` datetime(6) DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '更新人',
+  `update_time` datetime(6) DEFAULT NULL COMMENT '更新时间',
+  `delete_flag` tinyint(4) DEFAULT '0' COMMENT '删除标志',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='优惠券活动项';
+
+-- ----------------------------
+-- Records of coupon_activity_item
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for member_coupon
+-- ----------------------------
+DROP TABLE IF EXISTS `member_coupon`;
+CREATE TABLE `member_coupon` (
+  `id` bigint(20) NOT NULL COMMENT 'ID',
+  `consume_threshold` double(20,2) DEFAULT NULL COMMENT '消费门槛',
+  `consumption_time` datetime(6) DEFAULT NULL COMMENT '核销时间',
+  `coupon_id` bigint(20) DEFAULT NULL COMMENT '优惠券ID',
+  `coupon_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '活动类型',
+  `discount` double DEFAULT NULL COMMENT '折扣',
+  `end_time` datetime(6) DEFAULT NULL COMMENT '使用截止时间',
+  `get_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '优惠券类型',
+  `member_coupon_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '会员优惠券状态',
+  `member_id` bigint(20) DEFAULT NULL COMMENT '会员ID',
+  `member_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '会员名称',
+  `price` double(20,2) DEFAULT NULL COMMENT '面额',
+  `scope_id` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '范围关联的ID',
+  `scope_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT 'PORTION_GOODS' COMMENT '关联范围类型',
+  `start_time` datetime(6) DEFAULT NULL COMMENT '使用起始时间',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建者',
+  `create_time` datetime(6) DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(6) DEFAULT NULL COMMENT '更新时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '更新者',
+  `delete_flag` tinyint(4) DEFAULT '0' COMMENT '删除标志 ',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `member-id` (`member_id`) USING BTREE COMMENT 'member_id检索优惠券索引'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='会员优惠券';
+
+-- ----------------------------
+-- Records of member_coupon
+-- ----------------------------
+BEGIN;
+COMMIT;
 
 -- ----------------------------
 -- Table structure for promotion_goods
@@ -29,6 +153,8 @@ CREATE TABLE `promotion_goods` (
   `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '更新人',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `delete_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志 ',
+  `scope_id` mediumtext COLLATE utf8mb4_bin COMMENT '关联的范围id',
+  `scope_type` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '关联范围类型',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -56,8 +182,10 @@ CREATE TABLE `seckill` (
   `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '更新人',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `delete_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志 ',
+  `scope_id` mediumtext COLLATE utf8mb4_bin COMMENT '范围关联的ID',
+  `scope_type` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '关联范围类型',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='秒杀';
 
 -- ----------------------------
 -- Records of seckill
@@ -106,7 +234,7 @@ CREATE TABLE `setting` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '更新人',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `delete_flag` bit(1) DEFAULT NULL COMMENT '删除标志',
+  `delete_flag` tinyint(4) DEFAULT NULL COMMENT '删除标志',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 

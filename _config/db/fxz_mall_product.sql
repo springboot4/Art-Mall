@@ -1,3 +1,5 @@
+
+
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -12,11 +14,11 @@ CREATE TABLE `attribute` (
   `type` tinyint(4) NOT NULL COMMENT '类型(1:规格;2:属性;)',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `create_by` varchar(255) DEFAULT NULL COMMENT '创建人',
-  `update_by` varchar(255) DEFAULT NULL COMMENT '更新人',
+  `create_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '创建人',
+  `update_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '更新人',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `fk_pms_attr_pms_category` (`category_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1524927027245527042 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='商品属性表';
+) ENGINE=InnoDB AUTO_INCREMENT=1564437364663427074 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商品属性表';
 
 -- ----------------------------
 -- Records of attribute
@@ -39,6 +41,15 @@ INSERT INTO `attribute` (`id`, `category_id`, `name`, `type`, `create_time`, `up
 INSERT INTO `attribute` (`id`, `category_id`, `name`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1522951246206267394, 1522191266574311425, '重量', 2, '2022-05-07 22:47:27', '2022-05-07 22:47:27', 'fxz', 'fxz');
 INSERT INTO `attribute` (`id`, `category_id`, `name`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1524927022354968577, 3, '', 1, '2022-05-13 09:38:29', '2022-05-13 09:38:29', 'fxz', 'fxz');
 INSERT INTO `attribute` (`id`, `category_id`, `name`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1524927027245527041, 3, '', 2, '2022-05-13 09:38:30', '2022-05-13 09:38:30', 'fxz', 'fxz');
+INSERT INTO `attribute` (`id`, `category_id`, `name`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1564435985689518081, 1524737447959506946, '颜色', 1, '2022-08-30 10:12:59', '2022-08-30 10:12:59', 'fxz', 'fxz');
+INSERT INTO `attribute` (`id`, `category_id`, `name`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1564435985727266817, 1524737447959506946, '内存', 1, '2022-08-30 10:12:59', '2022-08-30 10:12:59', 'fxz', 'fxz');
+INSERT INTO `attribute` (`id`, `category_id`, `name`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1564435991829979138, 1524737447959506946, '显卡', 2, '2022-08-30 10:13:01', '2022-08-30 10:13:01', 'fxz', 'fxz');
+INSERT INTO `attribute` (`id`, `category_id`, `name`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1564436042136461313, 1524737517643673602, '内存', 1, '2022-08-30 10:13:13', '2022-08-30 10:13:13', 'fxz', 'fxz');
+INSERT INTO `attribute` (`id`, `category_id`, `name`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1564436046330765313, 1524737517643673602, '显卡', 2, '2022-08-30 10:13:14', '2022-08-30 10:13:14', 'fxz', 'fxz');
+INSERT INTO `attribute` (`id`, `category_id`, `name`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1564437281486184449, 1524738411214974977, '重量', 1, '2022-08-30 10:18:08', '2022-08-30 10:18:08', 'fxz', 'fxz');
+INSERT INTO `attribute` (`id`, `category_id`, `name`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1564437284686438401, 1524738411214974977, '品质', 2, '2022-08-30 10:18:09', '2022-08-30 10:18:09', 'fxz', 'fxz');
+INSERT INTO `attribute` (`id`, `category_id`, `name`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1564437362499166209, 1524738470811840514, '重量', 1, '2022-08-30 10:18:28', '2022-08-30 10:18:28', 'fxz', 'fxz');
+INSERT INTO `attribute` (`id`, `category_id`, `name`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1564437364663427073, 1524738470811840514, '品种', 2, '2022-08-30 10:18:28', '2022-08-30 10:18:28', 'fxz', 'fxz');
 COMMIT;
 
 -- ----------------------------
@@ -52,18 +63,19 @@ CREATE TABLE `brand` (
   `sort` int(11) DEFAULT NULL COMMENT '排序',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `create_by` varchar(255) DEFAULT NULL COMMENT '创建人',
-  `update_by` varchar(255) DEFAULT NULL COMMENT '更新人',
+  `create_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '创建人',
+  `update_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '更新人',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1525148812570275842 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='商品品牌表';
+) ENGINE=InnoDB AUTO_INCREMENT=1564437495265665027 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商品品牌表';
 
 -- ----------------------------
 -- Records of brand
 -- ----------------------------
 BEGIN;
-INSERT INTO `brand` (`id`, `name`, `logo_url`, `sort`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1, '华为', '/system/file/fxzcloud/f8c8716d0dd64ec1a569e29014605dc2.png', 1, '2021-07-11 19:56:58', '2022-05-07 13:31:41', NULL, 'fxz');
-INSERT INTO `brand` (`id`, `name`, `logo_url`, `sort`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (10, '小米', '/system/file/fxzcloud/472b416d13fc47219bd5b0effaff4a4e.jpeg', 1, '2022-03-05 16:12:16', '2022-05-13 13:26:19', NULL, 'fxz');
-INSERT INTO `brand` (`id`, `name`, `logo_url`, `sort`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1522951736029671425, '苹果', '/system/file/fxzcloud/c483c098f4124eb4a27e900250f1e1d4.png', 0, '2022-05-07 22:49:24', '2022-05-07 22:51:29', 'fxz', 'fxz');
+INSERT INTO `brand` (`id`, `name`, `logo_url`, `sort`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1, '华为', '/system/file/fxzcloud/fe713dafd220473491d1cd3d6ebddf3f.webp', 1, '2021-07-11 19:56:58', '2022-08-11 10:58:51', NULL, 'fxz');
+INSERT INTO `brand` (`id`, `name`, `logo_url`, `sort`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (10, '小米', '/system/file/fxzcloud/6d1953ea1f114fad86386965e7e1ff7e.png', 1, '2022-03-05 16:12:16', '2022-08-11 10:58:59', NULL, 'fxz');
+INSERT INTO `brand` (`id`, `name`, `logo_url`, `sort`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1522951736029671425, '苹果', '/system/file/fxzcloud/4664773d67d64a2db83956a44ed57e2f.png', 0, '2022-05-07 22:49:24', '2022-08-11 10:58:43', 'fxz', 'fxz');
+INSERT INTO `brand` (`id`, `name`, `logo_url`, `sort`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1564437495265665026, '红富士', '/system/file/fxzcloud/102ff1c9828a4d99ba365eaf866577e1.jpg', 4, '2022-08-30 10:18:59', '2022-08-30 10:18:59', 'fxz', 'fxz');
 COMMIT;
 
 -- ----------------------------
@@ -80,10 +92,10 @@ CREATE TABLE `category` (
   `visible` tinyint(1) DEFAULT '1' COMMENT '显示状态:( 0:隐藏 1:显示)',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `create_by` varchar(255) DEFAULT NULL COMMENT '创建人',
-  `update_by` varchar(255) DEFAULT NULL COMMENT '更新人',
+  `create_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '创建人',
+  `update_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '更新人',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1524738470811840515 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='商品分类表';
+) ENGINE=InnoDB AUTO_INCREMENT=1524738470811840515 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商品分类表';
 
 -- ----------------------------
 -- Records of category
@@ -94,15 +106,15 @@ INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, 
 INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (6, '电脑', 0, 1, 'http://a.youlai.tech:9000/default/776c21c1a71848069093033f461c5f4a.jpg', 1, 1, '2022-02-25 11:22:44', '2022-02-25 11:22:44', NULL, NULL);
 INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (7, '游戏本', 6, 2, 'http://a.youlai.tech:9000/default/f41d764d7ce64054b75fe9be5fb3f700.jpg', 1, 1, '2022-02-25 11:23:06', '2022-02-25 11:23:06', NULL, NULL);
 INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (8, '轻薄本', 6, 2, 'http://a.youlai.tech:9000/default/840ddc78c93d422b9929821c97f3dfbe.jpg', 2, 1, '2022-02-25 11:23:24', '2022-02-25 11:23:24', NULL, NULL);
-INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1522189691277635586, '5G手机', 4, 3, '/system/file/fxzcloud/1c61c39f60c24d849e6478b33a558248.png', 0, 1, '2022-05-05 20:21:18', '2022-05-14 10:09:13', 'fxz', 'fxz');
+INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1522189691277635586, '5G手机', 4, 3, '/system/file/fxzcloud/10ecdc1273c24e37a213616b604de77c.png', 0, 1, '2022-05-05 20:21:18', '2022-08-28 18:58:38', 'fxz', 'fxz');
 INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1522191209464668161, '苹果笔记本', 6, 2, '/system/file/fxzcloud/0c1aacddbff24e48bcde61ae4b0ccc7a.jpeg', 3, 1, '2022-05-05 20:27:20', '2022-05-07 22:45:52', 'fxz', 'fxz');
-INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1522191266574311425, 'macbook pro', 1522191209464668161, 3, '/system/file/fxzcloud/47657feb046845c297104c77ce421df0.jpeg', 1, 1, '2022-05-05 20:27:34', '2022-05-07 22:46:13', 'fxz', 'fxz');
-INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1524737447959506946, '游戏笔记本', 7, 3, '/system/file/fxzcloud/256ec2167fb247b18aa1b10bfc44f4ae.png', 0, 1, '2022-05-12 21:05:11', '2022-05-12 21:05:11', 'fxz', 'fxz');
-INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1524737517643673602, '高端游戏本', 7, 3, '/system/file/fxzcloud/cb8f26f54bca4786820c19240ee35abc.jpeg', 2, 1, '2022-05-12 21:05:27', '2022-05-12 21:05:27', 'fxz', 'fxz');
+INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1522191266574311425, 'macbook pro', 1522191209464668161, 3, '/system/file/fxzcloud/f0d5d8885a8b4eb29227c5e993b8667b.webp', 1, 1, '2022-05-05 20:27:34', '2022-08-11 09:26:41', 'fxz', 'fxz');
+INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1524737447959506946, '游戏笔记本', 7, 3, '/system/file/fxzcloud/961d0681ba594253bb23d505a6c63aa7.png', 0, 1, '2022-05-12 21:05:11', '2022-08-11 09:26:19', 'fxz', 'fxz');
+INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1524737517643673602, '高端游戏本', 7, 3, '/system/file/fxzcloud/084f74db8c3d4d1a9edbd36047694c57.png', 2, 1, '2022-05-12 21:05:27', '2022-08-11 09:26:28', 'fxz', 'fxz');
 INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1524738318097231873, '生鲜', 0, 1, '/system/file/fxzcloud/6a91521f391d4c9e959cd2f744be9d2b.png', 3, 1, '2022-05-12 21:08:38', '2022-05-12 21:08:38', 'fxz', 'fxz');
 INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1524738363114696705, '水果', 1524738318097231873, 2, '/system/file/fxzcloud/68fad79706804511bf273ded3a0d9120.jpeg', 1, 1, '2022-05-12 21:08:49', '2022-05-12 21:08:49', 'fxz', 'fxz');
-INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1524738411214974977, '苹果', 1524738363114696705, 3, '/system/file/fxzcloud/b6563d6859584c45a720c2a00df1f6fe.jpeg', 1, 1, '2022-05-12 21:09:00', '2022-05-12 21:09:00', 'fxz', 'fxz');
-INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1524738470811840514, '葡萄', 1524738363114696705, 3, '/system/file/fxzcloud/178764e92bc94000a94bb92f896390b8.jpeg', 2, 1, '2022-05-12 21:09:14', '2022-05-12 21:09:14', 'fxz', 'fxz');
+INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1524738411214974977, '苹果', 1524738363114696705, 3, '/system/file/fxzcloud/4c371284b26b4449b3fceeb4e0cb8468.png', 1, 1, '2022-05-12 21:09:00', '2022-08-11 09:26:53', 'fxz', 'fxz');
+INSERT INTO `category` (`id`, `name`, `parent_id`, `level`, `icon_url`, `sort`, `visible`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1524738470811840514, '葡萄', 1524738363114696705, 3, '/system/file/fxzcloud/b3bb2f37b17546a9a602e72bd8a523bd.jpeg', 2, 1, '2022-05-12 21:09:14', '2022-08-11 09:27:03', 'fxz', 'fxz');
 COMMIT;
 
 -- ----------------------------
@@ -120,20 +132,19 @@ CREATE TABLE `sku` (
   `pic_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '商品图片地址',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `create_by` varchar(255) DEFAULT NULL COMMENT '创建人',
-  `update_by` varchar(255) DEFAULT NULL COMMENT '更新人',
+  `create_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '创建人',
+  `update_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '更新人',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `fk_pms_sku_pms_spu` (`spu_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1524986262968958979 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='商品库存表';
+) ENGINE=InnoDB AUTO_INCREMENT=1564437966378278915 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商品库存表';
 
 -- ----------------------------
 -- Records of sku
 -- ----------------------------
 BEGIN;
-INSERT INTO `sku` (`id`, `sku_sn`, `spu_id`, `name`, `price`, `stock_num`, `locked_stock_num`, `pic_url`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1522935088551849985, 'huawei001', 1522935059942502401, '华为p40 8+128g', 5699, 100, 0, '无', '2022-05-07 21:43:15', '2022-05-07 21:43:15', 'fxz', 'fxz');
-INSERT INTO `sku` (`id`, `sku_sn`, `spu_id`, `name`, `price`, `stock_num`, `locked_stock_num`, `pic_url`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1523572235571093506, 'huaweip50-001', 1523572233188728833, '华为p50 黑色 8+256', 1199988, 100, 11, '/system/file/fxzcloud/b367ba62b5b04c31b9530015d733a2b0.jpeg', '2022-05-09 15:55:02', '2022-05-09 15:55:02', 'fxz', 'fxz');
-INSERT INTO `sku` (`id`, `sku_sn`, `spu_id`, `name`, `price`, `stock_num`, `locked_stock_num`, `pic_url`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1523584379993776130, 'macbookpro-001', 1523584378752262145, 'macbook pro 灰色 16+512G', 1399999, 50, 0, '/system/file/fxzcloud/dee78d4856d74ca2bb15ad48a9b66614.png', '2022-05-09 16:43:18', '2022-05-09 16:43:18', 'fxz', 'fxz');
-INSERT INTO `sku` (`id`, `sku_sn`, `spu_id`, `name`, `price`, `stock_num`, `locked_stock_num`, `pic_url`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1524986262968958978, 'xiaomi001', 1524986261358346242, '小米12pro 黑色 8+128G', 509900, 10, 0, '/system/file/fxzcloud/44d519cc8c7843c9bbe9032ccd952d81.png', '2022-05-13 13:33:53', '2022-05-13 13:33:53', 'fxz', 'fxz');
+INSERT INTO `sku` (`id`, `sku_sn`, `spu_id`, `name`, `price`, `stock_num`, `locked_stock_num`, `pic_url`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1557683375603257347, '0001', 1557683374491766788, '黑色华为p50', 899900, 1000, 0, '/system/file/fxzcloud/b9120a762ef444a782ed79c047662c83.png', '2022-08-11 19:00:32', '2022-08-11 19:00:32', 'fxz', 'fxz');
+INSERT INTO `sku` (`id`, `sku_sn`, `spu_id`, `name`, `price`, `stock_num`, `locked_stock_num`, `pic_url`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1557683376983183364, '0002', 1557683374491766788, '白色华为p50', 899900, 1000, 0, '/system/file/fxzcloud/d7c0b00c532d4fc6a406e65fd2797fd9.png', '2022-08-11 19:00:32', '2022-08-11 19:00:32', 'fxz', 'fxz');
+INSERT INTO `sku` (`id`, `sku_sn`, `spu_id`, `name`, `price`, `stock_num`, `locked_stock_num`, `pic_url`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1564437958274883586, 'hfs0001', 1564437956710408194, '红富士', 899, 1000, 1, NULL, '2022-08-30 10:20:50', '2022-08-30 10:20:50', 'fxz', 'fxz');
 COMMIT;
 
 -- ----------------------------
@@ -150,35 +161,22 @@ CREATE TABLE `sku_attribute_value` (
   `type` tinyint(4) NOT NULL COMMENT '类型(1:规格;2:属性;)',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `create_by` varchar(255) DEFAULT NULL COMMENT '创建人',
-  `update_by` varchar(255) DEFAULT NULL COMMENT '更新人',
+  `create_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '创建人',
+  `update_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '更新人',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `fk_pms_spu_attribute_pms_attr` (`name`) USING BTREE,
   KEY `fk_pms_spu_attribute_pms_spu` (`spu_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1524986263413555203 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='商品属性项表';
+) ENGINE=InnoDB AUTO_INCREMENT=1564437967082921986 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商品属性项表';
 
 -- ----------------------------
 -- Records of sku_attribute_value
 -- ----------------------------
 BEGIN;
-INSERT INTO `sku_attribute_value` (`id`, `spu_id`, `sku_id`, `attribute_id`, `name`, `value`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1, 1, 0, 34, '颜色', '黑', 1, NULL, '2022-03-05 15:01:53', NULL, NULL);
-INSERT INTO `sku_attribute_value` (`id`, `spu_id`, `sku_id`, `attribute_id`, `name`, `value`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (3, 1, 0, 35, '规格', '6+128g', 1, NULL, '2022-03-05 15:01:53', NULL, NULL);
-INSERT INTO `sku_attribute_value` (`id`, `spu_id`, `sku_id`, `attribute_id`, `name`, `value`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (4, 1, 0, 35, '规格', '8+256g', 1, NULL, '2022-03-05 15:01:53', NULL, NULL);
-INSERT INTO `sku_attribute_value` (`id`, `spu_id`, `sku_id`, `attribute_id`, `name`, `value`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (97, 68, 0, NULL, '颜色', '4123', 1, '2021-08-07 23:38:50', '2021-08-07 23:38:50', NULL, NULL);
-INSERT INTO `sku_attribute_value` (`id`, `spu_id`, `sku_id`, `attribute_id`, `name`, `value`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (98, 68, 0, NULL, '规格', '456', 1, '2021-08-07 23:38:50', '2021-08-07 23:38:50', NULL, NULL);
-INSERT INTO `sku_attribute_value` (`id`, `spu_id`, `sku_id`, `attribute_id`, `name`, `value`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (99, 68, 0, NULL, '规格', '123', 1, '2021-08-07 23:38:50', '2021-08-07 23:38:50', NULL, NULL);
-INSERT INTO `sku_attribute_value` (`id`, `spu_id`, `sku_id`, `attribute_id`, `name`, `value`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (101, 69, 0, NULL, '颜色', '123', 1, '2021-08-07 23:41:44', '2021-08-07 23:41:44', NULL, NULL);
-INSERT INTO `sku_attribute_value` (`id`, `spu_id`, `sku_id`, `attribute_id`, `name`, `value`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (102, 69, 0, NULL, '颜色', '4123', 1, '2021-08-07 23:41:44', '2021-08-07 23:41:44', NULL, NULL);
-INSERT INTO `sku_attribute_value` (`id`, `spu_id`, `sku_id`, `attribute_id`, `name`, `value`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (103, 69, 0, NULL, '规格', '456', 1, '2021-08-07 23:41:44', '2021-08-07 23:41:44', NULL, NULL);
-INSERT INTO `sku_attribute_value` (`id`, `spu_id`, `sku_id`, `attribute_id`, `name`, `value`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (104, 69, 0, NULL, '规格', '123', 1, '2021-08-07 23:41:45', '2021-08-07 23:41:45', NULL, NULL);
-INSERT INTO `sku_attribute_value` (`id`, `spu_id`, `sku_id`, `attribute_id`, `name`, `value`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (216, 1, 0, NULL, '颜色', '蓝', 1, '2022-03-05 09:25:53', '2022-03-05 15:01:53', NULL, NULL);
-INSERT INTO `sku_attribute_value` (`id`, `spu_id`, `sku_id`, `attribute_id`, `name`, `value`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1523572236128935938, 1523572233188728833, 1523572235571093506, 1522950701194211329, '颜色', '黑色', 1, '2022-05-09 15:55:02', '2022-05-09 15:55:02', 'fxz', 'fxz');
-INSERT INTO `sku_attribute_value` (`id`, `spu_id`, `sku_id`, `attribute_id`, `name`, `value`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1523572236137324546, 1523572233188728833, 1523572235571093506, 1522950701231960066, '内存', '8+256G', 1, '2022-05-09 15:55:02', '2022-05-09 15:55:02', 'fxz', 'fxz');
-INSERT INTO `sku_attribute_value` (`id`, `spu_id`, `sku_id`, `attribute_id`, `name`, `value`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1523584380379652098, 1523584378752262145, 1523584379993776130, 1522951238677491713, '屏幕尺寸', '16寸', 1, '2022-05-09 16:43:18', '2022-05-09 16:43:18', 'fxz', 'fxz');
-INSERT INTO `sku_attribute_value` (`id`, `spu_id`, `sku_id`, `attribute_id`, `name`, `value`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1523584380392235009, 1523584378752262145, 1523584379993776130, 1522951238694268929, '内存', '16+512G', 1, '2022-05-09 16:43:18', '2022-05-09 16:43:18', 'fxz', 'fxz');
-INSERT INTO `sku_attribute_value` (`id`, `spu_id`, `sku_id`, `attribute_id`, `name`, `value`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1523584380409012226, 1523584378752262145, 1523584379993776130, 1522951238694268930, '颜色', '灰色', 1, '2022-05-09 16:43:18', '2022-05-09 16:43:18', 'fxz', 'fxz');
-INSERT INTO `sku_attribute_value` (`id`, `spu_id`, `sku_id`, `attribute_id`, `name`, `value`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1524986263405166593, 1524986261358346242, 1524986262968958978, 1522950701231960066, '内存', '8+128G', 1, '2022-05-13 13:33:53', '2022-05-13 13:33:53', 'fxz', 'fxz');
-INSERT INTO `sku_attribute_value` (`id`, `spu_id`, `sku_id`, `attribute_id`, `name`, `value`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1524986263413555202, 1524986261358346242, 1524986262968958978, 1522950701194211329, '颜色', '黑色', 1, '2022-05-13 13:33:53', '2022-05-13 13:33:53', 'fxz', 'fxz');
+INSERT INTO `sku_attribute_value` (`id`, `spu_id`, `sku_id`, `attribute_id`, `name`, `value`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1557683376127545346, 1557683374491766786, 1557683375603257345, 1522950701231960066, '内存', '8+128G', 1, '2022-08-11 19:00:32', '2022-08-11 19:00:32', 'fxz', 'fxz');
+INSERT INTO `sku_attribute_value` (`id`, `spu_id`, `sku_id`, `attribute_id`, `name`, `value`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1557683376135933953, 1557683374491766786, 1557683375603257345, 1522950701194211329, '颜色', '黑色', 1, '2022-08-11 19:00:32', '2022-08-11 19:00:32', 'fxz', 'fxz');
+INSERT INTO `sku_attribute_value` (`id`, `spu_id`, `sku_id`, `attribute_id`, `name`, `value`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1557683377750740993, 1557683374491766786, 1557683376983183362, 1522950701231960066, '内存', '8+128G', 1, '2022-08-11 19:00:32', '2022-08-11 19:00:32', 'fxz', 'fxz');
+INSERT INTO `sku_attribute_value` (`id`, `spu_id`, `sku_id`, `attribute_id`, `name`, `value`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1557683377754935297, 1557683374491766786, 1557683376983183362, 1522950701194211329, '颜色', '白色', 1, '2022-08-11 19:00:32', '2022-08-11 19:00:32', 'fxz', 'fxz');
+INSERT INTO `sku_attribute_value` (`id`, `spu_id`, `sku_id`, `attribute_id`, `name`, `value`, `type`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1564437958954360834, 1564437956710408194, 1564437958274883586, 1564437281486184449, '重量', '1g', 1, '2022-08-30 10:20:50', '2022-08-30 10:20:50', 'fxz', 'fxz');
 COMMIT;
 
 -- ----------------------------
@@ -201,21 +199,18 @@ CREATE TABLE `spu` (
   `status` tinyint(4) DEFAULT NULL COMMENT '商品状态：0-下架 1-上架',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `create_by` varchar(255) DEFAULT NULL COMMENT '创建人',
-  `update_by` varchar(255) DEFAULT NULL COMMENT '更新人',
+  `create_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '创建人',
+  `update_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '更新人',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `fk_pms_spu_pms_brand` (`brand_id`) USING BTREE,
   KEY `fk_pms_spu_pms_category` (`category_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1524986261358346243 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='商品表';
+) ENGINE=InnoDB AUTO_INCREMENT=1564437964717334530 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商品表';
 
 -- ----------------------------
 -- Records of spu
 -- ----------------------------
 BEGIN;
-INSERT INTO `spu` (`id`, `name`, `category_id`, `brand_id`, `origin_price`, `price`, `sales`, `pic_url`, `album`, `unit`, `description`, `detail`, `status`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1522935059942502401, '华为p40', 3, 1, 5999, 5699, 0, '/system/file/fxzcloud/83c63debabbf4319820bec66a55ccd2d.png', '[\"/system/file/fxzcloud/b4b1916a49c74868934213cc4e4363b7.jpeg\"]', NULL, '华为p40手机，就是nb', '<p>华为就是nb</p>', NULL, '2022-05-07 21:43:08', '2022-05-07 21:43:08', 'fxz', 'fxz');
-INSERT INTO `spu` (`id`, `name`, `category_id`, `brand_id`, `origin_price`, `price`, `sales`, `pic_url`, `album`, `unit`, `description`, `detail`, `status`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1523572233188728833, '华为p50', 1522189691277635586, 1, 1299988, 1199988, 0, '/system/file/fxzcloud/d231c9027fef4362af9febbda70fb38c.jpeg', '[\"/system/file/fxzcloud/21a523f66b31416890d943c24f63c57f.jpeg\", \"/system/file/fxzcloud/86374955167e4520928b788c9344363e.jpeg\"]', NULL, '华为p50旗舰', '<p>华为最新款旗舰手机</p>', NULL, '2022-05-09 15:55:02', '2022-05-09 15:55:02', 'fxz', 'fxz');
-INSERT INTO `spu` (`id`, `name`, `category_id`, `brand_id`, `origin_price`, `price`, `sales`, `pic_url`, `album`, `unit`, `description`, `detail`, `status`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1523584378752262145, 'macbookpro 2021', 1522191266574311425, 1522951736029671425, 1499999, 1399999, 0, '/system/file/fxzcloud/3c7ab88b25934d71a9e20f1a8a369e51.png', NULL, NULL, 'macbook pro', '<p>macbook pro2021</p>', NULL, '2022-05-09 16:43:17', '2022-05-09 16:43:17', 'fxz', 'fxz');
-INSERT INTO `spu` (`id`, `name`, `category_id`, `brand_id`, `origin_price`, `price`, `sales`, `pic_url`, `album`, `unit`, `description`, `detail`, `status`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1524986261358346242, '小米12pro', 1522189691277635586, 10, 569900, 509900, 0, '/system/file/fxzcloud/375ed55bd7bc451fae67ce61bdcd8d58.jpeg', '[\"/system/file/fxzcloud/0646cb5d38ff462cb31f9cd7af5e71a2.png\", \"/system/file/fxzcloud/b497fc9dd42a494cb75c2f58eddaf9f6.jpeg\"]', NULL, '小米12pro', '<p>小米12pro</p>', NULL, '2022-05-13 13:33:52', '2022-05-13 13:33:52', 'fxz', 'fxz');
+INSERT INTO `spu` (`id`, `name`, `category_id`, `brand_id`, `origin_price`, `price`, `sales`, `pic_url`, `album`, `unit`, `description`, `detail`, `status`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1564437956710408194, '红富士大苹果', 1524738411214974977, 1564437495265665026, 999, 899, 0, '/system/file/fxzcloud/becfd62040b2413ca9126c8b21afe808.jpg', NULL, NULL, '快来买', '<p>不好吃</p>', NULL, '2022-08-30 10:20:49', '2022-08-30 10:20:49', 'fxz', 'fxz');
 COMMIT;
 
 -- ----------------------------
@@ -232,27 +227,41 @@ CREATE TABLE `spu_attribute_value` (
   `pic_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '规格图片',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `create_by` varchar(255) DEFAULT NULL COMMENT '创建人',
-  `update_by` varchar(255) DEFAULT NULL COMMENT '更新人',
+  `create_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '创建人',
+  `update_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '更新人',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `fk_pms_spu_attribute_pms_attr` (`name`) USING BTREE,
   KEY `fk_pms_spu_attribute_pms_spu` (`spu_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1524986262180429826 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='商品属性项表';
+) ENGINE=InnoDB AUTO_INCREMENT=1564437965388423171 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商品属性项表';
 
 -- ----------------------------
 -- Records of spu_attribute_value
 -- ----------------------------
 BEGIN;
-INSERT INTO `spu_attribute_value` (`id`, `spu_id`, `attribute_id`, `name`, `value`, `type`, `pic_url`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (100, 69, NULL, '上市时间', '123', 2, NULL, '2021-08-07 23:41:44', '2021-08-07 23:41:44', NULL, NULL);
-INSERT INTO `spu_attribute_value` (`id`, `spu_id`, `attribute_id`, `name`, `value`, `type`, `pic_url`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1522935072571551745, 1522935059942502401, 1522227526558879746, '网络', '5G', 2, NULL, '2022-05-07 21:43:11', '2022-05-07 21:43:11', 'fxz', 'fxz');
-INSERT INTO `spu_attribute_value` (`id`, `spu_id`, `attribute_id`, `name`, `value`, `type`, `pic_url`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1522935072655437826, 1522935059942502401, 1522228692801884161, '电池', '100w', 2, NULL, '2022-05-07 21:43:11', '2022-05-07 21:43:11', 'fxz', 'fxz');
-INSERT INTO `spu_attribute_value` (`id`, `spu_id`, `attribute_id`, `name`, `value`, `type`, `pic_url`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1522935072743518210, 1522935059942502401, 1522228796099203073, '重量', '300g', 2, NULL, '2022-05-07 21:43:11', '2022-05-07 21:43:11', 'fxz', 'fxz');
-INSERT INTO `spu_attribute_value` (`id`, `spu_id`, `attribute_id`, `name`, `value`, `type`, `pic_url`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1523572234547683330, 1523572233188728833, 1522950705698893825, '网络', '5G', 2, NULL, '2022-05-09 15:55:02', '2022-05-09 15:55:02', 'fxz', 'fxz');
-INSERT INTO `spu_attribute_value` (`id`, `spu_id`, `attribute_id`, `name`, `value`, `type`, `pic_url`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1523572234589626369, 1523572233188728833, 1522950705707282433, '重量', '200g', 2, NULL, '2022-05-09 15:55:02', '2022-05-09 15:55:02', 'fxz', 'fxz');
-INSERT INTO `spu_attribute_value` (`id`, `spu_id`, `attribute_id`, `name`, `value`, `type`, `pic_url`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1523584379293327361, 1523584378752262145, 1522951246197878785, '芯片', 'm1', 2, NULL, '2022-05-09 16:43:18', '2022-05-09 16:43:18', 'fxz', 'fxz');
-INSERT INTO `spu_attribute_value` (`id`, `spu_id`, `attribute_id`, `name`, `value`, `type`, `pic_url`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1523584379297521666, 1523584378752262145, 1522951246206267394, '重量', '300g', 2, NULL, '2022-05-09 16:43:18', '2022-05-09 16:43:18', 'fxz', 'fxz');
-INSERT INTO `spu_attribute_value` (`id`, `spu_id`, `attribute_id`, `name`, `value`, `type`, `pic_url`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1524986262167846914, 1524986261358346242, 1522950705698893825, '网络', '5G', 2, NULL, '2022-05-13 13:33:52', '2022-05-13 13:33:52', 'fxz', 'fxz');
-INSERT INTO `spu_attribute_value` (`id`, `spu_id`, `attribute_id`, `name`, `value`, `type`, `pic_url`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1524986262180429825, 1524986261358346242, 1522950705707282433, '重量', '200g', 2, NULL, '2022-05-13 13:33:52', '2022-05-13 13:33:52', 'fxz', 'fxz');
+INSERT INTO `spu_attribute_value` (`id`, `spu_id`, `attribute_id`, `name`, `value`, `type`, `pic_url`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1557683374990888961, 1557683374491766786, 1522950705698893825, '网络', '5G', 2, NULL, '2022-08-11 19:00:32', '2022-08-11 19:00:32', 'fxz', 'fxz');
+INSERT INTO `spu_attribute_value` (`id`, `spu_id`, `attribute_id`, `name`, `value`, `type`, `pic_url`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1557683375007666178, 1557683374491766786, 1522950705707282433, '重量', '200g', 2, NULL, '2022-08-11 19:00:32', '2022-08-11 19:00:32', 'fxz', 'fxz');
+INSERT INTO `spu_attribute_value` (`id`, `spu_id`, `attribute_id`, `name`, `value`, `type`, `pic_url`, `create_time`, `update_time`, `create_by`, `update_by`) VALUES (1564437957528297474, 1564437956710408194, 1564437284686438401, '品质', '杠杠滴', 2, NULL, '2022-08-30 10:20:50', '2022-08-30 10:20:50', 'fxz', 'fxz');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for undo_log
+-- ----------------------------
+DROP TABLE IF EXISTS `undo_log`;
+CREATE TABLE `undo_log` (
+  `branch_id` bigint(20) NOT NULL COMMENT 'branch transaction id',
+  `xid` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'global transaction id',
+  `context` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'undo_log context,such as serialization',
+  `rollback_info` longblob NOT NULL COMMENT 'rollback info',
+  `log_status` int(11) NOT NULL COMMENT '0:normal status,1:defense status',
+  `log_created` datetime(6) NOT NULL COMMENT 'create datetime',
+  `log_modified` datetime(6) NOT NULL COMMENT 'modify datetime',
+  UNIQUE KEY `ux_undo_log` (`xid`,`branch_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='AT transaction mode undo table';
+
+-- ----------------------------
+-- Records of undo_log
+-- ----------------------------
+BEGIN;
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

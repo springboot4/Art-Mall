@@ -225,8 +225,9 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
 		promotionGoodsService
 				.remove(Wrappers.<PromotionGoods>lambdaQuery().eq(PromotionGoods::getPromotionId, coupon.getId()));
 
-		// 如果优惠券的开始和结束时间都是null，我们认为此优惠券过期，删除掉优惠券下所有的促销商品信息
-		if (Objects.isNull(coupon.getStartTime()) && Objects.isNull(coupon.getEndTime())) {
+		// 如果优惠券的开始和结束时间都是null 且有效期也是null，我们认为此优惠券过期，删除掉优惠券下所有的促销商品信息
+		if (Objects.isNull(coupon.getStartTime()) && Objects.isNull(coupon.getEndTime())
+				&& Objects.isNull(coupon.getEffectiveDays())) {
 			return;
 		}
 
