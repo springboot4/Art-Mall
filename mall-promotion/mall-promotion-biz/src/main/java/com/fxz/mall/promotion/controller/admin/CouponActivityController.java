@@ -39,7 +39,7 @@ public class CouponActivityController {
 	 * 关闭券活动
 	 */
 	@Ojbk
-	@DeleteMapping("/close/{id}")
+	@PutMapping("/close/{id}")
 	public Result<Void> closeCouponActivity(@PathVariable("id") Long id) {
 		couponActivityService.closeCouponActivity(id);
 		return Result.success();
@@ -51,6 +51,15 @@ public class CouponActivityController {
 	@GetMapping(value = "/page")
 	public Result<PageResult<CouponActivity>> pageCoupon(Page<CouponActivity> pageParam) {
 		return Result.success(PageResult.success(couponActivityService.page(pageParam, Wrappers.emptyWrapper())));
+	}
+
+	/**
+	 * 根据id查询优惠券活动
+	 * @param id 优惠券活动id
+	 */
+	@GetMapping("/findById")
+	public Result<CouponActivity> findById(@RequestParam("id") Long id) {
+		return Result.success(couponActivityService.getById(id));
 	}
 
 }
