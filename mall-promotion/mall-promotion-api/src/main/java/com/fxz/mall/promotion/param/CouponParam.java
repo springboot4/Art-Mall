@@ -25,7 +25,8 @@ public class CouponParam extends Coupon implements Serializable {
 		return Wrappers.<Coupon>lambdaQuery().eq(Objects.nonNull(this.getId()), Coupon::getId, this.getId())
 				.like(StrUtil.isNotBlank(this.getCouponName()), Coupon::getCouponName, this.getCouponName())
 				.eq(StrUtil.isNotBlank(this.getCouponType()), Coupon::getCouponType, this.getCouponType())
-				.eq(StrUtil.isNotBlank(this.getGetType()), Coupon::getGetType, this.getGetType());
+				.eq(StrUtil.isNotBlank(this.getGetType()), Coupon::getGetType, this.getGetType())
+				.and(wr -> wr.isNotNull(Coupon::getStartTime).or().gt(Coupon::getEffectiveDays, 0));
 	}
 
 }

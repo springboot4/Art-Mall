@@ -167,8 +167,7 @@ public class CouponActivityServiceImpl extends ServiceImpl<CouponActivityMapper,
 			// 批量添加优惠券
 			memberCouponService.saveBatch(memberCouponList);
 			// 更新优惠券已领取数量
-			couponService.receiveCoupon(couponActivityItem.getCouponId(),
-					memberCouponList.size() * couponActivityItem.getNum());
+			couponService.receiveCoupon(couponActivityItem.getCouponId(), memberCouponList.size());
 		}
 	}
 
