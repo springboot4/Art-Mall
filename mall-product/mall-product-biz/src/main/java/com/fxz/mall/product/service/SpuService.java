@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.fxz.mall.product.dto.GoodsDTO;
 import com.fxz.mall.product.entity.Spu;
 import com.fxz.mall.product.query.SpuPageQuery;
-import com.fxz.mall.product.vo.GoodsDetailVO;
 import com.fxz.mall.product.vo.GoodsPageVO;
 import com.fxz.mall.product.vo.GoodsVO;
 
@@ -39,11 +38,6 @@ public interface SpuService extends IService<Spu> {
 	 * app端分页查询spu
 	 */
 	IPage<GoodsPageVO> listAppSpuPage(SpuPageQuery queryParams);
-
-	/**
-	 * 获取商品详情
-	 */
-	GoodsDetailVO getAppSpuDetail(Long spuId);
 
 	/**
 	 * 根据spuId获取商品详情

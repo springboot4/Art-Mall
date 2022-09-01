@@ -1,10 +1,11 @@
 package com.fxz.mall.product.vo;
 
 import com.fxz.common.core.serializer.ImgUrl;
-import com.fxz.mall.product.entity.Sku;
+import com.fxz.mall.product.dto.SkuDTO;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 商品详情视图对象
@@ -21,7 +22,12 @@ public class GoodsDetailVO {
 
 	private List<Specification> specList;
 
-	private List<Sku> skuList;
+	private List<SkuDTO> skuList;
+
+	/**
+	 * 优惠券列表
+	 */
+	List<Map<String, Object>> couponList;
 
 	@Data
 	public static class GoodsInfo {

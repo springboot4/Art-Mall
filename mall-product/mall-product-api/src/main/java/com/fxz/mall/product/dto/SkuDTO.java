@@ -1,7 +1,6 @@
 package com.fxz.mall.product.dto;
 
-import com.fxz.common.mp.base.BaseEntity;
-import com.fxz.mall.product.dto.AttributeValueDTO;
+import com.fxz.mall.product.entity.Sku;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -17,26 +16,23 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
-public class SkuDTO extends BaseEntity {
+public class SkuDTO extends Sku {
 
 	private static final long serialVersionUID = -1L;
 
-	private Long id;
+	/**
+	 * 原始价格
+	 */
+	private Long originPrice;
 
-	private String skuSn;
+	/**
+	 * 是否优惠
+	 */
+	private boolean isPromotion;
 
-	private Long spuId;
-
-	private String name;
-
-	private Long price;
-
-	private Integer stockNum;
-
-	private Integer lockedStockNum;
-
-	private String picUrl;
-
+	/**
+	 * 属性值
+	 */
 	private List<AttributeValueDTO> specValList;
 
 	/**

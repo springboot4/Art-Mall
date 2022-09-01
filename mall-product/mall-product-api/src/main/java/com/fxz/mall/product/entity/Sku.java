@@ -30,7 +30,7 @@ public class Sku extends BaseEntity {
 	private String skuSn;
 
 	/**
-	 * SPU ID
+	 * 商品id
 	 */
 	private Long spuId;
 
@@ -43,15 +43,6 @@ public class Sku extends BaseEntity {
 	 * 商品价格(单位：分)
 	 */
 	private Long price;
-
-	/**
-	 * 原始价格
-	 */
-	@TableField(exist = false)
-	private Long originPrice;
-
-	@TableField(exist = false)
-	private boolean isPromotion;
 
 	/**
 	 * 库存数量
