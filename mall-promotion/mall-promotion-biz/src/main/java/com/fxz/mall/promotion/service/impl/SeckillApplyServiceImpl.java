@@ -317,7 +317,7 @@ public class SeckillApplyServiceImpl extends ServiceImpl<SeckillApplyMapper, Sec
 	private PromotionGoods createSeckillGoods(SkuInfoDTO skuInfo, SeckillApply applie, Seckill seckill) {
 		// 促销商品默认信息
 		PromotionGoods promotionGoods = new PromotionGoods(skuInfo);
-		promotionGoods.setPromotionId(applie.getId());
+		promotionGoods.setPromotionId(seckill.getId());
 		promotionGoods.setLimitNum(applie.getQuantity());
 		promotionGoods.setNum(0);
 		promotionGoods.setTitle(seckill.getPromotionName());
