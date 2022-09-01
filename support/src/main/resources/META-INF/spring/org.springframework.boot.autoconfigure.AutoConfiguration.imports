@@ -1,0 +1,3 @@
+com.fxz.mall.support.config.SecurityAutoConfigure
+com.fxz.mall.support.config.FxzWechatWeappConfig
+com.fxz.mall.support.service.member.FxzMemberUserDetailsServiceImpl

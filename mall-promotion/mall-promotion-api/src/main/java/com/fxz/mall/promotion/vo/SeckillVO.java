@@ -1,4 +1,4 @@
-package com.fxz.mall.promotion.VO;
+package com.fxz.mall.promotion.vo;
 
 import com.fxz.mall.promotion.entity.Seckill;
 import com.fxz.mall.promotion.entity.SeckillApply;

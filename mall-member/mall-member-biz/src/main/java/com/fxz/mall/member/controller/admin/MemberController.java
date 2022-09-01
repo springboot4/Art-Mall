@@ -6,9 +6,12 @@ import com.fxz.common.mp.result.PageResult;
 import com.fxz.common.mp.result.Result;
 import com.fxz.common.mp.result.ResultCode;
 import com.fxz.common.security.annotation.Ojbk;
+import com.fxz.common.security.entity.FxzAuthUser;
 import com.fxz.common.security.util.SecurityUtil;
 import com.fxz.mall.member.entity.Member;
 import com.fxz.mall.member.service.impl.MemberServiceImpl;
+import com.fxz.system.entity.SystemUser;
+import com.fxz.system.entity.UserInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,10 +66,13 @@ public class MemberController {
 	 * @param id 会员id
 	 * @return 会员信息
 	 */
-	@Ojbk(inner = true)
-	@GetMapping("/auth/loadUserByUserId/{id}")
-	public Result<Member> loadUserByUserId(@PathVariable("id") Long id) {
-		return Result.success(memberService.loadUserByUserId(id));
+	@GetMapping("/auth/loadUserByUserId")
+	public Result<UserInfo> loadUserByUserId() {
+		FxzAuthUser user = SecurityUtil.getUser();
+
+		Member member = memberService.loadUserByUserId(user.getUserId());
+		return Result.success(new UserInfo().setSysUser(new SystemUser().setUserId(member.getId())
+				.setAvatar(member.getAvatarUrl()).setUsername(member.getNickName())));
 	}
 
 	/**

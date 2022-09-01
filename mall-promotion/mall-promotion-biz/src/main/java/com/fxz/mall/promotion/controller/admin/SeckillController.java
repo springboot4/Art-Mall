@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fxz.common.mp.result.PageResult;
 import com.fxz.common.mp.result.Result;
 import com.fxz.common.security.annotation.Ojbk;
-import com.fxz.mall.promotion.VO.SeckillVO;
+import com.fxz.mall.promotion.vo.SeckillVO;
 import com.fxz.mall.promotion.dto.SeckillDTO;
 import com.fxz.mall.promotion.entity.Seckill;
 import com.fxz.mall.promotion.service.SeckillService;

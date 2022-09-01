@@ -20,6 +20,7 @@
         <module>mall-search</module>
         <module>mall-promotion</module>
         <module>mall-xxlJob</module>
+        <module>support</module>
     </modules>
 
 </project>
