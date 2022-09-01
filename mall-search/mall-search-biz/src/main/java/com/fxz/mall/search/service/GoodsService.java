@@ -23,8 +23,10 @@ import com.fxz.mall.product.query.SpuPageQuery;
 import com.fxz.mall.product.vo.GoodsDetailVO;
 import com.fxz.mall.product.vo.GoodsPageVO;
 import com.fxz.mall.product.vo.GoodsVO;
+import com.fxz.mall.promotion.enums.CouponGetEnum;
 import com.fxz.mall.promotion.enums.PromotionTypeEnum;
 import com.fxz.mall.promotion.feign.RemoteCouponService;
+import com.fxz.mall.promotion.param.CouponParam;
 import com.fxz.mall.search.dto.EsGoodsDTO;
 import com.fxz.mall.search.entity.EsPage;
 import com.fxz.mall.search.entity.EsPromotionGoods;
@@ -144,115 +146,121 @@ public class GoodsService {
 						.query(q -> q.match(m -> m.field(EsGoodsDTO.Fields.id).query(spuId))).size(1),
 				EsGoodsDTO.class);
 
-		if (CollectionUtil.isNotEmpty(search.hits().hits())) {
-			EsGoodsDTO source = search.hits().hits().get(0).source();
-
-			GoodsDetailVO.GoodsInfo goodsInfo = new GoodsDetailVO.GoodsInfo();
-			BeanUtil.copyProperties(source, goodsInfo);
-			List<String> album = new ArrayList<>();
-			if (StrUtil.isNotBlank(source.getPicUrl())) {
-				album.add(source.getPicUrl());
-			}
-			if (source.getSubPicUrls() != null && source.getSubPicUrls().length > 0) {
-				album.addAll(Arrays.asList(source.getSubPicUrls()));
-			}
-			goodsInfo.setAlbum(album);
-			result.setGoodsInfo(goodsInfo);
-
-			List<AttributeValueDTO> attrList = source.getAttrList();
-			List<GoodsDetailVO.Attribute> attributes = attrList.stream().map(attr -> {
-				GoodsDetailVO.Attribute attribute = new GoodsDetailVO.Attribute();
-				BeanUtil.copyProperties(attr, attribute);
-				return attribute;
-			}).collect(Collectors.toList());
-			result.setAttributeList(attributes);
-
-			List<SkuDTO> skuList = source.getSkuList();
-			Set<AttributeValueDTO> specSet = new HashSet<>();
-			skuList.forEach(item -> specSet.addAll(item.getSpecValList()));
-			List<GoodsDetailVO.Specification> specList = new ArrayList<>();
-			// 规格Map [key:"颜色",value:[{id:1,value:"黑"},{id:2,value:"白"}]]
-			Map<String, List<AttributeValueDTO>> specValueMap = specSet.stream()
-					.collect(Collectors.groupingBy(AttributeValueDTO::getName));
-			for (Map.Entry<String, List<AttributeValueDTO>> entry : specValueMap.entrySet()) {
-				String specName = entry.getKey();
-				List<AttributeValueDTO> specValueSourceList = entry.getValue();
-
-				// 规格映射处理
-				GoodsDetailVO.Specification spec = new GoodsDetailVO.Specification();
-				spec.setName(specName);
-				if (CollectionUtil.isNotEmpty(specValueSourceList)) {
-					List<GoodsDetailVO.Specification.Value> specValueList = specValueSourceList.stream().map(item -> {
-						GoodsDetailVO.Specification.Value specValue = new GoodsDetailVO.Specification.Value();
-						specValue.setId(item.getId());
-						specValue.setValue(item.getValue());
-						return specValue;
-					}).collect(Collectors.toList());
-					spec.setValues(specValueList);
-					specList.add(spec);
-				}
-			}
-			result.setSpecList(specList);
-
-			Map<Long, Map<String, Object>> cache = new HashMap<>();
-
-			List<SkuDTO> list = skuList.stream().map(sku -> {
-				SkuDTO s = new SkuDTO();
-				BeanUtil.copyProperties(sku, s);
-
-				Map<String, EsPromotionGoods> promotionGoodsMap = JacksonUtil.parseObject(
-						sku.getPromotionMapJson() != null ? sku.getPromotionMapJson() : "{}",
-						new TypeReference<Map<String, EsPromotionGoods>>() {
-						});
-
-				s.setPromotion(false);
-				s.setOriginPrice(sku.getPrice());
-				s.setPrice(sku.getPrice());
-
-				// 优惠券id列表
-				List<Long> couponList = new ArrayList<>();
-				// 如果含有秒杀key
-				if (MapUtil.isNotEmpty(promotionGoodsMap)) {
-					for (String key : promotionGoodsMap.keySet()) {
-						if (key.contains(PromotionTypeEnum.SECKILL.getValue())) {
-							EsPromotionGoods esPromotionGoods = promotionGoodsMap.get(key);
-							s.setPromotion(true);
-							s.setOriginPrice(esPromotionGoods.getOriginalPrice());
-							s.setPrice(esPromotionGoods.getPrice());
-						}
-						if (key.contains(PromotionTypeEnum.COUPON.getValue())) {
-							couponList.add(promotionGoodsMap.get(key).getPromotionId());
-						}
-					}
-				}
-
-				// 查询优惠券信息
-				List<Map<String, Object>> coupons = new ArrayList<>();
-				couponList.forEach(id -> {
-					if (cache.containsKey(id)) {
-						coupons.add(cache.get(id));
-					}
-				});
-				couponList = couponList.stream().filter(key -> !cache.containsKey(key)).collect(Collectors.toList());
-				if (CollectionUtil.isNotEmpty(couponList)) {
-					List<Map<String, Object>> data = remoteCouponService.couponList(couponList).getData();
-					coupons.addAll(data);
-
-					// 缓存优惠券信息
-					data.forEach(map -> cache.put(Long.valueOf((String) map.get("id")), map));
-				}
-
-				List<AttributeValueDTO> specValList = sku.getSpecValList();
-				String specIds = specValList.stream().map(item -> String.valueOf(item.getId()))
-						.collect(Collectors.joining("_"));
-				s.setSpecIds(specIds);
-				return s;
-			}).collect(Collectors.toList());
-
-			result.setCouponList(CollectionUtil.newArrayList(cache.values()));
-			result.setSkuList(list);
-
+		if (CollectionUtil.isEmpty(search.hits().hits())) {
+			return result;
 		}
+
+		EsGoodsDTO source = search.hits().hits().get(0).source();
+
+		GoodsDetailVO.GoodsInfo goodsInfo = new GoodsDetailVO.GoodsInfo();
+		BeanUtil.copyProperties(source, goodsInfo);
+
+		List<String> album = new ArrayList<>();
+		if (StrUtil.isNotBlank(source.getPicUrl())) {
+			album.add(source.getPicUrl());
+		}
+		if (source.getSubPicUrls() != null && source.getSubPicUrls().length > 0) {
+			album.addAll(Arrays.asList(source.getSubPicUrls()));
+		}
+		goodsInfo.setAlbum(album);
+
+		result.setGoodsInfo(goodsInfo);
+
+		List<AttributeValueDTO> attrList = source.getAttrList();
+		List<GoodsDetailVO.Attribute> attributes = attrList.stream().map(attr -> {
+			GoodsDetailVO.Attribute attribute = new GoodsDetailVO.Attribute();
+			BeanUtil.copyProperties(attr, attribute);
+			return attribute;
+		}).collect(Collectors.toList());
+		result.setAttributeList(attributes);
+
+		List<SkuDTO> skuList = source.getSkuList();
+		Set<AttributeValueDTO> specSet = new HashSet<>();
+		skuList.forEach(item -> specSet.addAll(item.getSpecValList()));
+		List<GoodsDetailVO.Specification> specList = new ArrayList<>();
+		// 规格Map [key:"颜色",value:[{id:1,value:"黑"},{id:2,value:"白"}]]
+		Map<String, List<AttributeValueDTO>> specValueMap = specSet.stream()
+				.collect(Collectors.groupingBy(AttributeValueDTO::getName));
+		for (Map.Entry<String, List<AttributeValueDTO>> entry : specValueMap.entrySet()) {
+			String specName = entry.getKey();
+			List<AttributeValueDTO> specValueSourceList = entry.getValue();
+
+			// 规格映射处理
+			GoodsDetailVO.Specification spec = new GoodsDetailVO.Specification();
+			spec.setName(specName);
+			if (CollectionUtil.isNotEmpty(specValueSourceList)) {
+				List<GoodsDetailVO.Specification.Value> specValueList = specValueSourceList.stream().map(item -> {
+					GoodsDetailVO.Specification.Value specValue = new GoodsDetailVO.Specification.Value();
+					specValue.setId(item.getId());
+					specValue.setValue(item.getValue());
+					return specValue;
+				}).collect(Collectors.toList());
+				spec.setValues(specValueList);
+				specList.add(spec);
+			}
+		}
+		result.setSpecList(specList);
+
+		Map<Long, Map<String, Object>> cache = new HashMap<>();
+
+		List<SkuDTO> list = skuList.stream().map(sku -> {
+			SkuDTO s = new SkuDTO();
+			BeanUtil.copyProperties(sku, s);
+
+			Map<String, EsPromotionGoods> promotionGoodsMap = JacksonUtil.parseObject(
+					sku.getPromotionMapJson() != null ? sku.getPromotionMapJson() : "{}",
+					new TypeReference<Map<String, EsPromotionGoods>>() {
+					});
+
+			s.setPromotion(false);
+			s.setOriginPrice(sku.getPrice());
+			s.setPrice(sku.getPrice());
+
+			// 优惠券id列表
+			List<Long> couponList = new ArrayList<>();
+			// 如果含有秒杀key
+			if (MapUtil.isNotEmpty(promotionGoodsMap)) {
+				for (String key : promotionGoodsMap.keySet()) {
+					if (key.contains(PromotionTypeEnum.SECKILL.getValue())) {
+						EsPromotionGoods esPromotionGoods = promotionGoodsMap.get(key);
+						s.setPromotion(true);
+						s.setOriginPrice(esPromotionGoods.getOriginalPrice());
+						s.setPrice(esPromotionGoods.getPrice());
+					}
+					if (key.contains(PromotionTypeEnum.COUPON.getValue())) {
+						couponList.add(promotionGoodsMap.get(key).getPromotionId());
+					}
+				}
+			}
+
+			// 查询优惠券信息
+			List<Map<String, Object>> coupons = new ArrayList<>();
+			couponList.forEach(id -> {
+				if (cache.containsKey(id)) {
+					coupons.add(cache.get(id));
+				}
+			});
+			couponList = couponList.stream().filter(key -> !cache.containsKey(key)).collect(Collectors.toList());
+			if (CollectionUtil.isNotEmpty(couponList)) {
+				CouponParam param = new CouponParam();
+				param.setGetType(CouponGetEnum.FREE.getValue());
+				param.setIds(couponList);
+				List<Map<String, Object>> data = remoteCouponService.couponList(param).getData();
+				coupons.addAll(data);
+
+				// 缓存优惠券信息
+				data.forEach(map -> cache.put(Long.valueOf((String) map.get("id")), map));
+			}
+
+			List<AttributeValueDTO> specValList = sku.getSpecValList();
+			String specIds = specValList.stream().map(item -> String.valueOf(item.getId()))
+					.collect(Collectors.joining("_"));
+			s.setSpecIds(specIds);
+			return s;
+		}).collect(Collectors.toList());
+
+		result.setCouponList(CollectionUtil.newArrayList(cache.values()));
+		result.setSkuList(list);
 
 		return result;
 	}

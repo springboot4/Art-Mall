@@ -25,7 +25,7 @@ public class GoodsDetailVO {
 	private List<SkuDTO> skuList;
 
 	/**
-	 * 优惠券列表
+	 * 当前商品可领的优惠券列表
 	 */
 	List<Map<String, Object>> couponList;
 

@@ -1,9 +1,10 @@
 package com.fxz.mall.promotion.feign;
 
 import com.fxz.common.mp.result.Result;
+import com.fxz.mall.promotion.param.CouponParam;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Map;
@@ -19,10 +20,10 @@ import java.util.Map;
 public interface RemoteCouponService {
 
 	/**
-	 * 根据id查询优惠券信息
-	 * @param ids 优惠券id集合
+	 * 查询优惠券信息
+	 * @param couponParam 查询参数
 	 */
-	@GetMapping(value = "/app/coupon/list")
-	Result<List<Map<String, Object>>> couponList(@RequestParam("ids") List<Long> ids);
+	@PostMapping(value = "/app/coupon/list")
+	Result<List<Map<String, Object>>> couponList(@RequestBody CouponParam couponParam);
 
 }

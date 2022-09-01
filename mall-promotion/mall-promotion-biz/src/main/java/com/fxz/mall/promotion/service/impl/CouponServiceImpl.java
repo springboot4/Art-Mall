@@ -105,7 +105,7 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
 	@Override
 	public Boolean memberReceiveCoupon(Long couponId) {
 		Coupon coupon = this.getById(couponId);
-		if (Objects.isNull(coupon) || CouponGetEnum.FREE.getValue().equals(coupon.getGetType())) {
+		if (Objects.isNull(coupon) || CouponGetEnum.ACTIVITY.getValue().equals(coupon.getGetType())) {
 			throw new FxzException("优惠券信息不存在！");
 		}
 
@@ -385,16 +385,24 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
 	}
 
 	public void checkCouponLimit(Long couponId, Long memberId) {
+		// 查询优惠券信息
 		Coupon coupon = this.getById(couponId);
-		LambdaQueryWrapper<MemberCoupon> queryWrapper = new LambdaQueryWrapper<MemberCoupon>()
-				.eq(MemberCoupon::getCouponId, couponId).eq(MemberCoupon::getMemberId, memberId);
-		long haveCoupons = memberCouponService.count(queryWrapper);
 		if (!PromotionsStatusEnum.START.getValue().equals(coupon.getPromotionStatus())) {
 			throw new FxzException("优惠券已过期！");
 		}
+
+		if (coupon.getGetType().equals(CouponGetEnum.ACTIVITY.getValue())) {
+			return;
+		}
+
 		if (coupon.getPublishNum() != 0 && coupon.getReceivedNum() >= coupon.getPublishNum()) {
 			throw new FxzException("优惠券剩余领取数量不足！");
 		}
+
+		// 查看优惠券领取的数量
+		LambdaQueryWrapper<MemberCoupon> queryWrapper = new LambdaQueryWrapper<MemberCoupon>()
+				.eq(MemberCoupon::getCouponId, couponId).eq(MemberCoupon::getMemberId, memberId);
+		long haveCoupons = memberCouponService.count(queryWrapper);
 		if (!coupon.getCouponLimitNum().equals(0) && haveCoupons >= coupon.getCouponLimitNum()) {
 			throw new FxzException("此优惠券最多领取" + coupon.getCouponLimitNum() + "张");
 		}

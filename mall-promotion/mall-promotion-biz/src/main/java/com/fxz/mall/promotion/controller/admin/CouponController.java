@@ -79,15 +79,6 @@ public class CouponController {
 	}
 
 	/**
-	 * 会员领取优惠券
-	 * @param couponId 优惠券id
-	 */
-	@GetMapping("receiveCoupon/{couponId}")
-	public Result<Boolean> receiveCoupon(@PathVariable("couponId") Long couponId) {
-		return Result.judge(couponService.memberReceiveCoupon(couponId));
-	}
-
-	/**
 	 * 分页查询优惠券信息
 	 */
 	@GetMapping(value = "/page")

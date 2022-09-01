@@ -1,9 +1,8 @@
 package com.fxz.mall.promotion.controller.app;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fxz.common.mp.result.Result;
 import com.fxz.common.security.annotation.Ojbk;
-import com.fxz.mall.promotion.entity.Coupon;
+import com.fxz.mall.promotion.param.CouponParam;
 import com.fxz.mall.promotion.service.CouponService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -25,13 +24,13 @@ public class CouponController {
 	private final CouponService couponService;
 
 	/**
-	 * 根据id查询优惠券信息
-	 * @param ids 优惠券id集合
+	 * 查询优惠券信息
+	 * @param couponParam 查询参数
 	 */
 	@Ojbk
-	@GetMapping(value = "/list")
-	public Result<List<Map<String, Object>>> couponList(@RequestParam("ids") List<Long> ids) {
-		return Result.success(couponService.listMaps(Wrappers.<Coupon>lambdaQuery().in(Coupon::getId, ids)));
+	@PostMapping(value = "/list")
+	public Result<List<Map<String, Object>>> couponList(@RequestBody CouponParam couponParam) {
+		return Result.success(couponService.listMaps(couponParam.lambdaQuery()));
 	}
 
 	/**
