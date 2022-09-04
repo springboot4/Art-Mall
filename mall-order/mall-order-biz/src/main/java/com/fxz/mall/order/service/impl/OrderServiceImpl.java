@@ -229,7 +229,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 			T result = null;
 			switch (payTypeEnum) {
 			case WX_JSAPI:
-				// result = (T) wxJsapiPay(appId, order);
 				break;
 			default:
 				result = (T) balancePay(order);

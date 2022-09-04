@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
  * @version 1.0
  * @date 2022/8/10 10:21
  */
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class SeckillApplyVO extends SeckillApply {
 

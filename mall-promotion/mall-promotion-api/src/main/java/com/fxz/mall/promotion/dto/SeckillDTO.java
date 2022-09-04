@@ -13,7 +13,7 @@ import java.util.List;
  * @version 1.0
  * @date 2022/8/12 11:14
  */
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class SeckillDTO extends Seckill implements Serializable {
 
