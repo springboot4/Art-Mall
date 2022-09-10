@@ -8,7 +8,7 @@
 ## 📖文档
 
 🪜项目整体结构
-```
+```lua
 fxz-mall 
     ├── mall-member -- 会员模块
     ├── mall-order -- 订单模块
